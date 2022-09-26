@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32802.440
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaoDinhVu.WEB", "CaoDinhVu.WEB\CaoDinhVu.WEB.csproj", "{7CDB366A-A145-4A78-BA3B-C90CFB123462}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaoDinhVu.DAL", "CaoDinhVu.DAL\CaoDinhVu.DAL.csproj", "{13D346B8-AAF2-44F0-B1AF-2CB2F736F278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaoDinhVu.DAL", "CaoDinhVu.DAL\CaoDinhVu.DAL.csproj", "{13D346B8-AAF2-44F0-B1AF-2CB2F736F278}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
