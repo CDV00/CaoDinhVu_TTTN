@@ -1,4 +1,5 @@
-using CaoDinhVu.WEB.Data;
+using CaoDinhVu.BLL.Extensions;
+using CaoDinhVu.WEB.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,11 +26,19 @@ namespace CaoDinhVu.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-            services.AddDbContext<DBContext>(option =>
+            
+            /*services.AddDbContext<DBContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("MyDB"));
-            });
+            });*/
+            services.AddControllersWithViews();
+            services.ConfigureCos();
+            services.ConfigureIISIntegration();
+            services.ConfigureIdentity();
+            services.ConfigureSqlContext(Configuration);
+            services.ConfigureRepositories();
+            services.ConfigureServices();
+            services.AddAutoMapper(typeof(MapperInitializer));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +63,11 @@ namespace CaoDinhVu.WEB
 
             app.UseEndpoints(endpoints =>
             {
+
+                endpoints.MapControllerRoute(
+                    name: "areaRoute",
+                    pattern: "{area:exists}/{controller}/{action}");
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

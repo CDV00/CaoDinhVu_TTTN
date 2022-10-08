@@ -1,0 +1,222 @@
+﻿@model IEnumerable<Entities.Models.AppUser>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AvatarUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fullname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfileLink)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacebookLink)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LinkedlnLink)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.YoutubeLink)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HeadLine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RefreshToken)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RefreshTokenExpiryTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UpdateBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDelete)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NormalizedUserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NormalizedEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmailConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PasswordHash)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SecurityStamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConcurrencyStamp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TwoFactorEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LockoutEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LockoutEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccessFailedCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvatarUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fullname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfileLink)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FacebookLink)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LinkedlnLink)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YoutubeLink)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HeadLine)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RefreshToken)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RefreshTokenExpiryTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateAt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDelete)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NormalizedUserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NormalizedEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmailConfirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PasswordHash)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecurityStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConcurrencyStamp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TwoFactorEnabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LockoutEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LockoutEnabled)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccessFailedCount)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

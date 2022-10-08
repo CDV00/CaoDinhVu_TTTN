@@ -1,4 +1,5 @@
 ﻿using CaoDinhVu.WEB.Models;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,6 +14,7 @@ namespace CaoDinhVu.WEB.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
