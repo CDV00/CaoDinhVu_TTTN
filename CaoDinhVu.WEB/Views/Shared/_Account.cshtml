@@ -1,0 +1,26 @@
+﻿@model Entities.DTOs.UserDTO
+
+@{
+    if (Model == null)
+    {
+        <a href="~/dang-nhap/" class="widget-view">
+            <div class="icon-area">
+                <i class="fa fa-user"></i>
+            </div>
+            <small class="text"> Đăng nhập </small>
+        </a>
+    }
+    else
+    {
+        <a href="~/dang-nhap/" class="widget-view">
+            <div class="icon-area">
+                <i class="fa fa-user"></i>
+            </div>
+            <small class="text"> @Model.Fullname </small>
+        </a>
+    }
+
+
+}
+
+

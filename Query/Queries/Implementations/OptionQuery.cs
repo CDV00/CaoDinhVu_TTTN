@@ -21,5 +21,9 @@ namespace Query.Queries.Implementations
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
+        public IOptionQuery filterByProductColorId()
+        {
+                return this;
+        }
     }
 }

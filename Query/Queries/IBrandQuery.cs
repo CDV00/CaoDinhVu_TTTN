@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Query.Queries
 {
-    public interface IBrandQuery:IQuery<Brand>
+    public interface IBrandQuery : IQuery<Brand>
     {
+        IBrandQuery FindById(Guid id);
     }
 }

@@ -3,14 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CaoDinhVu.BLL.Services;
 
 namespace CaoDinhVu.WEB.Controllers
 {
     public class BrandController : Controller
     {
-        public IActionResult Index()
+        private readonly IBrandService _brandService;
+
+        public BrandController(IBrandService brandService)
         {
-            return View();
+            _brandService = brandService;
         }
+        public async Task<IActionResult> GetAll()
+        {
+            var brands = await _brandService.getAll();
+            return View(brands);
+        }
+        
+
     }
 }

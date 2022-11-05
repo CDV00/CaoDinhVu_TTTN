@@ -28,6 +28,9 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("AvatarUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -58,6 +61,9 @@ namespace CaoDinhVu.WEB.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fullname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HeadLine")
@@ -116,7 +122,7 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UpdateBy")
+                    b.Property<Guid?>("UpdateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
@@ -136,7 +142,7 @@ namespace CaoDinhVu.WEB.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("AppUser");
                 });
 
             modelBuilder.Entity("Entities.Models.Brand", b =>
@@ -167,7 +173,7 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<int?>("Orders")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ParentId")
+                    b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Slug")
@@ -186,6 +192,10 @@ namespace CaoDinhVu.WEB.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Orders")
+                        .IsUnique()
+                        .HasFilter("[Orders] IS NOT NULL");
 
                     b.ToTable("Brands");
                 });
@@ -218,7 +228,7 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<int?>("Orders")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ParentId")
+                    b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Slug")
@@ -237,6 +247,10 @@ namespace CaoDinhVu.WEB.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Orders")
+                        .IsUnique()
+                        .HasFilter("[Orders] IS NOT NULL");
 
                     b.ToTable("Categories");
                 });
@@ -276,6 +290,72 @@ namespace CaoDinhVu.WEB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Colors");
+                });
+
+            modelBuilder.Entity("Entities.Models.Detail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Battery")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CPU")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Camera")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Charger")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Connection")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreateBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GeneralInformation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OperatingSystem")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RAM")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ROM")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Screen")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdateBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique()
+                        .HasFilter("[ProductId] IS NOT NULL");
+
+                    b.ToTable("Details");
                 });
 
             modelBuilder.Entity("Entities.Models.Image", b =>
@@ -338,10 +418,10 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<int>("RAM")
+                    b.Property<int?>("RAM")
                         .HasColumnType("int");
 
-                    b.Property<int>("ROM")
+                    b.Property<int?>("ROM")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateAt")
@@ -361,8 +441,11 @@ namespace CaoDinhVu.WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AppUserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -370,11 +453,26 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<Guid>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StatusOrder")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
@@ -382,9 +480,12 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<Guid?>("UpdateBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -395,6 +496,9 @@ namespace CaoDinhVu.WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("Amount")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
@@ -407,13 +511,16 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProductColorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateAt")
@@ -422,9 +529,18 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<Guid?>("UpdateBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("productOptionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductColorId");
+
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("productOptionId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -453,9 +569,6 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Detail")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -472,8 +585,11 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
+
+                    b.Property<string>("Thumbnails")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -553,11 +669,14 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Number")
+                    b.Property<int?>("Number")
                         .HasColumnType("int");
 
                     b.Property<Guid?>("OptionId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("ProductColorId")
                         .HasColumnType("uniqueidentifier");
@@ -612,7 +731,7 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Orders")
+                    b.Property<int?>("Orders")
                         .HasColumnType("int");
 
                     b.Property<string>("Position")
@@ -621,7 +740,7 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Sort_order")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateAt")
@@ -764,6 +883,15 @@ namespace CaoDinhVu.WEB.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Entities.Models.Detail", b =>
+                {
+                    b.HasOne("Entities.Models.Product", "Product")
+                        .WithOne("Detail")
+                        .HasForeignKey("Entities.Models.Detail", "ProductId");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Entities.Models.Image", b =>
                 {
                     b.HasOne("Entities.Models.ProductColor", "ProductColor")
@@ -781,18 +909,38 @@ namespace CaoDinhVu.WEB.Migrations
 
             modelBuilder.Entity("Entities.Models.Order", b =>
                 {
-                    b.HasOne("Entities.Models.AppUser", null)
+                    b.HasOne("Entities.Models.AppUser", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Entities.Models.OrderDetail", b =>
                 {
+                    b.HasOne("Entities.Models.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId");
+
+                    b.HasOne("Entities.Models.ProductColor", "ProductColor")
+                        .WithMany()
+                        .HasForeignKey("ProductColorId");
+
                     b.HasOne("Entities.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
 
+                    b.HasOne("Entities.Models.ProductOption", "productOption")
+                        .WithMany()
+                        .HasForeignKey("productOptionId");
+
+                    b.Navigation("Order");
+
                     b.Navigation("Product");
+
+                    b.Navigation("ProductColor");
+
+                    b.Navigation("productOption");
                 });
 
             modelBuilder.Entity("Entities.Models.Product", b =>
@@ -844,7 +992,7 @@ namespace CaoDinhVu.WEB.Migrations
                         .HasForeignKey("ProductColorId");
 
                     b.HasOne("Entities.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductOptions")
                         .HasForeignKey("ProductId");
 
                     b.Navigation("Option");
@@ -912,11 +1060,20 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Entities.Models.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+                });
+
             modelBuilder.Entity("Entities.Models.Product", b =>
                 {
+                    b.Navigation("Detail");
+
                     b.Navigation("Images");
 
                     b.Navigation("ProductColors");
+
+                    b.Navigation("ProductOptions");
                 });
 
             modelBuilder.Entity("Entities.Models.ProductColor", b =>

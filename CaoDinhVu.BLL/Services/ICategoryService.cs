@@ -1,4 +1,6 @@
-﻿using Entities.Models;
+﻿using Entities.DTOs;
+using Entities.Requests;
+using Entities.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,10 @@ namespace CaoDinhVu.BLL.Services
 {
     public interface ICategoryService
     {
-        Task<Category> getById(Guid id);
+        Task<BaseResponse> AddAsync(CategoryRequest categoryRequest);
+        Task<BaseResponse> Delete(Guid id);
+        Task<List<CategoryDTO>> getAll();
+        Task<CategoryDTO> getById(Guid id);
+        Task<BaseResponse> Update(CategoryRequest categoryRequest);
     }
 }

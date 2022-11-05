@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Query.Queries
 {
-    public interface IProductColorQuery:IQuery<ProductColor>
+    public interface IProductColorQuery : IQuery<ProductColor>
     {
+        Guid FilterProductColorId(Guid productId, Guid colorId);
+        List<Guid> FilterProductId(Guid productId);
     }
 }

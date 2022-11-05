@@ -20,6 +20,11 @@ namespace Query.Queries.Implementations
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
+        public ICategoryQuery GetAll()
+        {
+            return this;
+        }
+        
         public ICategoryQuery FiterById(Guid id)
         {
             Query = Query.Where(type => type.Id == id);

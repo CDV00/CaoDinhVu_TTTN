@@ -20,6 +20,8 @@ namespace Entities.Models
         public string HeadLine { get; set; }
         public string Description { get; set; }
 
+        public string Address { get; set; }
+        public string Gender { get; set; }
         public string RefreshToken { get; set; }
         //public decimal Balance { get; set; } = 0;
 

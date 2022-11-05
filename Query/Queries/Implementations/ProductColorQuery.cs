@@ -1,4 +1,5 @@
 ﻿using CaoDinhVu.DAL.Data;
+using Entities.Constants;
 using Entities.Models;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,18 @@ namespace Query.Queries.Implementations
         public ProductColorQuery(IQueryable<ProductColor> productColorQuery, DBContext dbContext) : base(productColorQuery)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        }
+        public Guid FilterProductColorId(Guid productId, Guid colorId)
+        {
+            Guid productColorId = Query.Where(pc => pc.Product.Id == productId && pc.Color.Id == colorId).FirstOrDefault().Id;
+
+            return productColorId;
+        }
+        public List<Guid> FilterProductId(Guid productId)
+        {
+            var Ids = Query.Where(pc => pc.Product.Id == productId).Select(p=>p.Id).ToList();
+
+            return Ids;
         }
     }
 }

@@ -82,10 +82,33 @@ namespace CaoDinhVu.WEB.Extensions
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped<IColorRepository, ColorRepository>();
+            services.AddScoped<IImageRepository, ImageRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<IProductColorRepository, ProductColorRepository>();
+            services.AddScoped<IProductOptionRepository, ProductOptionRepository>();
+            services.AddScoped<ISliderRepository, SliderRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IOptionRepository, OptionRepository>();
         }
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductSevice, ProductSevice>();
+            services.AddScoped<IUploadImage, UploadImage>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<ISliderService, SliderService>();
+            services.AddScoped<IProductColorService, ProductColorService>();
+            services.AddScoped<IOptionService, OptionService>();
+            services.AddScoped<IColorService, ColorService>();
+            services.AddScoped<IProductOptionService, ProductOptionService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderDetailService, OrderDetailService>();
         }
     }
 }

@@ -1,0 +1,39 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Entities.DTOs.MenuDTO
+<ul class="navbar-nav h5 mx-3">
+    <li class="nav-item">
+        <a class="nav-link" style="color:#000000" href="~/">Trang chủ</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-black" style="color:#000000" href="~/tat-ca-san-pham">Tất cả sản phẩm</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" style="color:#000000" data-toggle="dropdown" href="~/danh-muc"> Danh mục </a>
+        <div class="dropdown-menu dropdown-large">
+            <nav class="row-cols-6">
+                <a href="~/danh-muc">Tất cả danh mục</a>
+                @foreach (var item in Model.listCategory)
+                {
+                    <br /><a href="/danh-muc/@item.Id">@item.Name</a>
+                }
+
+            </nav> <!--  row end .// -->
+        </div> <!--  dropdown-menu dropdown-large end.// -->
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" style="color:#000000" data-toggle="dropdown" href="~/thuong-hieu"> Thương hiệu </a>
+        <div class="dropdown-menu dropdown-large">
+            <nav class="">
+                <a href="~/thuong-hieu">Tất cả thương hiệu</a>
+                @foreach (var item in Model.listBrands)
+                {
+                    <br /><a href="/thuong-hieu/@item.Id">@item.Name</a>
+                }
+            </nav> <!--  row end .// -->
+        </div> <!--  dropdown-menu dropdown-large end.// -->
+    </li>
+
+</ul>

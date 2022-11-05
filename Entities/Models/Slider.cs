@@ -18,8 +18,8 @@ namespace Entities.Models
         public string Img { get; set; }
         public string Attribute { get; set; }
         public string Sort_order { get; set; }
-        public int Orders { get; set; }
-        public int Status { get; set; }
+        public int? Orders { get; set; }
+        public int? Status { get; set; }
     }
     
 }

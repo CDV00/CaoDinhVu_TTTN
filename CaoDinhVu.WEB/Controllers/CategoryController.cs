@@ -16,9 +16,8 @@ namespace CaoDinhVu.WEB.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            Guid id = new Guid();
-            await _categoryService.getById(id);
-            return View();
+            var categorys = await _categoryService.getAll();
+            return View(categorys);
         }
     }
 }

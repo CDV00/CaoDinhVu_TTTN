@@ -12,6 +12,7 @@ namespace Entities.Models
     {
         public UserBase()
         {
+            Id = new Guid();
             CreateAt = DateTime.UtcNow;
             IsActive = true;
         }
@@ -19,7 +20,7 @@ namespace Entities.Models
         public DateTime CreateAt { get; set; }
         public Guid CreateBy { get; set; }
         public DateTime? UpdateAt { get; set; }
-        public Guid UpdateBy { get; set; }
+        public Guid? UpdateBy { get; set; }
         public bool IsActive { get; set; }
         public bool IsDelete { get; set; }
 

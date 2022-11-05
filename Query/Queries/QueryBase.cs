@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Query.Queries
 {
     public abstract class QueryBase<TEntity> : IQuery<TEntity> where TEntity : class
@@ -29,6 +28,7 @@ namespace Query.Queries
 
         public virtual async Task<TOutput> AsSelectorAsync<TOutput>(Expression<Func<TEntity, TOutput>> selector)
         {
+
             return await Query.Select(selector).FirstOrDefaultAsync();
         }
 

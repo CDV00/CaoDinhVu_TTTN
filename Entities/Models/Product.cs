@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
+
     public class Product : BaseEntity<Guid>
     {
         [Required(ErrorMessage = "Bắt buộc nhập tên Sản phẩm")]
         public string Name { get; set; }
+        public string Thumbnails { get; set; }
         public string Slug { get; set; }
         [Required(ErrorMessage = "Bắt buộc nhập tiêu đề")]
         public string Title { get; set; }
@@ -20,11 +22,12 @@ namespace Entities.Models
         public Guid BrandId { get; set; }
         public virtual Brand Brand { get; set; }
         public string Description { get; set; }
-        public string Detail { get; set; }
+        public Detail Detail { get; set; }
         [Required(ErrorMessage = "Bắt buộc nhập giá")]
         [MinLength(0, ErrorMessage = "Giá nhỏ nhất: 0")]
         public decimal Price { get; set; }
-        public int Status { get; set; }
+        public int? Status { get; set; }
         public virtual ICollection<ProductColor> ProductColors { get; set; }
+        public virtual ICollection<ProductOption> ProductOptions { get; set; }
     }
 }

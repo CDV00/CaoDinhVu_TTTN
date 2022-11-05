@@ -8,10 +8,4 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.9" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Constants\" />
-    <Folder Include="Responses\" />
-    <Folder Include="Requests\" />
-  </ItemGroup>
-
 </Project>

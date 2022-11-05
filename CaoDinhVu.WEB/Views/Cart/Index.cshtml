@@ -1,10 +1,99 @@
-﻿
+﻿@model IEnumerable<Entities.DTOs.CartItem>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section scripts{
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    $(function () {
+        //cập nhập số lượng
+
+        $('.txtQuantity').change(function () {
+            var listProduct = $('.txtQuantity');
+            var cartList = [];
+            $.each(listProduct, function (i, item) {
+                cartList.push({
+                    quantity: $(item).val(),
+                    productOptionId: {
+                        Id: $(item).data('id'),
+                    }
+                });
+            });
+            var quantity = $(this).val();
+            var productOptionId = $(this).data('id');
+            $.ajax({
+                url: '/Cart/Update',
+                data: { "quantity": quantity, "productOptionId": productOptionId },
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+                    if (res.status == true) {
+                        alert("thành công");
+                        window.location.href = '/gio-hang';
+                    }
+                    else {
+
+                    }
+                }
+            })
+        });
+        //xóa sản phẩm
+        $('.btnDelete').off('click').on('click', function () {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Xác nhận?',
+                text: "Bạn có muốn xóa sản phẩm?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có!',
+                cancelButtonText: 'Không!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var id = $(this).data('id');
+                    $.ajax({
+                        url: '/Cart/Delete',
+                        data: { productOptionId: $(this).data('id') },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+
+                            $("tr[data-id='" + id + "']").remove();
+                            //thông báo
+                            swalWithBootstrapButtons.fire(
+                                'Thành công!',
+                                'Bạn đã xóa thành công sản phẩm.',
+                                'success'
+                            );
+                            @*if (res.status == true) {
+                                window.location.href = '/gio-hang';
+                            }*@
+                        }
+                    })
+
+                }
+            })
+
+
+
+
+        });
+    });
+    </script>
+}
 
 <!-- ========================= SECTION CONTENT ========================= -->
+<div id='toast'></div>
 <section class="section-content padding-y">
     <div class="container">
 
@@ -22,104 +111,60 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <figure class="itemside">
-                                        <div class="aside"><img src="images/items/1.jpg" class="img-sm"></div>
-                                        <figcaption class="info">
-                                            <a href="#" class="title text-dark">Some name of item goes here nice</a>
-                                            <p class="text-muted small">Size: XL, Color: blue, <br> Brand: Gucci</p>
-                                        </figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <select class="form-control">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="price-wrap">
-                                        <var class="price">$1156.00</var>
-                                        <small class="text-muted"> $315.20 each </small>
-                                    </div> <!-- price-wrap .// -->
-                                </td>
-                                <td class="text-right">
-                                    <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
-                                    <a href="" class="btn btn-light"> Remove</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <figure class="itemside">
-                                        <div class="aside"><img src="images/items/2.jpg" class="img-sm"></div>
-                                        <figcaption class="info">
-                                            <a href="#" class="title text-dark">Product name  goes here nice</a>
-                                            <p class="text-muted small">Size: XL, Color: blue, <br> Brand: Gucci</p>
-                                        </figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <select class="form-control">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="price-wrap">
-                                        <var class="price">$149.97</var>
-                                        <small class="text-muted"> $75.00 each </small>
-                                    </div> <!-- price-wrap .// -->
-                                </td>
-                                <td class="text-right">
-                                    <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
-                                    <a href="" class="btn btn-light btn-round"> Remove</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <figure class="itemside">
-                                        <div class="aside"><img src="images/items/3.jpg" class="img-sm"></div>
-                                        <figcaption class="info">
-                                            <a href="#" class="title text-dark">Another name of some product goes just here as a demo text </a>
-                                            <p class="small text-muted">Size: XL, Color: blue,  Brand: Tissot</p>
-                                        </figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <select class="form-control">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <div class="price-wrap">
-                                        <var class="price">$98.00</var>
-                                        <small class="text-muted"> $578.00 each</small>
-                                    </div> <!-- price-wrap .// -->
-                                </td>
-                                <td class="text-right">
-                                    <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
-                                    <a href="" class="btn btn-light btn-round"> Remove</a>
-                                </td>
-                            </tr>
+                            @foreach (var item in Model)
+                            {
+                                <tr data-id='@item.ProductOption.Id'>
+                                    <td>
+                                        <figure class="itemside">
+                                            <div class="aside"><img src="@item.ProductOption.Product.Thumbnails" class="img-sm"></div>
+                                            <figcaption class="info">
+                                                <a href="~/chi-tiet-san-pham/@item.ProductOption.Product.Id" class="title text-dark" data-id='@item.ProductOption.Id'>@item.ProductOption.Product.Name</a>
+                                                <p class="text-muted small">Màu sắc: @item.ProductOption.ProductColor.Color.Name
+                                                <br> RAM: @item.ProductOption.Option.RAM, ROM: @item.ProductOption.Option.ROM
+                                                <br> Brand: Gucci</p>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td>
+                                        <select class="form-control txtQuantity" data-id="@item.ProductOption.Id">
+                                            <option selected hidden>@item.quantity</option>
+                                            <option class="SL" value=1 data-id="@item.ProductOption.Id">1</option>
+                                            <option class="SL" value=2 data-id="@item.ProductOption.Id">2</option>
+                                            <option class="SL" value=3 data-id="@item.ProductOption.Id">3</option>
+                                            <option class="SL" value=4 data-id="@item.ProductOption.Id">4</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="price-wrap">
+                                            <var class="price">$1156.00</var>
+                                            <small class="text-muted"> @item.ProductOption.Price </small>
+                                        </div> <!-- price-wrap .// -->
+                                    </td>
+                                    <td class="text-right">
+                                        <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
+                                        <button class="btn btn-light btnDelete" data-id="@item.ProductOption.Id"> Remove</button>
+                                    </td>
+                                </tr>
+                            }
+
                         </tbody>
                     </table>
 
                     <div class="card-body border-top">
-                        <a href="#" class="btn btn-primary float-md-right"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
+                        @if (Model.FirstOrDefault() == null)
+                        {
+                            <a  disabled class="btn btn-primary float-md-right"> thanh toán <i class="fa fa-chevron-right"></i> </a>
+                        }
+                        else
+                        {
+                            <a href="~/thanh-toan" class="btn btn-primary float-md-right"> thanh toán <i class="fa fa-chevron-right"></i> </a>
+                        }
+
                         <a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
                     </div>
                 </div> <!-- card.// -->
 
-                <div class="alert alert-success mt-3">
-                    <p class="icontext"><i class="icon text-success fa fa-truck"></i> Free Delivery within 1-2 weeks</p>
-                </div>
+               
 
             </main> <!-- col.// -->
             <aside class="col-md-3">
@@ -166,26 +211,5 @@
 </section>
 <!-- ========================= SECTION CONTENT END// ========================= -->
 <!-- ========================= SECTION  ========================= -->
-<section class="section-name border-top padding-y">
-    <div class="container">
-        <h6>Payment and refund policy</h6>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
 
-    </div><!-- container // -->
-</section>
 <!-- ========================= SECTION  END// ========================= -->

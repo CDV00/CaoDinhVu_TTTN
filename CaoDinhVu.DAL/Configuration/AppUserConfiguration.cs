@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CaoDinhVu.WEB.Configuration
+namespace CaoDinhVu.DAL.Configuration
 {
     public class AppUserConfiguration : IEntityTypeConfiguration<AppUser>
     {
@@ -18,7 +18,7 @@ namespace CaoDinhVu.WEB.Configuration
             builder.HasQueryFilter(u => !u.IsDelete);
             //
             //builder.HasKey(x => x.Id);
-            builder.Property(u => u.Fullname).IsRequired();
+            //builder.Property(u => u.Fullname).IsRequired();
         }
     }
 }
