@@ -53,7 +53,7 @@ namespace Query.Queries
         /// <returns></returns>
         public async Task<List<TOutput>> ToListAsync<TOutput>(Expression<Func<TEntity, TOutput>> selector)
         {
-            return await Query.AsNoTracking()
+            return await Query
                 .Select(selector)
                 .ToListAsync()
                 .ConfigureAwait(false);

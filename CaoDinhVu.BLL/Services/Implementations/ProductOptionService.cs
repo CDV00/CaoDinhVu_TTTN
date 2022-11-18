@@ -29,18 +29,19 @@ namespace CaoDinhVu.BLL.Services.Implementations
             var productOption =await _productOptionRepository.BuildQuery()
                                                              .FilterByProductColorId(productColorId)
                                                              .IncludeOption()
-                                                             .ToListAsync(po => _mapper.Map<ProductOption>(po));
+                                                             .ToListAsync(p => _mapper.Map<ProductOptionDTO>(p));
+                                                             //.AsSelectorAsync(p => _mapper.Map<ProductOptionDTO>(p));
 
-            /*List<OptionDTO> options = new List<OptionDTO>();
+            List<OptionDTO> options = new List<OptionDTO>();
 
             for (int i = 0; i< productOption.Count; i++)
             {
                 var option = productOption[i].Option;
                 options.Add(option);
                 
-            }*/
+            }
 
-            return null;
+            return options;
 
         }
 

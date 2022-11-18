@@ -6,6 +6,7 @@
 }
 
 @section footer{
+    <script src="~/dist/ckeditor/ckeditor.js"></script>
     <script>
         $(document).ready(function () {
             var countAnh = 2;
@@ -19,7 +20,11 @@
                 );
                 countAnh++;
             });
+           
+            
         });
+        
+        CKEDITOR.replace('txtDescription');
     </script>
 }
 
@@ -127,7 +132,7 @@
                     <div class="form-group">
                         <label>Mô tả<span class="text-danger">(*)</span></label>
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @id ="txtDescription" })
                             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -257,5 +262,5 @@
         }
     </div>
 </div>
-}
+
 

@@ -10,6 +10,7 @@ using Entities.Models;
 using CaoDinhVu.BLL.Services;
 using Entities.Requests;
 using Newtonsoft.Json;
+using CaoDinhVu.BLL.Services.Implementations;
 
 namespace CaoDinhVu.WEB.Areas.Admin.Controllers
 {
@@ -20,13 +21,18 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IBrandService _brandService;
         private readonly IUploadImage _uploadImage;
+        private readonly IProductColorService _productColorService;
+        private readonly IProductOptionService _productOptionService;
 
-        public ProductsController(IProductSevice productSevice, ICategoryService categoryService, IBrandService brandService, IUploadImage uploadImage)
+        public ProductsController(IProductColorService productColorService,IProductOptionService productOptionService , IProductSevice productSevice, ICategoryService categoryService, IBrandService brandService, IUploadImage uploadImage)
         {
             _productSevice = productSevice;
             _categoryService = categoryService;
             _brandService = brandService;
             _uploadImage = uploadImage;
+            _productColorService = productColorService;
+            _productOptionService = productOptionService;
+
         }
 
         // GET: Admin/Products
@@ -169,6 +175,30 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             return Json(JsonConvert.SerializeObject(Result));
 
         }
+
+        public async Task<IActionResult> AddProductCorlor(ProductColorRequest productColor)
+        {
+            var Result = await _productColorService.AddAsync(productColor);
+            /*object Result = new
+            {
+                Status = true
+
+            };*/
+            return Json(JsonConvert.SerializeObject(Result));
+
+        }
+        public async Task<IActionResult> AddProductOption(ProductOptionRequest productColor)
+        {
+            var Result = await _productOptionService.AddAsync(productColor);
+            /*object Result = new
+            {
+                Status = true
+
+            };*/
+            return Json(JsonConvert.SerializeObject(Result));
+
+        }
+
 
         // GET: Admin/Products/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
