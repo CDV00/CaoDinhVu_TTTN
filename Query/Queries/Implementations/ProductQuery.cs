@@ -58,6 +58,7 @@ namespace Query.Queries.Implementations
         public IProductQuery IncludeDetail()
         {
             Query.Include(p => p.Detail).Load();
+            
             return this;
         }
         public IProductQuery IncludeOption()

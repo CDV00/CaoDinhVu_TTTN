@@ -10,6 +10,12 @@ namespace CaoDinhVu.WEB.Extensions
     {
         public static void RegisterRoute(this IApplicationBuilder app)
         {
+
+            /*app.MapAreaControllerRoute(
+            name: "MyAreaProducts",
+            areaName: "Products",
+            pattern: "Products/{controller=Home}/{action=Index}/{id?}");*/
+
             app.UseEndpoints(endpoints =>
             {
                 // Đăng ký

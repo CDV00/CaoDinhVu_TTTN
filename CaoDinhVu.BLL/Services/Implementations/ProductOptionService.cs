@@ -26,18 +26,21 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
         public async Task<List<OptionDTO>> getOptionbyProductcolorId(Guid productColorId)
         {
-            var productOption =await _productOptionRepository.BuildQuery().FilterByProductColorId(productColorId).IncludeOption().ToListAsync(po => _mapper.Map<ProductOptionDTO>(po));
+            var productOption =await _productOptionRepository.BuildQuery()
+                                                             .FilterByProductColorId(productColorId)
+                                                             .IncludeOption()
+                                                             .ToListAsync(po => _mapper.Map<ProductOption>(po));
 
-            List<OptionDTO> options = new List<OptionDTO>();
+            /*List<OptionDTO> options = new List<OptionDTO>();
 
             for (int i = 0; i< productOption.Count; i++)
             {
                 var option = productOption[i].Option;
                 options.Add(option);
                 
-            }
+            }*/
 
-            return options;
+            return null;
 
         }
 
@@ -56,7 +59,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
         public async Task<decimal> GetPrice(Guid productColorId , Guid optionId)
         {
-            decimal price = await _productOptionRepository.BuildQuery().FilterByProductColorId(productColorId).FilterOption(optionId).AsSelectorAsync(c => c.Price);
+            decimal price = await _productOptionRepository.BuildQuery().FilterByProductColorId(productColorId).FilterOption(optionId).AsSelectorAsync(c => c.Price.Value);
             return price;
         }
         public List<Guid> GetIdByProductId(Guid productId)
@@ -84,7 +87,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try
             {
                 var productOption = _mapper.Map<ProductOption>(productOptionRequest);
-                var update = _productOptionRepository.Update(productOption);
+                var update =await _productOptionRepository.Update(productOption);
                 if (!update)
                     return new BaseResponse(true, "Update Option thất bại");
                 await _unitOfWork.SaveChangesAsync();
@@ -101,7 +104,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             {
                 var productOption = await _productOptionRepository.GetByIdAsync(id);
                 productOption.IsDelete = true;
-                var update = _productOptionRepository.Update(productOption);
+                var update =await _productOptionRepository.Update(productOption);
                 if (!update)
                     return new BaseResponse(true, "Delete Option thất bại");
                 await _unitOfWork.SaveChangesAsync();

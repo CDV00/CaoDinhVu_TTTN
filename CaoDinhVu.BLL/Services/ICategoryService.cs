@@ -11,7 +11,10 @@ namespace CaoDinhVu.BLL.Services
     public interface ICategoryService
     {
         Task<BaseResponse> AddAsync(CategoryRequest categoryRequest);
+        Task<BaseResponse> ChangeStatus(Guid id);
+        bool CheckExist(Guid id);
         Task<BaseResponse> Delete(Guid id);
+        Task<BaseResponse> DeleteSoft(Guid id);
         Task<List<CategoryDTO>> getAll();
         Task<CategoryDTO> getById(Guid id);
         Task<BaseResponse> Update(CategoryRequest categoryRequest);

@@ -10,22 +10,23 @@ namespace Entities.Models
 
     public class Product : BaseEntity<Guid>
     {
-        [Required(ErrorMessage = "Bắt buộc nhập tên Sản phẩm")]
+        //[Required(ErrorMessage = "Bắt buộc nhập tên Sản phẩm")]
         public string Name { get; set; }
         public string Thumbnails { get; set; }
         public string Slug { get; set; }
-        [Required(ErrorMessage = "Bắt buộc nhập tiêu đề")]
+        //[Required(ErrorMessage = "Bắt buộc nhập tiêu đề")]
         public string Title { get; set; }
         public virtual ICollection<Image> Images { get; set; }
-        public Guid CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
         public virtual Category Category { get; set; }
-        public Guid BrandId { get; set; }
+        public Guid? BrandId { get; set; }
         public virtual Brand Brand { get; set; }
         public string Description { get; set; }
-        public Detail Detail { get; set; }
-        [Required(ErrorMessage = "Bắt buộc nhập giá")]
-        [MinLength(0, ErrorMessage = "Giá nhỏ nhất: 0")]
-        public decimal Price { get; set; }
+        public Guid? DetailId { get; set; }
+        public virtual Detail Detail { get; set; }
+        //[Required(ErrorMessage = "Bắt buộc nhập giá")]
+        //[MinLength(0, ErrorMessage = "Giá nhỏ nhất: 0")]
+        public decimal? Price { get; set; }
         public int? Status { get; set; }
         public virtual ICollection<ProductColor> ProductColors { get; set; }
         public virtual ICollection<ProductOption> ProductOptions { get; set; }

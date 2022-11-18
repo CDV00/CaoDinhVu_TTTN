@@ -39,6 +39,18 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 throw new("Something went wrong. " + ex.Message);
             }
         }
+        public bool CheckExist(Guid id)
+        {
+            try
+            {
+                return _brandRepository.CheckExists(id);
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw new("Something went wrong. " + ex.Message);
+            }
+        }
         public async Task<BrandDTO> getById(Guid id)
         {
             try
@@ -57,8 +69,8 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try
             {
                 var brand = _mapper.Map<Brand>(brandRequest);
-                brand.Status = 0;
                 await _brandRepository.CreateAsync(brand);
+                _brandRepository.ChangeOrder(brand.Orders.Value);
                 await _unitOfWork.SaveChangesAsync();
 
 
@@ -66,7 +78,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "Thêm thương hiệu thất bại " + ex);
+                return new BaseResponse(false, "Thêm thương hiệu thất bại " + ex);
             }
         }
 
@@ -74,8 +86,30 @@ namespace CaoDinhVu.BLL.Services.Implementations
         {
             try
             {
-                var brand = _mapper.Map<Brand>(brandRequest);
-                var update = _brandRepository.Update(brand);
+                //int order = categoryRequest.Orders.Value;
+                var brandOld = await _brandRepository.GetByIdAsync(brandRequest.Id.Value);
+                int orderOld = brandOld.Orders.Value;
+                //categoryRequest.UpdateBy =categoryold.CreateBy;
+                //categoryRequest.CreateBy =categoryold.CreateBy;
+                //
+                if (brandRequest.Image == null)
+                    brandRequest.Image = brandOld.Image;
+                if (brandRequest.ParentId == null)
+                    brandRequest.ParentId = brandOld.ParentId;
+                if (brandRequest.Slug == null)
+                    brandRequest.Slug = brandOld.Slug;
+                if (brandRequest.UpdateBy == null)
+                    brandRequest.UpdateBy = brandOld.CreateBy;
+
+                //
+                if (brandRequest.Orders != orderOld)
+                    _brandRepository.ChangeOrder(brandRequest.Orders.Value, orderOld);
+                var brand = _mapper.Map(brandRequest, brandOld);
+                //category.Tracking();            
+                //check order exist
+
+                brand.UpdateAt = DateTime.UtcNow;
+                var update =await _brandRepository.Update(brand);
                 if (!update)
                     return new BaseResponse(true, "Update thương hiệu thất bại");
                 await _unitOfWork.SaveChangesAsync();
@@ -86,13 +120,46 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 return new BaseResponse(true, "Update thương hiệu thất bại" + ex);
             }
         }
+        public async Task<BaseResponse> ChangeStatus(Guid id)
+        {
+            try
+            {
+                var category = await _brandRepository.GetByIdAsync(id);
+                if (category.Status == 1)
+                    category.Status = 2;
+                else
+                    category.Status = 1;
+
+                await _unitOfWork.SaveChangesAsync();
+                return new BaseResponse(true, category.Status.ToString());
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(false, "thay đổi trạng thái thất bại" + ex);
+            }
+        }
+        public async Task<BaseResponse> DeleteSoft(Guid id)
+        {
+            try
+            {
+                var category = await _brandRepository.GetByIdAsync(id);
+                category.Status = 0;
+
+                await _unitOfWork.SaveChangesAsync();
+                return new BaseResponse(true, "xóa mềm thành công");
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(true, "xóa mềm thất bại" + ex);
+            }
+        }
         public async Task<BaseResponse> Delete(Guid id)
         {
             try
             {
                 var product = await _brandRepository.GetByIdAsync(id);
                 product.IsDelete = true;
-                var update = _brandRepository.Update(product);
+                var update =await _brandRepository.Update(product);
                 if (!update)
                     return new BaseResponse(true, "Delete thất bại");
                 await _unitOfWork.SaveChangesAsync();

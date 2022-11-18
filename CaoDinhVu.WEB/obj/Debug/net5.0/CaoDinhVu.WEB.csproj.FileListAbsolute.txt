@@ -283,4 +283,15 @@ D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\CaoDinhVu.WEB.
 D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Views\Shared\_Account.cshtml.g.cs
 D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Views\Search\Filter.cshtml.g.cs
 D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Views\Payment\Index.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\CaoDinhVu.WEB.MvcApplicationPartsAssemblyInfo.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Brand\Create.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Brand\Delete.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Brand\Details.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Brand\Edit.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Brand\Index.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Products\Create.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Products\Delete.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Products\Details.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Products\Edit.cshtml.g.cs
+D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\Razor\Areas\Admin\Views\Products\Index.cshtml.g.cs
 D:\ThucTapTotNghiep\CaoDinhVu_TTTN\CaoDinhVu.WEB\obj\Debug\net5.0\refint\CaoDinhVu.WEB.dll

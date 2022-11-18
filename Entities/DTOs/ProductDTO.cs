@@ -18,6 +18,8 @@ namespace Entities.DTOs
         public Guid BrandId { get; set; }
         public virtual BrandDTO Brand { get; set; }
         public string Description { get; set; }
+        public Guid? DetailId { get; set; }
+        //public virtual DetailDTO Detail { get; set; }
         public virtual DetailDTO Detail { get; set; }
         public decimal Price { get; set; }
         public int Status { get; set; }

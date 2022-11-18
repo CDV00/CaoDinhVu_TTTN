@@ -1,108 +1,210 @@
-﻿@model IEnumerable<Entities.Models.Category>
+﻿@model IEnumerable<Entities.DTOs.CategoryDTO>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Slug)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ParentId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Orders)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdateAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UpdateBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsActive)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDelete)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slug)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ParentId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Orders)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Image)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdateAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdateBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDelete)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+
+@section header{
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
 }
-    </tbody>
-</table>
+@section footer{
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            debugger
+            $('#myTable').DataTable();
+        });
+        //xóa danh mục
+        $('.btnDelete').off('click').on('click', function () {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Xác nhận?',
+                text: "Bạn có muốn xóa danh mục?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có!',
+                cancelButtonText: 'Không!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var id = $(this).data('id');
+                    $.ajax({
+                        url: '/Admin/Categories/DeleteSoft',
+                        data: { categoryId: $(this).data('id') },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+
+                            $("tr[data-id='" + id + "']").remove();
+                            //thông báo
+                            swalWithBootstrapButtons.fire(
+                                'Thành công!',
+                                'Bạn đã xóa danh mục thành công.',
+                                'success'
+                            );
+                            @*if (res.status == true) {
+                                window.location.href = '/gio-hang';
+                            }*@
+                        }
+                    })
+
+                }
+            })
+        })
+        //change status
+        $('.status').off('click').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/Admin/Categories/ChangeStatus',
+                data: { categoryId: $(this).data('id') },
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+
+                    var obj = JSON.parse(res);
+                    console.log(obj);
+                    if (obj.IsSuccess) {
+                        if (obj.Message == "1") {
+                            // remove class
+                            $("a[data-id='" + id + "']").removeClass('btn-danger');
+                            $("a[data-id='" + id + "']").children().removeClass('fa-toggle-off');
+                            //add class
+                            $("a[data-id='" + id + "']").addClass('btn-success');
+                            $("a[data-id='" + id + "']").children().addClass('fa-toggle-on');
+
+                        }
+                        if (obj.Message == "2")
+                        {
+                            // remove class
+                            $("a[data-id='" + id + "']").removeClass('btn-success');
+                            $("a[data-id='" + id + "']").children().removeClass('fa-toggle-on');
+                            //add class
+                            $("a[data-id='" + id + "']").addClass('btn-danger');
+                            $("a[data-id='" + id + "']").children().addClass('fa-toggle-off');
+                        }
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                    //$("tr[data-id='" + id + "']").remove();
+
+                }
+            })
+
+        });
+
+    </script>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <strong class="text-danger text-uppercase">Tất cả sản phẩm</strong>
+                @*<h1>@Session["Test"]</h1>*@
+            </div>
+            <div class="col-sm-6 text-right">
+                <!--ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Blank Page</li>
+                </ol-->
+                <a href="@Url.Action("Create","Categories")" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Thêm</a>
+                <a href="@Url.Action("Trash","Categories")" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Thùng rác</a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+
+        <div class="card-body my-2">
+            @*@Html.Partial("Message")*@
+            <table class="table table-bordered table-striped" id="myTable">
+                <thead>
+                    <tr class="text-center">
+                        <th>#</th>
+                        <th style="width:100px">
+                            Hình danh mục
+                        </th>
+                        <th>
+                            Tên danh mục
+                        </th>
+                        @*<th>
+                    Ngày tạo
+                </th>*@
+                        <th>
+                            Trạng thái
+                        </th>
+                        <th>Change</th>
+
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var item in Model.Where(c => c.Status != 0).OrderBy(c => c.Orders))
+                    {
+                        <tr data-id='@item.Id'>
+                            <td>
+                                <input type="checkbox" name="checkId" value="@item" />
+                            </td>
+                            <td>
+                                <img src="@item.Image" alt="Hình ảnh" class="img-fluid" />
+                            </td>
+                            <td>
+                                @item.Name
+                            </td>
+
+                            @*<td>
+                        @(String.Format("{0:d}", item.CreatedAt))
+                    </td>*@
+
+                            <td>
+                                @if (item.Status == 1)
+                                {
+                                    <a class="btn btn-sm btn-success status" data-id="@item.Id"><i class="fas fa-toggle-on"></i></a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-sm btn-danger status" data-id="@item.Id"><i class="fas fa-toggle-off"></i></a>
+                                }
+
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Details","Categories", new { id = item.Id })" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Chi tiết</a>
+                                <a href="@Url.Action("Edit","Categories", new { id = item.Id })" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Sữa</a>
+                                <button class="btn btn-sm btn-danger btnDelete" data-id="@item.Id"><i class="fas fa-trash"></i> Xóa</button>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

@@ -14,8 +14,8 @@ namespace Entities.Models
         public string Battery { get; set; }
         public string Charger { get; set; }
         public string GeneralInformation { get; set; }
-        public Guid? ProductId { get; set; }
-        public Product Product { get; set; }
+        //public Guid? ProductId { get; set; }
+        public virtual Product Product { get; set; }
 
     }
 }

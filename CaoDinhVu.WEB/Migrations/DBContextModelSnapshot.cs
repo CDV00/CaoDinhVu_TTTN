@@ -38,10 +38,10 @@ namespace CaoDinhVu.WEB.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
@@ -69,10 +69,10 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("HeadLine")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -151,19 +151,19 @@ namespace CaoDinhVu.WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -179,7 +179,7 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -206,19 +206,19 @@ namespace CaoDinhVu.WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -234,7 +234,7 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Slug")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -248,10 +248,6 @@ namespace CaoDinhVu.WEB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Orders")
-                        .IsUnique()
-                        .HasFilter("[Orders] IS NOT NULL");
-
                     b.ToTable("Categories");
                 });
 
@@ -261,24 +257,22 @@ namespace CaoDinhVu.WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Hex")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateAt")
@@ -313,26 +307,23 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Connection")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("GeneralInformation")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("OperatingSystem")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RAM")
                         .HasColumnType("nvarchar(max)");
@@ -351,10 +342,6 @@ namespace CaoDinhVu.WEB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique()
-                        .HasFilter("[ProductId] IS NOT NULL");
-
                     b.ToTable("Details");
                 });
 
@@ -364,19 +351,19 @@ namespace CaoDinhVu.WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Imglink")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("ProductColorId")
@@ -406,16 +393,16 @@ namespace CaoDinhVu.WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<int?>("RAM")
@@ -447,19 +434,19 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -471,7 +458,7 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<int?>("StatusOrder")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal?>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdateAt")
@@ -499,16 +486,16 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<int?>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("OrderId")
@@ -554,32 +541,34 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<Guid?>("AppUserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BrandId")
+                    b.Property<Guid?>("BrandId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<Guid?>("DetailId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Slug")
@@ -592,7 +581,6 @@ namespace CaoDinhVu.WEB.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateAt")
@@ -609,6 +597,10 @@ namespace CaoDinhVu.WEB.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("DetailId")
+                        .IsUnique()
+                        .HasFilter("[DetailId] IS NOT NULL");
+
                     b.ToTable("Products");
                 });
 
@@ -621,16 +613,16 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<Guid?>("ColorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("ProductId")
@@ -657,25 +649,25 @@ namespace CaoDinhVu.WEB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<int?>("Number")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("OptionId")
+                    b.Property<Guid>("OptionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("ProductColorId")
@@ -710,19 +702,19 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Property<string>("Attribute")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreateAt")
+                    b.Property<DateTime?>("CreateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreateBy")
+                    b.Property<Guid?>("CreateBy")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Img")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool?>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
+                    b.Property<bool?>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<string>("Link")
@@ -883,15 +875,6 @@ namespace CaoDinhVu.WEB.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Entities.Models.Detail", b =>
-                {
-                    b.HasOne("Entities.Models.Product", "Product")
-                        .WithOne("Detail")
-                        .HasForeignKey("Entities.Models.Detail", "ProductId");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Entities.Models.Image", b =>
                 {
                     b.HasOne("Entities.Models.ProductColor", "ProductColor")
@@ -951,19 +934,21 @@ namespace CaoDinhVu.WEB.Migrations
 
                     b.HasOne("Entities.Models.Brand", "Brand")
                         .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BrandId");
 
                     b.HasOne("Entities.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Entities.Models.Detail", "Detail")
+                        .WithOne("Product")
+                        .HasForeignKey("Entities.Models.Product", "DetailId");
 
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Detail");
                 });
 
             modelBuilder.Entity("Entities.Models.ProductColor", b =>
@@ -985,7 +970,9 @@ namespace CaoDinhVu.WEB.Migrations
                 {
                     b.HasOne("Entities.Models.Option", "Option")
                         .WithMany()
-                        .HasForeignKey("OptionId");
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Entities.Models.ProductColor", "ProductColor")
                         .WithMany("ProductOptions")
@@ -1060,6 +1047,11 @@ namespace CaoDinhVu.WEB.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Entities.Models.Detail", b =>
+                {
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Entities.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
@@ -1067,8 +1059,6 @@ namespace CaoDinhVu.WEB.Migrations
 
             modelBuilder.Entity("Entities.Models.Product", b =>
                 {
-                    b.Navigation("Detail");
-
                     b.Navigation("Images");
 
                     b.Navigation("ProductColors");

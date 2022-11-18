@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "/tzW1LnXRuAVFbw5OcYVDmYuzWNCj+EoxbFNUKK+Zc8jS965atOgTv5ndO6tUb1rUslbusvsw6lsGYITJWp5Dw==",
+  "dgSpecHash": "cCWqwkntY9M6n6RIkq7hlSWPPOjo8Sc+1nW0R51lL5CY+sg3bp7bTjhqr08doIUAeIvW2ko0rOC7OkrnyFT/gw==",
   "success": true,
   "projectFilePath": "D:\\ThucTapTotNghiep\\CaoDinhVu_TTTN\\CaoDinhVu.DAL\\CaoDinhVu.DAL.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\PC\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.9\\microsoft.aspnetcore.cryptography.internal.6.0.9.nupkg.sha512",
     "C:\\Users\\PC\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.9\\microsoft.aspnetcore.cryptography.keyderivation.6.0.9.nupkg.sha512",

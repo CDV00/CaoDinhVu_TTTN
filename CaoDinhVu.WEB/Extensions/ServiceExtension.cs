@@ -93,6 +93,7 @@ namespace CaoDinhVu.WEB.Extensions
             services.AddScoped<ISliderRepository, SliderRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IOptionRepository, OptionRepository>();
+            services.AddScoped<IDetailRepository, DetailRepository>();
         }
         public static void ConfigureServices(this IServiceCollection services)
         {

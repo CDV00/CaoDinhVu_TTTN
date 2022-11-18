@@ -22,6 +22,6 @@ namespace Entities.Models
         public int? Orders { get; set; }
         public string Image { get; set; }
         public string Title { get; set; }
-        public int Status { get; set; }
+        public int? Status { get; set; } = 1;
     }
 }

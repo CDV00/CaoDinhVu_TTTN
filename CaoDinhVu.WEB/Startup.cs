@@ -1,4 +1,4 @@
-﻿using CaoDinhVu.BLL.Extensions;
+﻿using Entities.Extensions;
 using CaoDinhVu.WEB.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -104,6 +104,8 @@ namespace CaoDinhVu.WEB
             app.UseRouting();
 
             app.UseAuthorization();
+
+
             /*app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -113,14 +115,34 @@ namespace CaoDinhVu.WEB
                 
             });*/
 
-            /*app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync("Hello World!");
-                });
-                endpoints.MapSitefinityEndpoints();
-            });*/
+                //đặt hành
+                //sản phẩm
+                //thương hiệu
+                //danh mục
+                endpoints.MapAreaControllerRoute(
+                     name: "xem-tat-ca",
+                     areaName: "Admin",
+                     defaults: new { Areas = "Admin", Controller = "Categories", Action = "Index" },
+                     pattern: "quan-ly-danh-muc");
+                endpoints.MapAreaControllerRoute(
+                     name: "xem-chi-tiet-danh-muc",
+                     areaName: "Admin",
+                     defaults: new { Areas = "Admin", Controller = "Categories", Action = "Details" },
+                     pattern: "danh-muc/chi-tiet/{id?}");
+                endpoints.MapAreaControllerRoute(
+                   name: "MyAreaProducts",
+                   areaName: "Admin",
+                   defaults: new { Areas = "Admin", Controller = "Categories", Action = "Edit" },
+                   pattern: "sua-danh-muc/{id?}");
+                /*endpoints.MapAreaControllerRoute(
+                    name: "MyAreaProducts",
+                    areaName: "Admin",
+                    defaults: new {Areas = "Admin", Controller = "Categories", Action = "Edit" },
+                    pattern: "sua-danh-muc/{id?}");*/
+
+            });
 
 
             //app

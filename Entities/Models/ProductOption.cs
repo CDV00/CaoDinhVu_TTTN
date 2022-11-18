@@ -19,6 +19,6 @@ namespace Entities.Models
 
         //[Required(ErrorMessage = "Bắt buộc nhập giá")]
         //[MinLength(0, ErrorMessage = "Giá nhỏ nhất: 0")]
-        public decimal Price { get; set; } = 100000;
+        public decimal? Price { get; set; } = 100000;
     }
 }

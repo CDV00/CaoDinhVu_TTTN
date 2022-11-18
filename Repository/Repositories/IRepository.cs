@@ -13,7 +13,7 @@ namespace Repository.Repositories
         Task<T> GetByIdAsync(Guid Id);
         Task CreateAsync(T _object);
         Task CreateRangeAsync(List<T> _object);
-        bool Update(T _object);
+        Task<bool> Update(T _object);
         void Remove(object _object, bool? permanent);
         void RemoveRange(List<T> _object);
     }

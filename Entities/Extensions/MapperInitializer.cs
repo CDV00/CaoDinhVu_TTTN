@@ -7,14 +7,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CaoDinhVu.BLL.Extensions
+namespace Entities.Extensions
 {
     public class MapperInitializer : Profile
     {
         public MapperInitializer()
         {
+            //mapper category
             CreateMap<Category, CategoryDTO>().ReverseMap();
+            CreateMap<Category, CategoryRequest>().ReverseMap();
+            //mapper brand
             CreateMap<Brand, BrandDTO>().ReverseMap();
+            CreateMap<Brand, BrandRequest>().ReverseMap();
+
+            //
             CreateMap<Slider, SliderDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Product, ListProductDTO>().ReverseMap();
@@ -34,7 +40,8 @@ namespace CaoDinhVu.BLL.Extensions
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, PaymentRequest>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
-
+            //
+            CreateMap<Detail, DetailDTO>().ReverseMap();
         }
     }
 }

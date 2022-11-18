@@ -26,21 +26,47 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
         private readonly IProductColorService _productColorService;
         private readonly IProductOptionService _productOptionService;
+        private readonly IDetailRepository _detailRepository;
+        private readonly IImageRepository _imageRepository;
 
         public ProductSevice(IUnitOfWork unitOfWork,IProductRepository productRepository, IMapper mapper,
             IProductColorService productColorService,
-            IProductOptionService productOptionService)
+            IProductOptionService productOptionService,
+            IDetailRepository detailRepository,
+            IImageRepository imageRepository)
         {
             _unitOfWork = unitOfWork;
             _productRepository = productRepository;
             _mapper = mapper;
             _productColorService = productColorService;
             _productOptionService = productOptionService;
+            _detailRepository = detailRepository;
+            _imageRepository = imageRepository;
+        }
+        public async Task<List<ListProductDTO>> GetAll()
+        {
+            try
+            {
+
+                var listProducts = await _productRepository.BuildQuery()
+                                                           .IncludeBrand()
+                                                           .IncludeCategory()
+                                                           .ToListAsync(p => _mapper.Map<ListProductDTO>(p));
+
+                return listProducts;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+
+            }
         }
         public async Task<PagingResponse<ListProductDTO>> GetAll(PagingRequest pagingRequest)
         {
             try
             {
+
                 var listProducts = await _productRepository.BuildQuery()
                                                            .IncludeBrand()
                                                            .IncludeCategory()
@@ -50,6 +76,15 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
                 int totalProducts = await _productRepository.BuildQuery()
                                                            .CountAsync();
+
+                /*var builquery = await _productRepository.BuildQuery()
+                                                           .IncludeBrand()
+                                                           .IncludeCategory()
+                                                           .ToListAsync(p => _mapper.Map<ListProductDTO>(p));*/
+                //var nobuilquery = await _productRepository.GetAllTest();
+
+
+
 
 
                 return new PagingResponse<ListProductDTO>(new Paging(pagingRequest.page.Value, pagingRequest.pageSize.Value, totalProducts), listProducts);
@@ -68,12 +103,15 @@ namespace CaoDinhVu.BLL.Services.Implementations
             {
                 var listProducts = await _productRepository.BuildQuery()
                                                            .FilterProductId(id)
+                                                           .IncludeDetail()
+                                                           .IncludeBrand()
+                                                           .IncludeCategory()
                                                            .IncludeImage()
                                                            .IncludeProductColor()
                                                            .IncludeColor()
                                                            .IncludeProductOption()
                                                            .IncludeOption()
-                                                           .AsSelectorAsync(p => _mapper.Map<ProductDTO>(p));
+                                                           .AsSelectorAsync(p =>_mapper.Map<ProductDTO>(p));
                 return listProducts;
             }
             catch (Exception ex)
@@ -220,10 +258,49 @@ namespace CaoDinhVu.BLL.Services.Implementations
         {
             try
             {
-                var product = _mapper.Map<Product>(productRequest);
-                product.Status = 0;
+                //var product = _mapper.Map<Product>(productRequest);
+
+                var product = new Product()
+                {
+                    Name = productRequest.Name,
+                    Thumbnails = productRequest.Thumbnails,
+                    Slug = productRequest.Slug,
+                    Title = productRequest.Title,
+                    CategoryId = productRequest.CategoryId,
+                    BrandId = productRequest.BrandId,
+                    Description = productRequest.Description,
+                    Price = 0,
+                    Status = productRequest.Status,
+                };
                 await _productRepository.CreateAsync(product);
-                await _unitOfWork.SaveChangesAsync();
+
+                var detail = new Detail()
+                {
+                    Screen = productRequest.Screen,
+                    Camera = productRequest.Camera,
+                    OperatingSystem = productRequest.OperatingSystem,
+                    CPU = productRequest.CPU,
+                    ROM = productRequest.ROM,
+                    RAM = productRequest.RAM,
+                    Connection = productRequest.Connection,
+                    Battery = productRequest.Battery,
+                    Charger = productRequest.Charger,
+                    GeneralInformation = productRequest.GeneralInformation,
+                    //ProductId = product.Id,
+                };
+                foreach (var item in productRequest.ListImage)
+                {
+                    var img = new Image()
+                    {
+                        Imglink = item.ToString(),
+                        ProductId = product.Id
+                    };
+                    await _imageRepository.CreateAsync(img);
+                }
+                await _detailRepository.CreateAsync(detail);
+
+                product.DetailId = detail.Id;
+        await _unitOfWork.SaveChangesAsync();
 
                 
                 return new BaseResponse(true, "Thêm thành công");
@@ -239,7 +316,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try
             {
                 var product = _mapper.Map<Product>(productRequest);
-                var update = _productRepository.Update(product);
+                var update =await _productRepository.Update(product);
                 if (!update)
                     return new BaseResponse(true, "Update sản phẩm thất bại");
                 await _unitOfWork.SaveChangesAsync();
@@ -259,11 +336,22 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
 
                 product.IsDelete = true;
-                var update = _productRepository.Update(product);
+                var update =await _productRepository.Update(product);
                 if (!update)
                     return new BaseResponse(true, "Delete sản phẩm thất bại");
                 await _unitOfWork.SaveChangesAsync(); 
                 //var productColor = _productColorService.GetIdByProductId(id);
+
+                /*using(var products = _productColorService.GetIdByProductId(id))
+                {
+                    foreach (var productColor in products)
+                    {
+                        var delete = await _productColorService.Delete(productColor);
+                        if (!delete.IsSuccess)
+                            return new BaseResponse(true, delete.Message);
+                    }
+                }*/
+
                 foreach (var productColor in _productColorService.GetIdByProductId(id))
                 {
                    var delete = await _productColorService.Delete(productColor);
@@ -283,6 +371,41 @@ namespace CaoDinhVu.BLL.Services.Implementations
             catch (Exception ex)
             {
                 return new BaseResponse(true, "Delete sản phẩm thất bại" + ex);
+            }
+        }
+
+        //
+        public async Task<BaseResponse> ChangeStatus(Guid id)
+        {
+            try
+            {
+                var product = await _productRepository.GetByIdAsync(id);
+                if (product.Status == 1)
+                    product.Status = 2;
+                else
+                    product.Status = 1;
+
+                await _unitOfWork.SaveChangesAsync();
+                return new BaseResponse(true, product.Status.ToString());
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(false, "thay đổi trạng thái thất bại" + ex);
+            }
+        }
+        public async Task<BaseResponse> DeleteSoft(Guid id)
+        {
+            try
+            {
+                var category = await _productRepository.GetByIdAsync(id);
+                category.Status = 0;
+
+                await _unitOfWork.SaveChangesAsync();
+                return new BaseResponse(true, "xóa mềm thành công");
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(true, "xóa mềm thất bại" + ex);
             }
         }
 

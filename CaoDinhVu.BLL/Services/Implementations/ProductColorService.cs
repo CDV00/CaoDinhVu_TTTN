@@ -55,7 +55,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try
             {
                 var productColor = _mapper.Map<ProductColor>(productColorRequest);
-                var update = _productColorRepository.Update(productColor);
+                var update =await _productColorRepository.Update(productColor);
                 if(!update)
                     return new BaseResponse(true, "Update Color thất bại");
                 await _unitOfWork.SaveChangesAsync();
@@ -72,7 +72,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             {
                 var productColor = await _productColorRepository.GetByIdAsync(id);
                 productColor.IsDelete = true;
-                var update = _productColorRepository.Update(productColor);
+                var update =await _productColorRepository.Update(productColor);
                 if (!update)
                     return new BaseResponse(true, "Delete Color thất bại");
                 await _unitOfWork.SaveChangesAsync();

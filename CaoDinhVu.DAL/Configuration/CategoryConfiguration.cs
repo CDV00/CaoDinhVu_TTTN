@@ -9,10 +9,10 @@ namespace CaoDinhVu.DAL.Configuration
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             //valudation
-            builder.HasQueryFilter(u => !u.IsDelete);
+            builder.HasQueryFilter(u => !u.IsDelete.Value);
             //
             //builder.HasKey(x => x.Id);
-            builder.HasIndex(u => u.Orders).IsUnique();
+            //builder.HasIndex(u => u.Orders).IsUnique();
         }
     }
 }

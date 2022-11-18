@@ -39,7 +39,7 @@
                 success: function (data) {
                     $("#options").empty();
                     var obj = JSON.parse(data);
-                    //console.log(obj);
+                    console.log(obj);
                     let DS = "";
                     $.each(obj, function () {
                         console.log($(this));
@@ -79,7 +79,7 @@
                 dataType: "json",
                 //contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    alert(data);
+                    //alert(data);
                     var obj = JSON.parse(data);
                     console.log(obj);
                     $("#price").text(obj.Price);
@@ -323,10 +323,7 @@
             <div class="col-md-8">
                 <h5 class="title-description">Description</h5>
                 <p>
-                    Lava stone grill, suitable for natural gas, with cast-iron cooking grid, piezo ignition, stainless steel burners, water tank, and thermocouple. Thermostatic adjustable per zone. Comes complete with lava rocks. Adjustable legs. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat.
+                    @Model.Description
                 </p>
                 <ul class="list-check">
                     <li>Material: Stainless steel</li>
@@ -342,12 +339,20 @@
 
             <div class="col-md-4">
                 <table class="table table-bordered">
-                    <tr> <th colspan="2">Basic specs</th> </tr>
-                    <tr> <td>Type of energy</td><td>Lava stone</td> </tr>
-                    <tr> <td>Number of zones</td><td>2</td> </tr>
-                    <tr> <td>Automatic connection	</td> <td> <i class="fa fa-check text-success"></i> Yes </td></tr>
+                    <tr> <th colspan="2">Thông số kỹ thuật</th> </tr>
+                    <tr> <td>Màn hình</td><td>@Model.Detail.Screen</td> </tr>
+                    <tr> <td>Camere</td><td>@Model.Detail.Camera</td> </tr>
+                    <tr> <td>Hệ điều hành</td><td>@Model.Detail.OperatingSystem</td> </tr>
+                    <tr> <td>chip xử lý</td><td>@Model.Detail.CPU</td> </tr>
+                    <tr> <td>Bộ nhớ RAM</td><td>@Model.Detail.RAM</td> </tr>
+                    <tr> <td>Ổ cứng</td><td>@Model.Detail.ROM</td> </tr>
+                    <tr> <td>Kết nối</td><td>@Model.Detail.Connection</td> </tr>
+                    <tr> <td>Pin</td><td>@Model.Detail.Battery</td> </tr>
+                    <tr> <td>Sạc Pin</td><td>@Model.Detail.Charger</td> </tr>
+                    <tr> <td>Thông tin chung</td><td>@Model.Detail.GeneralInformation</td> </tr>
+                    @*<tr> <td>Automatic connection	</td> <td> <i class="fa fa-check text-success"></i> Yes </td></tr>*@
 
-                    <tr> <th colspan="2">Dimensions</th> </tr>
+                    @*<tr> <th colspan="2">Dimensions</th> </tr>
                     <tr> <td>Width</td><td>500mm</td> </tr>
                     <tr> <td>Depth</td><td>400mm</td> </tr>
                     <tr> <td>Height	</td><td>700mm</td> </tr>
@@ -358,8 +363,8 @@
 
                     <tr> <th colspan="2">Connections</th> </tr>
                     <tr> <td>Heating Type</td><td>Gas</td> </tr>
-                    <tr> <td>Connected load gas</td><td>15 Kw</td> </tr>
-
+                    <tr> <td>Connected load gas</td><td>15 Kw</td> </tr>*@
+                    
                 </table>
 
             </div> <!-- col.// -->

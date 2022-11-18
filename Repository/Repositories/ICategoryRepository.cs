@@ -10,5 +10,7 @@ namespace Repository.Repositories
     public interface ICategoryRepository : IRepository<Category>
     {
         ICategoryQuery BuildQuery();
+        void ChangeOrder(int order, int? orderOld = 0);
+        bool CheckExists(Guid id);
     }
 }

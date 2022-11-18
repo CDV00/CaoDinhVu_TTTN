@@ -72,14 +72,17 @@ namespace Repository.Repositories.Implementations
 
         public virtual async Task<bool> IsExists() => await DbSet.AnyAsync();
 
-        public Task<T> GetByIdAsync(Guid Id)
+        public virtual async Task<T> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var data = await DbSet.FindAsync(id);
+            return data;
         }
 
-        public bool Update(T _object)
+        public virtual async Task<bool> Update(T _object)
         {
-            throw new NotImplementedException();
+            DbSet.Attach(_object);
+            _context.Entry(_object).State = EntityState.Modified;
+            return true;
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
-    
+
     public interface IColorRepository : IRepository<Color>
     {
         IColorQuery BuildQuery();

@@ -15,7 +15,7 @@ namespace CaoDinhVu.DAL.Configuration
             //table name
             builder.ToTable("AppUser");
             //valudation
-            builder.HasQueryFilter(u => !u.IsDelete);
+            builder.HasQueryFilter(u => !u.IsDelete.Value);
             //
             //builder.HasKey(x => x.Id);
             //builder.Property(u => u.Fullname).IsRequired();

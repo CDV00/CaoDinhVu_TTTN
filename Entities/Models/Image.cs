@@ -8,7 +8,9 @@ namespace Entities.Models
     public class Image:BaseEntity<Guid>
     {
         public string Imglink { get; set; }
+        public Guid? ProductColorId { get; set; }
         public virtual ProductColor ProductColor{get;set;}
+        public Guid? ProductId { get; set; }
         public virtual Product Product { get; set; }
     }
 }

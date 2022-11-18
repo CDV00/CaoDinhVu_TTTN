@@ -37,7 +37,6 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
                 };*/
 
-
                 await _orderRepository.CreateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
                 //
@@ -46,9 +45,9 @@ namespace CaoDinhVu.BLL.Services.Implementations
                     var orderDetail = new OrderDetail();
                     orderDetail.Amount = item.quantity;
                     orderDetail.OrderId = order.Id;
-                    /*orderDetail.productOption.Id = item.ProductOption.Id;
-                    orderDetail.ProductColor.Id = item.ProductOption.ProductColor.Id;
-                    orderDetail.Product.Id = item.ProductOption.Product.Id;*/
+                    orderDetail.productOptionId = item.ProductOption.Id;
+                    orderDetail.ProductColorId = item.ProductOption.ProductColor.Id;
+                    orderDetail.ProductId = item.ProductOption.Product.Id;
 
                     var ResultAddDetail = await _orderDetailService.Add(orderDetail);
                     if (!ResultAddDetail.IsSuccess)
