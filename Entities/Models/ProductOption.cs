@@ -14,11 +14,11 @@ namespace Entities.Models
         public virtual ProductColor ProductColor { get; set; }
         public Guid? ProductId { get; set; }
         public virtual Product Product { get; set; }
-        public Guid? OptionId { get; set; }
+        public Guid OptionId { get; set; }
         public virtual Option Option { get; set; }
 
-        [Required(ErrorMessage = "Bắt buộc nhập giá")]
-        [MinLength(0, ErrorMessage = "Giá nhỏ nhất: 0")]
+        //[Required(ErrorMessage = "Bắt buộc nhập giá")]
+        //[MinLength(0, ErrorMessage = "Giá nhỏ nhất: 0")]
         public decimal Price { get; set; } = 100000;
     }
 }
