@@ -15,7 +15,7 @@ namespace CaoDinhVu.BLL.Services
         bool CheckExist(Guid id);
         Task<BaseResponse> Delete(Guid id);
         Task<BaseResponse> DeleteSoft(Guid id);
-        Task<List<CategoryDTO>> getAll();
+        Task<List<CategoryDTO>> getAll(int? status = 1);
         Task<CategoryDTO> getById(Guid id);
         Task<BaseResponse> Update(CategoryRequest categoryRequest);
     }

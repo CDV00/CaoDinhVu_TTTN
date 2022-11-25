@@ -11,7 +11,7 @@ namespace Repository.Repositories.Implementations
 {
     public class ProductOptionRepository : Repository<ProductOption>, IProductOptionRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public ProductOptionRepository(DBContext context) : base(context)
         {
             _context = context;

@@ -117,9 +117,20 @@ namespace CaoDinhVu.WEB
 
             app.UseEndpoints(endpoints =>
             {
+                //Dashboard
+                endpoints.MapAreaControllerRoute(
+                     name: "quan-ly-thong-ke",
+                     areaName: "Admin",
+                     defaults: new { Areas = "Admin", Controller = "Dashboards", Action = "Index" },
+                     pattern: "quan-ly-thong-ke");
                 //đặt hành
                 //sản phẩm
                 //thương hiệu
+                endpoints.MapAreaControllerRoute(
+                   name: "MyAreaProductsd",
+                   areaName: "Admin",
+                   defaults: new { Areas = "Admin", Controller = "Brand", Action = "Index" },
+                   pattern: "quan-ly-thuong-hieu");
                 //danh mục
                 endpoints.MapAreaControllerRoute(
                      name: "xem-tat-ca",

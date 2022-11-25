@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace CaoDinhVu.WEB.Controllers
 {
-    public class AuthController : Controller
+    public class AuthController : BaseController
     {
         private readonly IAccountService _accountService;
 
@@ -23,18 +23,7 @@ namespace CaoDinhVu.WEB.Controllers
             _accountService = accountService;
         }
 
-        public UserDTO UserInfo
-        {
-            get
-            {
-                var data = HttpContext.Session.Get<UserDTO>("UserInfo");
-                if (data == null)
-                {
-                    data = new UserDTO();
-                }
-                return data;
-            }
-        }
+        
 
 
         public IActionResult Register()
@@ -106,9 +95,9 @@ namespace CaoDinhVu.WEB.Controllers
             }
 
             var userInfo = UserInfo;
-
+            
             userInfo = result.Data;
-
+            userInfo.Id = result.Data.Id;
             HttpContext.Session.Set<UserDTO>("UserInfo", userInfo);
 
             ViewBag.Error = "<strong class=\"text-success \">" + result.Message + ".</strong>";

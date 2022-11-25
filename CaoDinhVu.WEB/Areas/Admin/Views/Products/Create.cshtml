@@ -13,15 +13,12 @@
             $("#ThemAnh").click(function () {
                 $("#ThemAnh").before(
                     `<div class='form-group pl-5' id='_ImageSP_${countAnh}'></div>`
-
                 );
                 $(`#_ImageSP_${countAnh}`).before(
                     `<input name='ImageSP_${countAnh}' type='file' />`
                 );
                 countAnh++;
-            });
-           
-            
+            }); 
         });
         
         CKEDITOR.replace('txtDescription');

@@ -1,0 +1,332 @@
+﻿@model Entities.DTOs.DashboardDTO;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
+}
+
+
+<div class="col-md-10 py-1 m-auto">
+    <h3>Thống kê số lượng sản phẩm bán ra theo các ngày trong 1 tuần</h3>
+    <div class="card">
+        <div class="card-body">
+            <canvas id="chLine"></canvas>
+        </div>
+    </div>
+</div>
+
+@*<div class="col-md-10 py-1 m-auto">
+    <div class="card">
+        <div class="card-body">
+            <canvas id="chBar"></canvas>
+        </div>
+    </div>
+</div>*@
+<div class="row py-2 ">
+    <div class="col-md-4 py-1 m-auto">
+        <h3>Thống kê số lượng sản phẩm đã bán theo danh mục</h3>
+        <div class="card">
+            <div class="card-body">
+                <canvas id="chDonut1"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 py-1  m-auto">
+        <h3>Thống kê số lượng sản phẩm đã bán theo thương hiệu</h3>
+        <div class="card">
+            <div class="card-body">
+                <canvas id="chDonut2"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section footer{
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.js"></script>
+    <script>
+        @{ List<int> number = new List<int>() { 562, 445, 483, 503, 289, 492, 534 };
+            List<string> carss = new List<string>() { "Volvo", "BMW", "Ford", "Mazda", "BMW", "Ford", "Mazda" };
+         }
+        //var obj = { "1": 5, "2": 7, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 0 }
+        //var result = Object.keys(obj).map((key) => [Number(key), obj[key]]);
+        //const a = @carss;
+        //alert("a");
+        /* chart.js chart examples */
+        const cars = new Array("@Model.OrderInWeek[0].Day.ToString()", "@Model.OrderInWeek[1].Day.ToString()", "@Model.OrderInWeek[2].Day.ToString()", "@Model.OrderInWeek[3].Day.ToString()", "@Model.OrderInWeek[4].Day.ToString()", "@Model.OrderInWeek[5].Day.ToString()", "@Model.OrderInWeek[6].Day.ToString()");
+
+        const number = new Array("@Model.OrderInWeek[0].Amount.ToString()","@Model.OrderInWeek[1].Amount.ToString()","@Model.OrderInWeek[2].Amount.ToString()","@Model.OrderInWeek[3].Amount.ToString()","@Model.OrderInWeek[4].Amount.ToString()","@Model.OrderInWeek[5].Amount.ToString()","@Model.OrderInWeek[6].Amount.ToString()");
+        // chart colors
+        //var a = @carss[0].ToString();
+        var b = "aa";
+        var colors = ['#007bff', '#28a745', '#333333', '#c3e6cb', '#dc3545', '#6c757d'];
+
+        /* large line chart */
+        var chLine = document.getElementById("chLine");
+        var chartData = {
+            labels: cars,//["S", "M", "T", "W", "T", "F", "S"],
+            datasets: [{
+                label: "Số lượng sản phẩm bán được",
+                data: number,//[562, 445, 483, 503, 289, 492, 534],
+                backgroundColor: 'transparent',
+                borderColor: colors[0],
+                borderWidth: 4,
+                pointBackgroundColor: colors[0]
+            }@*,
+                   {
+                     data: [639, 465, 493, 478, 589, 632, 674],
+                     backgroundColor: colors[3],
+                     borderColor: colors[1],
+                     borderWidth: 4,
+                     pointBackgroundColor: colors[1]
+                   }*@
+            ]
+        };
+        if (chLine) {
+            new Chart(chLine, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: false
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    },
+                    responsive: true
+                }
+            });
+        }
+
+        /* large pie/donut chart */
+        var chPie = document.getElementById("chPie");
+        if (chPie) {
+            new Chart(chPie, {
+                type: 'pie',
+                data: {
+                    labels: ['Desktop', 'Phone', 'Tablet', 'Unknown'],
+                    datasets: [
+                        {
+                            backgroundColor: [colors[1], colors[0], colors[2], colors[5]],
+                            borderWidth: 0,
+                            data: [50, 40, 15, 5]
+                        }
+                    ]
+                },
+                plugins: [{
+                    beforeDraw: function (chart) {
+                        var width = chart.chart.width,
+                            height = chart.chart.height,
+                            ctx = chart.chart.ctx;
+                        ctx.restore();
+                        var fontSize = (height / 70).toFixed(2);
+                        ctx.font = fontSize + "em sans-serif";
+                        ctx.textBaseline = "middle";
+                        var text = chart.config.data.datasets[0].data[0] + "%",
+                            textX = Math.round((width - ctx.measureText(text).width) / 2),
+                            textY = height / 2;
+                        ctx.fillText(text, textX, textY);
+                        ctx.save();
+                    }
+                }],
+                options: { layout: { padding: 0 }, legend: { display: false }, cutoutPercentage: 80 }
+            });
+        }
+
+        /* bar chart */
+        var chBar = document.getElementById("chBar");
+        if (chBar) {
+            new Chart(chBar, {
+                type: 'bar',
+                data: {
+                    labels: ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
+                    datasets: [{
+                        data: [89, 45, 43, 53, 89, 32, 34],
+                        backgroundColor: colors[0]
+                    },
+                    {
+                        data: [18, 15, 35, 25, 59, 62, 74],
+                        backgroundColor: colors[1]
+                    },
+                    {
+                        label: "laptop",
+                        data: [13, 6, 9, 46, 24, 16, 15],
+                        backgroundColor: colors[2]
+                    },
+                    {
+                        data: [10, 55, 36, 33, 57, 89, 32],
+                        backgroundColor: colors[3]
+                    }]
+                },
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            barPercentage: 0.4,
+                            categoryPercentage: 0.5
+                        }]
+                    }
+                }
+            });
+        }
+
+        /* 3 donut charts */
+        var donutOptions = {
+            cutoutPercentage: 85,
+            legend: { position: 'bottom', padding: 5, labels: { pointStyle: 'circle', usePointStyle: true } }
+        };
+
+        // donut 1
+        var chDonutData1 = {
+            labels: ["@Model.OrderByCategory[0].CategoryName.ToString()", "@Model.OrderByCategory[1].CategoryName.ToString()", "@Model.OrderByCategory[2].CategoryName.ToString()"],
+            datasets: [
+                {
+                backgroundColor: colors.slice(0, 3),
+                    borderWidth: 0,
+                    data: [@Model.OrderByCategory[0].Amount, @Model.OrderByCategory[1].Amount, @Model.OrderByCategory[2].Amount]
+                }
+            ]
+        };
+
+        var chDonut1 = document.getElementById("chDonut1");
+        if (chDonut1) {
+            new Chart(chDonut1, {
+                type: 'pie',
+                data: chDonutData1,
+                options: donutOptions
+            });
+        }
+
+        // donut 2
+        var chDonutData2 = {
+            labels: ["@Model.OrderByBrand[0].BrandName.ToString()", "@Model.OrderByBrand[1].BrandName.ToString()", "@Model.OrderByBrand[2].BrandName.ToString()"],
+            datasets: [
+                {
+                    backgroundColor: colors.slice(2, 5),
+                    borderWidth: 0,
+                     data: [@Model.OrderByBrand[0].Amount, @Model.OrderByBrand[1].Amount, @Model.OrderByBrand[2].Amount]
+                }
+            ]
+        };
+        var chDonut2 = document.getElementById("chDonut2");
+        if (chDonut2) {
+            new Chart(chDonut2, {
+                type: 'pie',
+                data: chDonutData2,
+                options: donutOptions
+            });
+        }
+
+        // donut 3
+        var chDonutData3 = {
+            labels: ['Angular', 'React', 'Other'],
+            datasets: [
+                {
+                    backgroundColor: colors.slice(0, 3),
+                    borderWidth: 0,
+                    data: [21, 45, 55, 33]
+                }
+            ]
+        };
+        var chDonut3 = document.getElementById("chDonut3");
+        if (chDonut3) {
+            new Chart(chDonut3, {
+                type: 'pie',
+                data: chDonutData3,
+                options: donutOptions
+            });
+        }
+
+        /* 3 line charts */
+        var lineOptions = {
+            legend: { display: false },
+            tooltips: { interest: false, bodyFontSize: 11, titleFontSize: 11 },
+            scales: {
+                xAxes: [
+                    {
+                        ticks: {
+                            display: false
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        }
+                    }
+                ],
+                yAxes: [{ display: false }]
+            },
+            layout: {
+                padding: {
+                    left: 6,
+                    right: 6,
+                    top: 4,
+                    bottom: 6
+                }
+            }
+        };
+
+        var chLine1 = document.getElementById("chLine1");
+        if (chLine1) {
+            new Chart(chLine1, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                    datasets: [
+                        {
+                            backgroundColor: '#ffffff',
+                            borderColor: '#ffffff',
+                            data: [10, 11, 4, 11, 4],
+                            fill: false
+                        }
+                    ]
+                },
+                options: lineOptions
+            });
+        }
+        var chLine2 = document.getElementById("chLine2");
+        if (chLine2) {
+            new Chart(chLine2, {
+                type: 'line',
+                data: {
+                    labels: ['A', 'B', 'C', 'D', 'E'],
+                    datasets: [
+                        {
+                            backgroundColor: '#ffffff',
+                            borderColor: '#ffffff',
+                            data: [4, 5, 7, 13, 12],
+                            fill: false
+                        }
+                    ]
+                },
+                options: lineOptions
+            });
+        }
+
+        var chLine3 = document.getElementById("chLine3");
+        if (chLine3) {
+            new Chart(chLine3, {
+                type: 'line',
+                data: {
+                    labels: ['Pos', 'Neg', 'Nue', 'Other', 'Unknown'],
+                    datasets: [
+                        {
+                            backgroundColor: '#ffffff',
+                            borderColor: '#ffffff',
+                            data: [13, 15, 10, 9, 14],
+                            fill: false
+                        }
+                    ]
+                },
+                options: lineOptions
+            });
+        }
+    </script>
+
+}
+

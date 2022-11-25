@@ -4,6 +4,7 @@ namespace Entities.Models
 {
     public class Detail : BaseEntity<Guid>
     {
+        public Detail() : base() { }
         public string Screen { get; set; }
         public string Camera { get; set; }
         public string OperatingSystem { get; set; }

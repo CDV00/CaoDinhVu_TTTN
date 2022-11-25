@@ -7,6 +7,7 @@ namespace Entities.Models
 {
     public class ProductColor:BaseEntity<Guid>
     {
+        public ProductColor() : base() { }
         public Guid? ProductId { get; set; }
         public virtual Product Product { get; set; }
         public Guid? ColorId { get; set; }

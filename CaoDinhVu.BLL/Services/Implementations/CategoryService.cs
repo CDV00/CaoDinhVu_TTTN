@@ -49,11 +49,11 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 throw new("Something went wrong. " + ex.Message);
             }
         }
-        public async Task<List<CategoryDTO>> getAll()
+        public async Task<List<CategoryDTO>> getAll(int? status =1)
         {
             try
             {
-                var category = await _categoryRepository.BuildQuery().ToListAsync(c=> _mapper.Map<CategoryDTO>(c));
+                var category = await _categoryRepository.BuildQuery().FilterStatus(status.Value).ToListNoTrackingAsync(c=> _mapper.Map<CategoryDTO>(c));
                 //var category = _categoryRepository.GetAll().FirstOrDefault();
                 return category;
             }
@@ -152,7 +152,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "xóa mềm thất bại" + ex);
+                return new BaseResponse(false, "xóa mềm thất bại" + ex);
             }
         }
         public async Task<BaseResponse> Delete(Guid id)
@@ -170,7 +170,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "Delete sản phẩm thất bại" + ex);
+                return new BaseResponse(false, "Delete sản phẩm thất bại" + ex);
             }
         }
 

@@ -38,7 +38,7 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-            var product = await _productSevice.GetAll();
+            var product = await _productSevice.GetAll(2);
             return View(product);
         }
 
@@ -62,8 +62,8 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public async Task<IActionResult> Create()
         {
-            ViewData["BrandId"] = new SelectList( await _brandService.getAll(), "Id", "Name");
-            ViewData["CategoryId"] = new SelectList(await _categoryService.getAll(), "Id", "Name");
+            ViewData["BrandId"] = new SelectList( await _brandService.getAll(1), "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(await _categoryService.getAll(1), "Id", "Name");
             return View();
         }
 
@@ -115,8 +115,8 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewBag.listBrand = new SelectList(await _brandService.getAll(), "Id", "Name", product.BrandId);
-            ViewBag.listCat = new SelectList(await _categoryService.getAll(), "Id", "Name", product.CategoryId);
+            ViewBag.listBrand = new SelectList(await _brandService.getAll(1), "Id", "Name", product.BrandId);
+            ViewBag.listCat = new SelectList(await _categoryService.getAll(1), "Id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -145,8 +145,8 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BrandId"] = new SelectList(await _brandService.getAll(), "Id", "Name", product.BrandId);
-            ViewData["CategoryId"] = new SelectList(await _categoryService.getAll(), "Id", "Name", product.CategoryId);
+            ViewData["BrandId"] = new SelectList(await _brandService.getAll(1), "Id", "Name", product.BrandId);
+            ViewData["CategoryId"] = new SelectList(await _categoryService.getAll(1), "Id", "Name", product.CategoryId);
             return View(product);
         }
 

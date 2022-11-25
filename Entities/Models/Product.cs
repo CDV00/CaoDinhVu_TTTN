@@ -10,6 +10,7 @@ namespace Entities.Models
 
     public class Product : BaseEntity<Guid>
     {
+        public Product() : base() { }
         //[Required(ErrorMessage = "Bắt buộc nhập tên Sản phẩm")]
         public string Name { get; set; }
         public string Thumbnails { get; set; }

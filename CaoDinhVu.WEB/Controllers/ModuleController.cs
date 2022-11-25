@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CaoDinhVu.WEB.Controllers
 {
-    public class ModuleController : Controller
+    public class ModuleController : BaseController
     {
         private readonly ICategoryService _categoryService;
         private readonly IProductSevice _productSevice;
@@ -56,7 +56,7 @@ namespace CaoDinhVu.WEB.Controllers
         }
         public IActionResult _ShoppingCart()
         {
-            ViewBag.CartCount = Cart.countCart;
+            ViewBag.CartCount = Carts.Count;
             return PartialView("_ShoppingCart");
         }
 

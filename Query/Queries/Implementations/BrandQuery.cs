@@ -25,6 +25,22 @@ namespace Query.Queries.Implementations
             Query = Query.Where(type => type.Id == id);
             return this;
         }
-        
+        public IBrandQuery FilterStatus(int status)
+        {
+            if (status == 0)
+            {
+                Query = Query.Where(p => p.Status == 0);
+            }
+            else if (status == 1)
+            {
+                Query = Query.Where(p => p.Status == 1);
+            }
+            else
+            {
+                Query = Query.Where(p => p.Status == 1 || p.Status == 2);
+            }
+            return this;
+        }
+
     }
 }

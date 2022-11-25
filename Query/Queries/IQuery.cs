@@ -72,5 +72,6 @@ namespace Query.Queries
         Task<int> CountAsync();
         Task<TOutput> AsSelectorAsync<TOutput>(Expression<Func<TEntity, TOutput>> selector);
         IQuery<TEntity> ApplySort(string orderby);
+        Task<List<TOutput>> ToListNoTrackingAsync<TOutput>(Expression<Func<TEntity, TOutput>> selector);
     }
 }

@@ -18,6 +18,10 @@ namespace CaoDinhVu.WEB.Extensions
 
             app.UseEndpoints(endpoints =>
             {
+                //route Admin
+                endpoints.MapControllerRoute(
+                    name: "areaRoute",
+                    pattern: "{area:exists}/{controller}/{action}");
                 // Đăng ký
                 endpoints.MapControllerRoute(
                     name: "dang-nhap",
@@ -87,10 +91,7 @@ namespace CaoDinhVu.WEB.Extensions
                     pattern: "chi-tiet-san-pham/{id:Guid}");
                 //
 
-                //route Admin
-                endpoints.MapControllerRoute(
-                    name: "areaRoute",
-                    pattern: "{area:exists}/{controller}/{action}");
+                
                 //routo default
                 endpoints.MapControllerRoute(
                     name: "default",

@@ -8,6 +8,6 @@ namespace Entities.DTOs
 {
     public class BaseDTO
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; } = Guid.Empty;
     }
 }

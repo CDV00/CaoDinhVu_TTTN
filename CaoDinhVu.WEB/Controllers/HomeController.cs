@@ -46,25 +46,19 @@ namespace CaoDinhVu.WEB.Controllers
             
             homeDTO.listBrands = await _brandService.getAll();
             homeDTO.listSlider = await _sliderService.getAll();
-            homeDTO.listProducts = await _productSevice.GetAll(new PagingRequest(1,2));
-            Guid categoryId = (homeDTO.listCategory.FirstOrDefault()).Id;
-            homeDTO.listProductsByCategory = await _productSevice.GetByCategoryId(new PagingRequest(categoryId,1, 2));
-            Guid brandId = (homeDTO.listCategory.FirstOrDefault()).Id;
-            //PagingRequest paging
-            homeDTO.listProductsByBrabd = await _productSevice.GetByBrandId( new PagingRequest(brandId, 1, 2));
-
-
-            //bool res = (await _brandService.SeedMail("caodinhvu00@gmail.com", "vucao005@gmail.com", "Gửi mail", "Nội dung Email")).IsSuccess; 
-            /*string uri = @"D:\HK3_2022\ASP\CaoDinhVu\CaoDinhVu\Content\images\banners";
-            List<string> img = new List<string>();
-            img.Add(uri+ @"\slider_01.png");
-            img.Add(uri+ @"\slider_02.png");
-            img.Add(uri+ @"\slider_03.png");
-            foreach (var item in img)
+            homeDTO.listProducts = await _productSevice.GetAllNoTracking(new PagingRequest(1,100));
+            Guid categoryId = (homeDTO.listCategory.FirstOrDefault()).Id.Value;
+            homeDTO.ProductsByCategory.category = await _categoryService.getById(categoryId);
+            /*if(category != null)
             {
-                string url = await _uploadImage.UploadImageToImgur(item);
-                Console.WriteLine(url);
+                homeDTO.ProductsByCategory.category = new CategoryDTO();
+                homeDTO.ProductsByCategory.category = category;
             }*/
+            
+            homeDTO.ProductsByCategory.products = await _productSevice.GetByCategoryId(new PagingRequest(categoryId,1, 102))??null;
+            Guid brandId = (homeDTO.listBrands.FirstOrDefault()).Id.Value;
+            homeDTO.ProductsByBrabds.brand = homeDTO.listBrands.FirstOrDefault()??null;
+            homeDTO.ProductsByBrabds.products = await _productSevice.GetByBrandId(new PagingRequest(brandId, 1, 102))??null;
 
 
             return View(homeDTO);

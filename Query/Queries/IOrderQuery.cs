@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Query.Queries
 {
-    public interface IOrderQuery:IQuery<Order>
+    public interface IOrderQuery : IQuery<Order>
     {
+        IOrderQuery FiterById(Guid id);
+        IOrderQuery FiterByUserId(Guid id);
+        IOrderQuery FiterStatus(int status);
+        IOrderQuery IncludeDetail();
     }
 }

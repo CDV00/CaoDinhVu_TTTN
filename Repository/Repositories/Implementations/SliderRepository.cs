@@ -11,7 +11,7 @@ namespace Repository.Repositories.Implementations
 {
     public class SliderRepository : Repository<Slider>, ISliderRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public SliderRepository(DBContext context) : base(context)
         {
             _context = context;

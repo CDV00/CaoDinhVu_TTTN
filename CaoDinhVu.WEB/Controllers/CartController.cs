@@ -2,6 +2,7 @@
 using CaoDinhVu.WEB.Extensions;
 using Entities.Constants;
 using Entities.DTOs;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CaoDinhVu.WEB.Controllers
 {
-    public class CartController : Controller
+    public class CartController : BaseController
     {
         private readonly IProductColorService _productColorService;
         private readonly IProductOptionService _productOptionService;
@@ -28,18 +29,7 @@ namespace CaoDinhVu.WEB.Controllers
 
         
 
-        public List<CartItem> Carts
-        {
-            get
-            {
-                var data = HttpContext.Session.Get<List<CartItem>>("Cart");
-                if (data == null)
-                {
-                    data = new List<CartItem>();
-                }
-                return data;
-            }
-        }
+        
 
         public IActionResult Index()
         {
@@ -71,19 +61,21 @@ namespace CaoDinhVu.WEB.Controllers
             {
                 // Đã tồn tại, tăng thêm 1
                 cartitem.quantity += Quantity.Value;
+                cartitem.TotalPrice += productOption.Price * Quantity.Value;
                 HttpContext.Session.Set("Cart", cart);
                 //SaveCartSession(cart);
                 //return Json(JsonConvert.SerializeObject( new { Message = "ThemSanPham" }));
                 int CartCount = cart.Count;
                 Cart.countCart = CartCount;
+
                 Res res = new Res() { Mess = "ThemMoi", CartCount = CartCount };
                 return Json(JsonConvert.SerializeObject(res));
             }
             else
             {
                 //  Thêm mới
-                cart.Add(new CartItem() { quantity = Quantity.Value, ProductOption = productOption });
-
+                cart.Add(new CartItem() { quantity = Quantity.Value, ProductOption = productOption, TotalPrice= productOption.Price * Quantity.Value });
+                
                 HttpContext.Session.Set("Cart", cart);
                 int CartCount = cart.Count;
                 Cart.countCart = CartCount;
@@ -124,12 +116,12 @@ namespace CaoDinhVu.WEB.Controllers
 
 
             cartitem.quantity = quantity;
-
+            cartitem.TotalPrice = cartitem.ProductOption.Price * quantity;
             HttpContext.Session.Set("Cart", cart);
 
             //Session["cart"] = sesstionCart;
             //Session["count"] = Int32.Parse(Session["count"].ToString()) - 1;
-            Res res = new Res() { Mess = "cập nhập số lượng sản phẩm "+ name+" là "+quantity+" thành công!"};
+            Res res = new Res() { Mess = "cập nhập số lượng sản phẩm "+ name+" là "+quantity+" thành công!",totalprice = cartitem.TotalPrice };
             return Json(JsonConvert.SerializeObject(res));
 
         }
@@ -176,6 +168,7 @@ namespace CaoDinhVu.WEB.Controllers
     {
         public string Mess { set; get; }
         public int? CartCount { set; get; }
+        public decimal? totalprice { get; set; }
     }
     /*public class CartItem
     {

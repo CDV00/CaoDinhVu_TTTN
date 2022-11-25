@@ -29,13 +29,7 @@
                 dataType: 'json',
                 type: 'POST',
                 success: function (res) {
-                    if (res.status == true) {
-                        alert("thành công");
-                        window.location.href = '/gio-hang';
-                    }
-                    else {
-
-                    }
+                    window.location.href = '/gio-hang';
                 }
             })
         });
@@ -67,8 +61,8 @@
                         dataType: 'json',
                         type: 'POST',
                         success: function (res) {
-
-                            $("tr[data-id='" + id + "']").remove();
+                                window.location.href = '/gio-hang';
+                            //$("tr[data-id='" + id + "']").remove();
                             //thông báo
                             swalWithBootstrapButtons.fire(
                                 'Thành công!',
@@ -110,9 +104,13 @@
                                 <th scope="col" class="text-right" width="200"> </th>
                             </tr>
                         </thead>
-                        <tbody>
+                            <tbody>
+                                @{
+                                decimal totalprice = 0;
+                            }
                             @foreach (var item in Model)
                             {
+                                totalprice += item.TotalPrice;
                                 <tr data-id='@item.ProductOption.Id'>
                                     <td>
                                         <figure class="itemside">
@@ -121,7 +119,7 @@
                                                 <a href="~/chi-tiet-san-pham/@item.ProductOption.Product.Id" class="title text-dark" data-id='@item.ProductOption.Id'>@item.ProductOption.Product.Name</a>
                                                 <p class="text-muted small">Màu sắc: @item.ProductOption.ProductColor.Color.Name
                                                 <br> RAM: @item.ProductOption.Option.RAM, ROM: @item.ProductOption.Option.ROM
-                                                <br> Brand: Gucci</p>
+                                                @*<br> thương hiệu: @item.ProductOption.Product.Brand.Name</p>*@
                                             </figcaption>
                                         </figure>
                                     </td>
@@ -136,8 +134,8 @@
                                     </td>
                                     <td>
                                         <div class="price-wrap">
-                                            <var class="price">$1156.00</var>
-                                            <small class="text-muted"> @item.ProductOption.Price </small>
+                                            <var class="price">@((item.TotalPrice).ToString("#,##0"))</var>
+                                            <small class="text-muted"> @((item.ProductOption.Price).ToString("#,##0")) </small>
                                         </div> <!-- price-wrap .// -->
                                     </td>
                                     <td class="text-right">
@@ -187,16 +185,16 @@
                     <div class="card-body">
                         <dl class="dlist-align">
                             <dt>Total price:</dt>
-                            <dd class="text-right">USD 568</dd>
+                            <dd id="tongtien" class="text-right">@(totalprice.ToString("#,##0"))</dd>
                         </dl>
-                        <dl class="dlist-align">
+                        @*<dl class="dlist-align">
                             <dt>Discount:</dt>
                             <dd class="text-right">USD 658</dd>
                         </dl>
                         <dl class="dlist-align">
                             <dt>Total:</dt>
                             <dd class="text-right  h5"><strong>$1,650</strong></dd>
-                        </dl>
+                        </dl>*@
                         <hr>
                         <p class="text-center mb-3">
                             <img src="images/misc/payments.png" height="26">

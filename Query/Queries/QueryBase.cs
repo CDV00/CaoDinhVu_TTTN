@@ -58,6 +58,19 @@ namespace Query.Queries
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
+        /// <summary>
+        /// ntolist NoTracking
+        /// </summary>
+        /// <typeparam name="TOutput"></typeparam>
+        /// <param name="selector"></param>
+        /// <returns></returns>
+        public async Task<List<TOutput>> ToListNoTrackingAsync<TOutput>(Expression<Func<TEntity, TOutput>> selector)
+        {
+            return await Query.AsNoTracking()
+                              .Select(selector)
+                              .ToListAsync()
+                              .ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Where
@@ -136,7 +149,7 @@ namespace Query.Queries
         /// <returns></returns>
         public async Task<long> SumAsync(Expression<Func<TEntity, long>> expression)
         {
-            return await Query.SumAsync(expression).ConfigureAwait(false);
+            return await Query.AsNoTracking().SumAsync(expression).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -144,7 +157,7 @@ namespace Query.Queries
         /// <returns></returns>
         public async Task<int> CountAsync()
         {
-            return await Query.CountAsync().ConfigureAwait(false);
+            return await Query.AsNoTracking().CountAsync().ConfigureAwait(false);
         }
 
 

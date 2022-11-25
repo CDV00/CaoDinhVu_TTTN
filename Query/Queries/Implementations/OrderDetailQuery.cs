@@ -20,5 +20,10 @@ namespace Query.Queries.Implementations
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
+        public IOrderDetailQuery FilterByDay(DateTime dateTime)
+        {
+            Query = Query.Where(od => od.CreateAt.Value.Date == dateTime.Date);
+            return this;
+        }
     }
 }

@@ -8,7 +8,7 @@ namespace Entities.Models
 {
     public class ProductOption: BaseEntity<Guid>
     {
-        
+        public ProductOption() : base() { }
         public int? Number { get; set; } = 0;
         public Guid? ProductColorId { get; set; }
         public virtual ProductColor ProductColor { get; set; }

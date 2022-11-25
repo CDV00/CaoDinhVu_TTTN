@@ -43,12 +43,13 @@ namespace CaoDinhVu.BLL.Services.Implementations
             _detailRepository = detailRepository;
             _imageRepository = imageRepository;
         }
-        public async Task<List<ListProductDTO>> GetAll()
+        public async Task<List<ListProductDTO>> GetAll(int? status = 1)
         {
             try
             {
 
                 var listProducts = await _productRepository.BuildQuery()
+                                                           .FilterStatus(status.Value)
                                                            .IncludeBrand()
                                                            .IncludeCategory()
                                                            .ToListAsync(p => _mapper.Map<ListProductDTO>(p));
@@ -62,14 +63,33 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
             }
         }
-        public async Task<PagingResponse<ListProductDTO>> GetAll(PagingRequest pagingRequest)
+        public async Task<PagingResponse<ListProductDTO>> GetAllNoTracking(PagingRequest pagingRequest, int? status = 1)
         {
             try
             {
-
                 var listProducts = await _productRepository.BuildQuery()
-                                                           .IncludeBrand()
-                                                           .IncludeCategory()
+                                                           .FilterStatus(status.Value)
+                                                           .Skip((pagingRequest.page - 1) * pagingRequest.pageSize)
+                                                           .Take(pagingRequest.pageSize)
+                                                           .ToListNoTrackingAsync(p => _mapper.Map<ListProductDTO>(p));
+
+                int totalProducts = await _productRepository.BuildQuery()
+                                                           .CountAsync();
+                return new PagingResponse<ListProductDTO>(new Paging(pagingRequest.page.Value, pagingRequest.pageSize.Value, totalProducts), listProducts);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return new PagingResponse<ListProductDTO>(false, "Something went wrong. " + ex.Message);
+
+            }
+        }
+        public async Task<PagingResponse<ListProductDTO>> GetAll(PagingRequest pagingRequest, int? status = 1)
+        {
+            try
+            {
+                var listProducts = await _productRepository.BuildQuery()
+                                                           .FilterStatus(status.Value)
                                                            .Skip((pagingRequest.page - 1) * pagingRequest.pageSize)
                                                            .Take(pagingRequest.pageSize)
                                                            .ToListAsync(p => _mapper.Map<ListProductDTO>(p));
@@ -151,12 +171,10 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try
             {
                 var listProducts = await _productRepository.BuildQuery()
-                                                           .IncludeBrand()
-                                                           .IncludeCategory()
                                                            .FilterCategoryId(pagingRequest.id.Value)
                                                            .Skip((pagingRequest.page - 1) * pagingRequest.pageSize)
                                                            .Take(pagingRequest.pageSize)
-                                                           .ToListAsync(p => _mapper.Map<ListProductDTO>(p));
+                                                           .ToListNoTrackingAsync(p => _mapper.Map<ListProductDTO>(p));
                 int totalProducts = await _productRepository.BuildQuery()
                                                            .FilterCategoryId(pagingRequest.id.Value)
                                                            .CountAsync();
@@ -176,12 +194,10 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try
             {
                 var listProducts = await _productRepository.BuildQuery()
-                                                           .IncludeBrand()
-                                                           .IncludeCategory()
                                                            .FilterCategoryId(pagingRequest.id.Value)
                                                            .Skip((pagingRequest.page - 1) * pagingRequest.pageSize)
                                                            .Take(pagingRequest.pageSize)
-                                                           .ToListAsync(p => _mapper.Map<ListProductDTO>(p));
+                                                           .ToListNoTrackingAsync(p => _mapper.Map<ListProductDTO>(p));
 
                 int totalProducts = await _productRepository.BuildQuery()
                                                            .FilterCategoryId(pagingRequest.id.Value)
@@ -198,12 +214,10 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try 
 	        {
                 var listProducts = await _productRepository.BuildQuery()
-                                                           .IncludeBrand()
-                                                           .IncludeCategory()
                                                            .FilterByKeyword(keyWork)
                                                            .Skip((pagingRequest.page - 1) * pagingRequest.pageSize)
                                                            .Take(pagingRequest.pageSize)
-                                                           .ToListAsync(p => _mapper.Map<ListProductDTO>(p));
+                                                           .ToListNoTrackingAsync(p => _mapper.Map<ListProductDTO>(p));
 
                 int totalProducts = await _productRepository.BuildQuery()
                                                            .FilterByKeyword(keyWork)
@@ -307,7 +321,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "Thêm sản phẩm thất bại " + ex);
+                return new BaseResponse(false, "Thêm sản phẩm thất bại " + ex);
             }
         }
 
@@ -324,7 +338,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "Update sản phẩm thất bại" + ex);
+                return new BaseResponse(false, "Update sản phẩm thất bại" + ex);
             }
         }
         public async Task<BaseResponse> Delete(Guid id)
@@ -370,7 +384,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "Delete sản phẩm thất bại" + ex);
+                return new BaseResponse(false, "Delete sản phẩm thất bại" + ex);
             }
         }
 
@@ -405,7 +419,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "xóa mềm thất bại" + ex);
+                return new BaseResponse(false, "xóa mềm thất bại" + ex);
             }
         }
 

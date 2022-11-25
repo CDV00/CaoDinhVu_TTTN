@@ -11,7 +11,7 @@ namespace Repository.Repositories.Implementations
 {
     public class BrandRepository : Repository<Brand>, IBrandRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public BrandRepository(DBContext context) : base(context)
         {
             _context = context;

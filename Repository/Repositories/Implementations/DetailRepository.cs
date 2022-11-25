@@ -5,7 +5,7 @@ namespace Repository.Repositories.Implementations
 {
     public class DetailRepository : Repository<Detail>, IDetailRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public DetailRepository(DBContext context) : base(context)
         {
             _context = context;

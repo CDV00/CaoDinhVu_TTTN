@@ -7,7 +7,7 @@ namespace Repository.Repositories.Implementations
 {
     public class OptionRepository : Repository<Option>, IOptionRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public OptionRepository(DBContext context) : base(context)
         {
             _context = context;

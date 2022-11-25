@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CaoDinhVu.WEB.Controllers
 {
-    public class PaymentController : Controller
+    public class PaymentController : BaseController
     {
         private readonly IOrderService _orderService;
 
@@ -21,7 +21,7 @@ namespace CaoDinhVu.WEB.Controllers
         }
         public IActionResult Index()
         {
-            var Carts = HttpContext.Session.Get<List<CartItem>>("Cart");
+            //var Carts = HttpContext.Session.Get<List<CartItem>>("Cart");
             return View(Carts);
         }
 
@@ -35,16 +35,22 @@ namespace CaoDinhVu.WEB.Controllers
             string phuong = field["phuong"];
             string soNha = field["soNha"];
             string ghiChu = field["ghiChu"];
-            var carts = HttpContext.Session.Get<List<CartItem>>("Cart");
-
+            var carts = Carts;
+            decimal totalPrice = 0;
+            foreach (var item in Carts)
+            {
+                totalPrice += item.TotalPrice;
+            }
             var paymentRequest = new PaymentRequest()
             {
-                Name = name,
-                Phone = phone,
-                Email = email,
+                FirstName = name,
+                PhoneNumber = phone,
+                LastName = email,
                 Address = soNha + ", " + phuong + ", " + huyen + ", " + tinh,
                 Note = ghiChu,
-                Carts = carts
+                Carts = carts,
+                CreateBy = UserInfo.Id,
+                TotalPrice = totalPrice
             };
             var Result = await _orderService.Add(paymentRequest);
 
@@ -54,7 +60,8 @@ namespace CaoDinhVu.WEB.Controllers
             }
             carts.Clear();
             HttpContext.Session.Set<List<CartItem>>("Cart", carts);
-            return RedirectToAction("/gio-hang");
+            return RedirectToAction("Index","Cart");
+            //return RedirectToAction("/gio-hang");
         }
     }
 }

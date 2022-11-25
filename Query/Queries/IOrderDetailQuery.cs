@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Query.Queries
 {
-    public interface IOrderDetailQuery:IQuery<OrderDetail>
+    public interface IOrderDetailQuery : IQuery<OrderDetail>
     {
+        IOrderDetailQuery FilterByDay(DateTime dateTime);
     }
 }

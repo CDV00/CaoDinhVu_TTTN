@@ -8,6 +8,7 @@ namespace Entities.Models
 {
     public class Order : BaseEntity<Guid>
     {
+        public Order() : base() { }
         public decimal? TotalPrice { get; set; }
 
         public string FirstName { set; get; }

@@ -10,7 +10,7 @@ namespace Repository.Repositories.Implementations
 {
     public class CategoryRepository : Repository<Category>, ICategoryRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public CategoryRepository(DBContext context) : base(context)
         {
             _context = context;

@@ -8,6 +8,7 @@ namespace Query.Queries
 {
     public interface IBrandQuery : IQuery<Brand>
     {
+        IBrandQuery FilterStatus(int status);
         IBrandQuery FindById(Guid id);
     }
 }

@@ -144,7 +144,7 @@
                 <div class="col-md-3">
 
                     <div class="home-category-banner bg-light-orange">
-                        <h5 class="title">@Model.listBrands.FirstOrDefault().Name</h5>
+                        <h5 class="title">@Model.ProductsByBrabds.brand.Name</h5>
                         <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                         <a href="#" class="btn btn-outline-primary rounded-pill">Source now</a>
                         <img src="~/Content/images/items/2.jpg" class="img-bg">
@@ -153,7 +153,7 @@
                 </div> <!-- col.// -->
                 <div class="col-md-9">
                     <ul class="row no-gutters bordered-cols">
-                        @foreach (var item in Model.listProductsByBrabd.Data.Take(8))
+                        @foreach (var item in Model.ProductsByBrabds.products.Data.Take(8))
                         {
                             <li class="col-6 col-lg-3 col-md-4">
                                 <a href="~/chi-tiet-san-pham/@item.Id" class="item">
@@ -183,7 +183,7 @@
                 <div class="col-md-3">
 
                     <div class="home-category-banner bg-light-orange">
-                        <h5 class="title">Machinery items for manufacturers</h5>
+                        <h5 class="title">@Model.ProductsByCategory.category.Name</h5>
                         <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                         <a href="#" class="btn btn-outline-primary rounded-pill">Source now</a>
                         <img src="~/Content/images/items/14.jpg" class="img-bg">
@@ -192,7 +192,7 @@
                 </div> <!-- col.// -->
                 <div class="col-md-9">
                     <ul class="row no-gutters bordered-cols">
-                        @foreach (var item in Model.listProductsByCategory.Data.Take(8))
+                        @foreach (var item in Model.ProductsByCategory.products.Data.Take(8))
                         {
                             <li class="col-6 col-lg-3 col-md-4">
                                 <a href="~/chi-tiet-san-pham/@item.Id" class="item">

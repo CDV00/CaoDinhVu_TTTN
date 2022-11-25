@@ -50,7 +50,7 @@ namespace CaoDinhVu.WEB.Controllers
             Guid s = Guid.Parse("128A4BCD-E90A-499B-8A92-45D07D1CC4FE");
             id = id.Equals(Guid.Empty) ? Guid.Parse("128A4BCD-E90A-499B-8A92-45D07D1CC4FE"):id;
             var product = await _productSevice.GetById(id);
-            Product.ProductColorId = product.ProductColors.FirstOrDefault().Id;
+            Product.ProductColorId = product.ProductColors.FirstOrDefault().Id.Value;
             return View(product);
         }
 
@@ -65,6 +65,7 @@ namespace CaoDinhVu.WEB.Controllers
            
             return Json(JsonConvert.SerializeObject(options));
         }
+        [HttpPost]
         public async Task<JsonResult> UpdatePrice(string productId, string optionId, string colorId)
         {
             Guid ProductId = Guid.Parse(productId);
@@ -76,7 +77,7 @@ namespace CaoDinhVu.WEB.Controllers
             options.Add("a");*/
             return Json(new
             {
-                Price = price,
+                Price = price.ToString("#,##0"),
                 status = true,
 
             });

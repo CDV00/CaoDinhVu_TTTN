@@ -196,6 +196,47 @@ namespace CaoDinhVu.BLL.Services.Implementations
             await _userManager.AddToRoleAsync(user, customerRole);
         }
 
+        public async Task<Response<ProfileAddress>> GetProfileAddress(Guid userId)
+        {
+            try
+            {
+                //string s = userId.ToString();
+                ProfileAddress profileAddress = new ProfileAddress();
+                //int userId = Int32.Parse(Session["UserId"].ToString());
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+                if(user == null)
+                {
+                    return new Response<ProfileAddress>(false, "Thất bại");
+                }
+                _mapper.Map(user, profileAddress.AppUser);
+                string address = profileAddress.AppUser.Address;
+
+                /*int index;
+                int length = address.Length;
+                index =  address.LastIndexOf(",");*/
+                int index = address.LastIndexOf(",");
+                string s = address.Substring(index + 1);
+                address.Remove(10);
+                profileAddress.tinh = XuLyChuoi(ref address);
+                profileAddress.huyen = XuLyChuoi(ref address);
+                profileAddress.phuong = XuLyChuoi(ref address);
+                profileAddress.chiTiet = address;
+                return new Response<ProfileAddress>(true,"Thành công", profileAddress);
+            }
+            catch (Exception ex)
+            {
+                return new Response<ProfileAddress>(false, "Thất bại"+ex.Message);
+                throw;
+            }
+        }
+        private String XuLyChuoi(ref string address)
+        {
+            int index = address.LastIndexOf(",");
+            string s = address.Substring(index + 2);
+            address = address.Remove(index);
+            return s;
+        }
+
     }
 
 }

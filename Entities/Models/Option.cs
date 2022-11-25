@@ -7,6 +7,7 @@ namespace Entities.Models
 {
     public class Option:BaseEntity<Guid>
     {
+        public Option() : base() { }
         public int? RAM { get; set; }
         public int? ROM { get; set; }
     }

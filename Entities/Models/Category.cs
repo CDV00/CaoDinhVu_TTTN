@@ -9,7 +9,7 @@ namespace Entities.Models
 {
     public class Category : BaseEntity<Guid>
     {
-        public Category() { }
+        public Category():base() { }
         public Category(Guid id, string name, string slug, int status, Guid createBy) :base(id, createBy) 
         {
             Name = name;

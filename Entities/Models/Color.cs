@@ -8,6 +8,7 @@ namespace Entities.Models
 {
     public class Color : BaseEntity<Guid>
     {
+        public Color() : base() { }
         //[Required(ErrorMessage = "Bắt buộc nhập tên màu sắc")]
         public string Name { get; set; }
         //[MaxLength(10, ErrorMessage = "Mã hex dài nhất #FFFFFF"), MinLength(4, ErrorMessage = "Mã hex ngắn nhất: #FFF")]

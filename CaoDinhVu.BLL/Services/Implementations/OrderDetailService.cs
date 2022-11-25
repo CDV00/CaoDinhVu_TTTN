@@ -35,6 +35,11 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 return new BaseResponse(true, "có lỗi khi thêm chi tiêt đon hàng");
             }
         }
+        public async Task<long> GetAmountInDay(DateTime dateTime)
+        {
+            var amount = await _orderDetailRepository.SumAmountInDay(dateTime);
+            return amount;
+        }
     }
 
 }

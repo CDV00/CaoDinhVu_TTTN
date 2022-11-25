@@ -30,7 +30,7 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         // GET: Admin/Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _categoryService.getAll());
+            return View(await _categoryService.getAll(2));
         }
 
         // GET: Admin/Categories/Details/5
@@ -200,7 +200,7 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Trash()
         {
-            return View(await _categoryService.getAll());
+            return View(await _categoryService.getAll(0));
         }
         /* private bool CategoryExists(Guid id)
          {

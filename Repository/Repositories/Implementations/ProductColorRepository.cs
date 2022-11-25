@@ -11,7 +11,7 @@ namespace Repository.Repositories.Implementations
 {
     public class ProductColorRepository : Repository<ProductColor>, IProductColorRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public ProductColorRepository(DBContext context) : base(context)
         {
             _context = context;

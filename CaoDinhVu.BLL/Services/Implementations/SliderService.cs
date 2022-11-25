@@ -23,7 +23,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
         {
             try
             {
-                var listSliders = await _sliderRepository.BuildQuery().ToListAsync(s => _mapper.Map<SliderDTO>(s));
+                var listSliders = await _sliderRepository.BuildQuery().ToListNoTrackingAsync(s => _mapper.Map<SliderDTO>(s));
                 return listSliders;
             }
             catch (Exception ex)

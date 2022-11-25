@@ -11,7 +11,7 @@ namespace Repository.Repositories.Implementations
 {
     public class OrderRepository : Repository<Order>, IOrderRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public OrderRepository(DBContext context) : base(context)
         {
             _context = context;

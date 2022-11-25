@@ -8,6 +8,7 @@ namespace Entities.Models
 {
     public class Slider : BaseEntity<Guid>
     {
+        public Slider() : base() { }
         //[Required]
         public string Name { get; set; }
         //[Required]

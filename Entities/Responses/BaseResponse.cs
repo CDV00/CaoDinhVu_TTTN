@@ -32,4 +32,15 @@ namespace Entities.Responses
         }
 
     }
+    public class Responses<T> : BaseResponse
+    {
+        public List<T> Data { get; set; }
+
+        public Responses(bool isSuccess, string message) : base(isSuccess, message) { }
+        public Responses(bool isSuccess, string message, List<T> data) : base(isSuccess, message)
+        {
+            Data = data;
+        }
+
+    }
 }

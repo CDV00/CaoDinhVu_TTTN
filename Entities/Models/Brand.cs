@@ -8,7 +8,7 @@ namespace Entities.Models
 {
     public class Brand : BaseEntity<Guid>
     {
-        public Brand() { }
+        public Brand():base() { }
         public Brand(Guid id, string name, string slug, int status, Guid createBy) : base(id, createBy)
         {
             Name = name;

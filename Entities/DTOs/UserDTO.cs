@@ -31,4 +31,12 @@ namespace Entities.DTOs
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
     }
+    public class ProfileAddress
+    {
+        public UserDTO AppUser { get; set; }
+        public String tinh { get; set; }
+        public String huyen { get; set; }
+        public String phuong { get; set; }
+        public String chiTiet { get; set; }
+    }
 }

@@ -8,6 +8,7 @@ namespace Entities.Models
 {
     public class OrderDetail : BaseEntity<Guid>
     {
+        public OrderDetail() : base() { }
         public int? Amount { get; set; }
         public Guid? OrderId { get; set; }
         public Guid? ProductId { get; set; }

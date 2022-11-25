@@ -29,7 +29,7 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         // GET: Admin/Brand
         public async Task<IActionResult> Index()
         {
-            return View(await _brandService.getAll());
+            return View(await _brandService.getAll(2));
         }
 
         // GET: Admin/Brand/Details/5

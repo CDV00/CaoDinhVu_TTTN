@@ -10,7 +10,7 @@ namespace Repository.Repositories.Implementations
 {
     public class ImageRepository : Repository<Image>, IImageRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public ImageRepository(DBContext context) : base(context)
         {
             _context = context;

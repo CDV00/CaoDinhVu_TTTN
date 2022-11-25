@@ -8,6 +8,7 @@ namespace Query.Queries
 {
     public interface ICategoryQuery : IQuery<Category>
     {
+        ICategoryQuery FilterStatus(int status);
         ICategoryQuery FiterById(Guid id);
         ICategoryQuery GetAll();
     }

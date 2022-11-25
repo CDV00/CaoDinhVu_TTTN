@@ -14,7 +14,7 @@ namespace Repository.Repositories.Implementations
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         private readonly IMapper _mapper;
         public ProductRepository(DBContext context, IMapper mapper) : base(context)
         {

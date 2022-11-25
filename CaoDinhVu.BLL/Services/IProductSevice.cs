@@ -16,8 +16,9 @@ namespace CaoDinhVu.BLL.Services
         Task<BaseResponse> Delete(Guid id);
         Task<BaseResponse> DeleteSoft(Guid id);
         Task<PagingResponse<ListProductDTO>> Filter(FilterRequest filterRequest);
-        Task<PagingResponse<ListProductDTO>> GetAll(PagingRequest pagingRequest);
-        Task<List<ListProductDTO>> GetAll();
+        Task<PagingResponse<ListProductDTO>> GetAll(PagingRequest pagingRequest, int? status = 1);
+        Task<List<ListProductDTO>> GetAll(int? status = 1);
+        Task<PagingResponse<ListProductDTO>> GetAllNoTracking(PagingRequest pagingRequest, int? status = 1);
         Task<PagingResponse<ListProductDTO>> GetByBrandId(PagingRequest pagingRequest);
         Task<PagingResponse<ListProductDTO>> GetByCategoryId(PagingRequest pagingRequest);
         Task<ProductDTO> GetById(Guid id);

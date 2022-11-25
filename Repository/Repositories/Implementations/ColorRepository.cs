@@ -11,7 +11,7 @@ namespace Repository.Repositories.Implementations
 {
     public class ColorRepository : Repository<Color>, IColorRepository
     {
-        private DBContext _context;
+        private readonly DBContext _context;
         public ColorRepository(DBContext context) : base(context)
         {
             _context = context;

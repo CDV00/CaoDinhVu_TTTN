@@ -24,5 +24,6 @@ namespace Query.Queries
         IProductQuery IncludeProductOption();
         IProductQuery FilterByPriceMax(decimal? price);
         IProductQuery FilterByPriceMin(decimal? price);
+        IProductQuery FilterStatus(int status);
     }
 }

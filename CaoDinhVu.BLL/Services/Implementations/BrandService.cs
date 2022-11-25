@@ -26,11 +26,11 @@ namespace CaoDinhVu.BLL.Services.Implementations
             _brandRepository = brandRepository;
             _unitOfWork = unitOfWork;
         }
-        public async Task<List<BrandDTO>> getAll()
+        public async Task<List<BrandDTO>> getAll(int? status = 1)
         {
             try
             {
-                var lisBrands = await _brandRepository.BuildQuery().ToListAsync(b => _mapper.Map<BrandDTO>(b));
+                var lisBrands = await _brandRepository.BuildQuery().FilterStatus(status.Value).ToListNoTrackingAsync(b => _mapper.Map<BrandDTO>(b));
                 return lisBrands;
             }
             catch (Exception ex)
@@ -150,7 +150,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "xóa mềm thất bại" + ex);
+                return new BaseResponse(false, "xóa mềm thất bại" + ex);
             }
         }
         public async Task<BaseResponse> Delete(Guid id)
@@ -168,7 +168,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "Delete thất bại" + ex);
+                return new BaseResponse(false, "Delete thất bại" + ex);
             }
         }
 

@@ -97,7 +97,22 @@ namespace Query.Queries.Implementations
                                 );
             return this;
         }
-        
+        public IProductQuery FilterStatus(int status)
+        {
+            if(status == 0)
+            {
+                Query = Query.Where(p => p.Status == 0);
+            }
+            else if(status == 1)
+            {
+                Query = Query.Where(p => p.Status == 1);
+            }
+            else
+            {
+                Query = Query.Where(p => p.Status == 1 || p.Status ==2);
+            }
+            return this;
+        }
 
         public IProductQuery FilterByOptionId(Guid? optionId)
         {
