@@ -11,12 +11,16 @@ using CaoDinhVu.BLL.Services;
 using Entities.Requests;
 using Newtonsoft.Json;
 using CaoDinhVu.BLL.Services.Implementations;
+using Entities.DTOs;
+using Entities.Responses;
 
 namespace CaoDinhVu.WEB.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ProductsController : Controller
     {
+        private readonly IOptionService _optionService;
+        private readonly IColorService _colorService;
         private readonly IProductSevice _productSevice;
         private readonly ICategoryService _categoryService;
         private readonly IBrandService _brandService;
@@ -24,8 +28,10 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         private readonly IProductColorService _productColorService;
         private readonly IProductOptionService _productOptionService;
 
-        public ProductsController(IProductColorService productColorService,IProductOptionService productOptionService , IProductSevice productSevice, ICategoryService categoryService, IBrandService brandService, IUploadImage uploadImage)
+        public ProductsController(IOptionService optionService,IColorService colorService,IProductColorService productColorService,IProductOptionService productOptionService , IProductSevice productSevice, ICategoryService categoryService, IBrandService brandService, IUploadImage uploadImage)
         {
+            _optionService = optionService;
+            _colorService = colorService;
             _productSevice = productSevice;
             _categoryService = categoryService;
             _brandService = brandService;
@@ -41,7 +47,6 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             var product = await _productSevice.GetAll(2);
             return View(product);
         }
-
         // GET: Admin/Products/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -149,7 +154,16 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             ViewData["CategoryId"] = new SelectList(await _categoryService.getAll(1), "Id", "Name", product.CategoryId);
             return View(product);
         }
-
+        public async Task<IActionResult> AddProductItem(Guid productId)
+        {
+            if (productId == Guid.Empty)
+                productId = new Guid("164c13be-77a8-4411-2e2e-08dac91bc8a4");
+            var addProductItem = new AddProductItem();
+            addProductItem.Product = await _productSevice.GetById(productId); 
+            addProductItem.Colors = await _colorService.GetALL();
+            addProductItem.Options = await _optionService.GetALL();
+            return View(addProductItem);
+        }
         public async Task<IActionResult> DeleteSoft(Guid categoryId)
         {
             var category = await _productSevice.DeleteSoft(categoryId);
@@ -175,8 +189,13 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             return Json(JsonConvert.SerializeObject(Result));
 
         }
-
-        public async Task<IActionResult> AddProductCorlor(ProductColorRequest productColor)
+        /// <summary>
+        /// Add product color
+        /// </summary>
+        /// <param name="productColor"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> AddProductCorlor([FromBody] ProductColorRequest productColor)
         {
             var Result = await _productColorService.AddAsync(productColor);
             /*object Result = new
@@ -187,9 +206,15 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             return Json(JsonConvert.SerializeObject(Result));
 
         }
-        public async Task<IActionResult> AddProductOption(ProductOptionRequest productColor)
+        /// <summary>
+        /// Add product option
+        /// </summary>
+        /// <param name="productOption"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> AddProductOption([FromBody] ProductOptionRequest productOption)
         {
-            var Result = await _productOptionService.AddAsync(productColor);
+            var Result = await _productOptionService.AddAsync(productOption);
             /*object Result = new
             {
                 Status = true
@@ -198,7 +223,38 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             return Json(JsonConvert.SerializeObject(Result));
 
         }
-
+        [HttpPost]
+        public async Task<IActionResult> AddColor([FromBody] ColorDTO color)
+        {
+            var Result = await _colorService.AddAsync(color);
+            if(Result.IsSuccess == true)
+            {
+                var colors = await _colorService.GetALL();
+                return Json(JsonConvert.SerializeObject(
+                    new Responses<ColorDTO>(
+                        true,
+                        "Thanh cong",
+                        colors
+                        )));
+            }
+            return Json(JsonConvert.SerializeObject(Result));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddOption([FromBody] OptionDTO option)
+        {
+            var Result = await _optionService.AddAsync(option);
+            if (Result.IsSuccess == true)
+            {
+                var options = await _optionService.GetALL();
+                return Json(JsonConvert.SerializeObject(
+                    new Responses<OptionDTO>(
+                        true,
+                        "Thanh cong",
+                        options
+                        )));
+            }
+            return Json(JsonConvert.SerializeObject(Result));
+        }
 
         // GET: Admin/Products/Delete/5
         public async Task<IActionResult> Delete(Guid? id)

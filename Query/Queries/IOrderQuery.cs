@@ -11,6 +11,7 @@ namespace Query.Queries
         IOrderQuery FiterById(Guid id);
         IOrderQuery FiterByUserId(Guid id);
         IOrderQuery FiterStatus(int status);
+        IOrderQuery FiterStatusS(int status);
         IOrderQuery IncludeDetail();
     }
 }

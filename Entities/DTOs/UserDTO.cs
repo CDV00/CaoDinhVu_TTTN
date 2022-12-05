@@ -27,7 +27,7 @@ namespace Entities.DTOs
         public string Gender { get; set; }
         public string RefreshToken { get; set; }
         //public decimal Balance { get; set; } = 0;
-
+        
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
     }
@@ -38,5 +38,15 @@ namespace Entities.DTOs
         public String huyen { get; set; }
         public String phuong { get; set; }
         public String chiTiet { get; set; }
+    }
+    public class ProfileMain
+    {
+        public UserDTO AppUser { get; set; }
+        public IEnumerable<OrderDTO> Order { get; set; }
+        public int AmountOrder { get; set; }
+        public int AmountWaitForConfirmation { get; set; }
+        public int AmountAwaitingDelivery { get; set; }
+        public int AmountDeliveredItems { get; set; }
+
     }
 }

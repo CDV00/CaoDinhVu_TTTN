@@ -7,23 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CaoDinhVu.DAL.Data;
 using Entities.Models;
+using CaoDinhVu.BLL.Services;
 
 namespace CaoDinhVu.WEB.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class UsersController : Controller
     {
+        private readonly IAccountService _accountService;
         private readonly DBContext _context;
 
-        public UsersController(DBContext context)
+        public UsersController(DBContext context, IAccountService accountService)
         {
+            _accountService = accountService;
             _context = context;
         }
 
         // GET: Admin/Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.AppUsers.ToListAsync());
+            var users = await _accountService.GetAll();
+            return View(users);
         }
 
         // GET: Admin/Users/Details/5
@@ -55,7 +59,7 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AvatarUrl,Fullname,FirstName,LastName,ProfileLink,FacebookLink,LinkedlnLink,YoutubeLink,HeadLine,Description,RefreshToken,RefreshTokenExpiryTime,CreateAt,CreateBy,UpdateAt,UpdateBy,IsActive,IsDelete,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] AppUser appUser)
+        public async Task<IActionResult> Create([Bind("AvatarUrl,Fullname,FirstName,LastName,ProfileLink,FacebookLink,LinkedlnLink,YoutubeLink,HeadLine,Description,Address,Gender,RefreshToken,RefreshTokenExpiryTime,CreateAt,CreateBy,UpdateAt,UpdateBy,IsActive,IsDelete,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] AppUser appUser)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +92,7 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AvatarUrl,Fullname,FirstName,LastName,ProfileLink,FacebookLink,LinkedlnLink,YoutubeLink,HeadLine,Description,RefreshToken,RefreshTokenExpiryTime,CreateAt,CreateBy,UpdateAt,UpdateBy,IsActive,IsDelete,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] AppUser appUser)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AvatarUrl,Fullname,FirstName,LastName,ProfileLink,FacebookLink,LinkedlnLink,YoutubeLink,HeadLine,Description,Address,Gender,RefreshToken,RefreshTokenExpiryTime,CreateAt,CreateBy,UpdateAt,UpdateBy,IsActive,IsDelete,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] AppUser appUser)
         {
             if (id != appUser.Id)
             {

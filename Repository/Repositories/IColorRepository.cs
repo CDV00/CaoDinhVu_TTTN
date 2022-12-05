@@ -11,5 +11,6 @@ namespace Repository.Repositories
     public interface IColorRepository : IRepository<Color>
     {
         IColorQuery BuildQuery();
+        bool CheckExist(string Name);
     }
 }

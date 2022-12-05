@@ -4,30 +4,24 @@
     ViewData["Title"] = "Details";
     Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
 }
+@{
+    string GetStatus(int status)
+    {
+        var str = new List<string>()
+                                                                {
+                                    "Đơn hàng bị hủy","Chờ xác nhận","Chờ giao hàng","Đã giao hàng thành công"
+                                };
+        return str[status];
+    }
 
+}
 <article class="card mb-4">
     <header class="card-header">
         <a href="#" class="float-right noPrint" onclick="window.print();"> <i class="fa fa-print"></i> Print</a>
         <strong class="d-inline-block mr-3">ID Đơn hàng: @Model.Id</strong>
         <span class="mr-3">Order Date: @(String.Format("{0:MM/dd/yy}", Model.CreateAt))</span>
-        @{
-            if (Model.StatusOrder == 0)
-            {
-                <span><b>      Trạng Thái:</b> Đã xóa</span>
-            }
-            else if (Model.StatusOrder == 1)
-            {
-                <span><b>      Trạng Thái:</b> Chưa xác nhận</span>
-            }
-            else if (Model.StatusOrder == 2)
-            {
-                <span><b>      Trạng Thái:</b> Đang giao hàng</span>
-            }
-            else
-            {
-                <span><b>      Trạng Thái:</b> Đã giao hàng thành công</span>
-            }
-        }
+        <span><b>      Trạng Thái:</b> @GetStatus((int)Model.StatusOrder)</span>
+        
 
     </header>
     <div class="card-body">
@@ -70,7 +64,7 @@
                             <var class="price text-muted">@((item.ProductOption.Price).ToString("#,##0")) VND</var>
                         </td>
                         <td> Số lượng: @item.Amount.Value <br> Tổng giá: @((item.ProductOption.Price * item.Amount.Value).ToString("#,##0")) VND</td>
-                        
+
                     </tr>
                 }
 

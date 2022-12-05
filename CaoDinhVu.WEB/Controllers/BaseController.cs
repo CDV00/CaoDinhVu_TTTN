@@ -34,6 +34,10 @@ namespace CaoDinhVu.WEB.Controllers
                 return data;
             }
         }
+        public IActionResult dLogin()
+        {
+            return RedirectToAction("Login", "Auth");
+        }
 
     }
 }

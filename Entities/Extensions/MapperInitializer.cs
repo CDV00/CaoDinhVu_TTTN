@@ -20,28 +20,39 @@ namespace Entities.Extensions
             CreateMap<Brand, BrandDTO>().ReverseMap();
             CreateMap<Brand, BrandRequest>().ReverseMap();
 
-            //
+            //slider
             CreateMap<Slider, SliderDTO>().ReverseMap();
+            //product
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Product, ListProductDTO>().ReverseMap();
-            CreateMap<Color, ColorDTO>().ReverseMap();
-            CreateMap<Image, ImageDTO>().ReverseMap();
-            CreateMap<Option, OptionDTO>().ReverseMap();
-            CreateMap<ProductColor, ProductColorDTO>().ReverseMap();
-            CreateMap<ProductOption, ProductOptionDTO>().ReverseMap();
-            CreateMap<AppUser, UserDTO>().ReverseMap();
             //cartItem
             CreateMap<Product, ProductCartItem>().ReverseMap();
             CreateMap<ProductColor, ProductColorCartItem>().ReverseMap();
             CreateMap<ProductOption, ProductOptionCartItem>().ReverseMap();
+            //color
+            CreateMap<Color, ColorDTO>().ReverseMap();
+            //image
+            CreateMap<Image, ImageDTO>().ReverseMap();
+            //option
+            CreateMap<Option, OptionDTO>().ReverseMap();
+            //product detail
+            CreateMap<Detail, DetailDTO>().ReverseMap();
+            //product color
+            CreateMap<ProductColor, ProductColorDTO>().ReverseMap();
+            CreateMap<ProductColor, ProductColorRequest>().ReverseMap();
+            //Product option
+            CreateMap<ProductOption, ProductOptionDTO>().ReverseMap();
+            CreateMap<ProductOption, ProductOptionRequest>().ReverseMap();
+            //Appuser
+            CreateMap<AppUser, UserDTO>().ReverseMap();
+            
             //Register
             CreateMap<AppUser, RegisterRequest>().ReverseMap();
-            //
+            //order
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<Order, PaymentRequest>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
-            //
-            CreateMap<Detail, DetailDTO>().ReverseMap();
+            
         }
     }
 }

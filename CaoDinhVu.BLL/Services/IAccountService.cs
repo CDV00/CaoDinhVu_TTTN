@@ -11,5 +11,7 @@ namespace CaoDinhVu.BLL.Services
     {
         Task<BaseResponse> Register(RegisterRequest registerRequest);
         Task<Response<UserDTO>> Login(LoginRequest loginRequest);
+        Task<Response<UserDTO>> GetById(Guid id);
+        Task<IEnumerable<UserDTO>> GetAll();
     }
 }

@@ -43,6 +43,15 @@ namespace Query.Queries.Implementations
             }
             return this;
         }
+        public IOrderQuery FiterStatusS(int status)
+        {
+            if(status == 4)
+            {
+                return this;
+            }
+            Query = Query.Where(or => or.StatusOrder == status);
+            return this;
+        }
         public IOrderQuery IncludeDetail()
         {
             Query.Include(or => or.OrderDetails).Load();

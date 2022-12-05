@@ -11,5 +11,6 @@ namespace Repository.Repositories
     public interface IOptionRepository : IRepository<Option>
     {
         IOptionQuery BuildQuery();
+        bool CheckExist(int RAM, int ROM);
     }
 }

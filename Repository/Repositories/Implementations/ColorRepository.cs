@@ -21,5 +21,10 @@ namespace Repository.Repositories.Implementations
         {
             return new ColorQuery(_context.Colors.AsQueryable(), _context);
         }
+        public bool CheckExist(string Name)
+        {
+            var result = _context.Colors.Any(c => c.Name == Name);
+            return result;
+        }
     }
 }

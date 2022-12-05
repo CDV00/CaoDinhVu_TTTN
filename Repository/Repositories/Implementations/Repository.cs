@@ -49,7 +49,7 @@ namespace Repository.Repositories.Implementations
         }
 
 
-        public virtual IQueryable<T> GetAll() => DbSet.AsNoTracking();
+        public virtual IQueryable<T> GetAll() => DbSet.AsNoTracking().AsQueryable();
 
         /* public virtual async Task<T> GetByIdAsync(Guid Id)
          {

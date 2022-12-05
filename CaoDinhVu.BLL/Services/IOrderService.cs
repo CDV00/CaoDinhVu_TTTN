@@ -17,5 +17,6 @@ namespace CaoDinhVu.BLL.Services
         Responses<OrderInWeekResponse> GetOrderInWeek();
         Task<BaseResponse> DeleteSoft(Guid id);
         Task<BaseResponse> ChangeStatus(Guid id);
+        Task<int> CountOrderByStatus(Guid userId,int? status = 4);
     }
 }

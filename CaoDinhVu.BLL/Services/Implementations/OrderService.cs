@@ -102,7 +102,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
         {
             try
             {
-                var orders = await _orderRepository.BuildQuery().FiterByUserId(userId).ToListNoTrackingAsync(o => _mapper.Map<OrderDTO>(o));
+                var orders = await _orderRepository.BuildQuery().FiterByUserId(userId).IncludeDetail().ToListAsync(o => _mapper.Map<OrderDTO>(o));
                 return new Responses<OrderDTO>(true, "Thành công", orders);
             }
             catch (Exception ex)
@@ -119,6 +119,23 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 //ngày này tuần trước
                 var dayLastWeek = DateTime.Now.Date.Add(new TimeSpan(0, 0, 0)).AddDays(-6);
                 var lineChart = _orderDetailRepository.OrderInWeek(dayLastWeek);
+                var result = new List<OrderInWeekResponse>();
+                for (int i =0; i < 7; i++)
+                {
+                    int j = 0;
+                    if(dayLastWeek.AddDays(i).Day.ToString() == lineChart[j].Day)
+                    {
+                        j++;
+                        result.Add(lineChart[i]);
+                    }
+                    else
+                    {
+                        var item = new OrderInWeekResponse();
+                        item.Day = dayLastWeek.AddDays(i).Day.ToString();
+                        item.Amount = 0;
+                        result.Add(lineChart[i]);
+                    }
+                }
                 return new Responses<OrderInWeekResponse>(true, "thanh cong", lineChart);
                 #region comment
                 /*var listAmount = new List<long>();
@@ -133,8 +150,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             catch (Exception ex)
             {
                 return new Responses<OrderInWeekResponse>(false, "that bai "+ex.Message);
-            }
-            
+            } 
         }
         public Responses<OrderByCategoryResponse> GetOrderByCategory()
         {
@@ -212,7 +228,20 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 return new BaseResponse(false, "xóa mềm thất bại" + ex);
             }
         }
-
+        public async Task<int> CountOrderByStatus(Guid userId, int? status = 4)
+        {
+            int countOrder = 0;
+            try
+            {
+                countOrder = await _orderRepository.BuildQuery().FiterByUserId(userId).FiterStatusS(status.Value).CountAsync();
+                return countOrder;
+            }
+            catch (Exception ex)
+            {
+                return countOrder;
+                throw new Exception(ex.Message);
+            }
+        }
     }
 
 }

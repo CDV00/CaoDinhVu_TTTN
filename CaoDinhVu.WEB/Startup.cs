@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using CaoDinhVu.WEB.Controllers;
 
 namespace CaoDinhVu.WEB
 {
@@ -49,7 +50,7 @@ namespace CaoDinhVu.WEB
                       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                    );*/
             //services.AddOutputCaching();
-
+            services.AddHttpContextAccessor();
 
             //[OutputCache]
             services.AddControllersWithViews(x =>
@@ -154,13 +155,28 @@ namespace CaoDinhVu.WEB
                     pattern: "sua-danh-muc/{id?}");*/
 
             });
-
+            /*app.Use(async (context, next) =>
+            {
+                await next.Invoke();
+                if (context.Response.StatusCode == 401)
+                {
+                    context.Response.Redirect("~/Auth/Login");
+                }
+            });*/
+            /*app.UseWhen(ShouldAuthenticate, appBuilder =>
+            {
+                appBuilder.UseMiddleware<AccountController>();
+            });*/
 
             //app
             app.RegisterRoute();
 
             app.Run(handler: async (conttext) =>
             {
+                if (conttext.Response.StatusCode == 403)
+                {
+                    conttext.Response.Redirect("~/Auth/Login");
+                }
                 await conttext.Response.WriteAsync(text: "Failse to find route");
             });
         }

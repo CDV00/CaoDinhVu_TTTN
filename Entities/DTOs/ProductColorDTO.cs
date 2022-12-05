@@ -13,4 +13,10 @@ namespace Entities.DTOs
         public virtual ICollection<ProductOptionDTO> ProductOptions { get; set; }
         public virtual ICollection<ImageDTO> Images { get; set; }
     }
+    public class AddProductItem : BaseDTO
+    {
+        public virtual ProductDTO Product { get; set; }
+        public virtual ICollection<ColorDTO> Colors { get; set; }
+        public virtual ICollection<OptionDTO> Options { get; set; }
+    }
 }

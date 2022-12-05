@@ -28,7 +28,16 @@ namespace CaoDinhVu.BLL.Services.Implementations
         }
         public Guid GetProductColorId(Guid productId, Guid colorId)
         {
-            return _productColorRepository.BuildQuery().FilterProductColorId(productId, colorId);
+            try
+            {
+                var productColorId = _productColorRepository.BuildQuery().FilterProductColorId(productId, colorId);
+                return productColorId;
+            }
+            catch (Exception ex)
+            {
+                return Guid.Empty;
+                throw new Exception(ex.Message);
+            }
         }
         public  List<Guid> GetIdByProductId(Guid productId)
         {
@@ -39,22 +48,27 @@ namespace CaoDinhVu.BLL.Services.Implementations
         {
             try
             {
+                if(!GetProductColorId(productColorRequest.ProductId, productColorRequest.ColorId).Equals(Guid.Empty))
+                    return new BaseResponse(true, GetProductColorId(productColorRequest.ProductId, productColorRequest.ColorId).ToString());
                 var productColor = _mapper.Map<ProductColor>(productColorRequest);
                 await _productColorRepository.CreateAsync(productColor);
                 await _unitOfWork.SaveChangesAsync();
-                return new BaseResponse(true, "Thêm thành công");
+                return new BaseResponse(true, productColor.Id.ToString());
             }
             catch (Exception ex)
             {
                 return new BaseResponse(true, "Thêm Color thất bại "+ ex);
             }
         }
-
         public async Task<BaseResponse> Update(ProductColorRequest productColorRequest)
         {
             try
             {
-                var productColor = _mapper.Map<ProductColor>(productColorRequest);
+                var productColor = await _productColorRepository.GetByIdAsync(productColorRequest.Id.Value);
+
+                _mapper.Map(productColorRequest,productColor);
+
+
                 var update =await _productColorRepository.Update(productColor);
                 if(!update)
                     return new BaseResponse(true, "Update Color thất bại");

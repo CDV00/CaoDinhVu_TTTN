@@ -60,8 +60,17 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
         public async Task<decimal> GetPrice(Guid productColorId , Guid optionId)
         {
-            decimal price = await _productOptionRepository.BuildQuery().FilterByProductColorId(productColorId).FilterOption(optionId).AsSelectorAsync(c => c.Price.Value);
-            return price;
+            try
+            {
+                decimal price = await _productOptionRepository.BuildQuery().FilterByProductColorId(productColorId).FilterOption(optionId).AsSelectorAsync(c => c.Price.Value);
+                return price;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                throw new Exception(ex.Message);
+            }
+            
         }
         public List<Guid> GetIdByProductId(Guid productId)
         {
@@ -72,6 +81,8 @@ namespace CaoDinhVu.BLL.Services.Implementations
         {
             try
             {
+                if(await GetPrice(productOptionRequest.ProductColorId.Value, productOptionRequest.OptionId.Value) > 0)
+                    return new BaseResponse(false, "Sản phẩm đã tồn tại");
                 var productOption = _mapper.Map<ProductOption>(productOptionRequest);
                 await _productOptionRepository.CreateAsync(productOption);
                 await _unitOfWork.SaveChangesAsync();

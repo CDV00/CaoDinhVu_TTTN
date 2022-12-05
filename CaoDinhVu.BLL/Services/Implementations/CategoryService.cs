@@ -105,13 +105,13 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 //
                 if (categoryRequest.Orders != orderOld)
                     _categoryRepository.ChangeOrder(categoryRequest.Orders.Value, orderOld);
-                var category = _mapper.Map(categoryRequest, categoryold);
+                _mapper.Map(categoryRequest, categoryold);
                 //category.Tracking();            
-                    //check order exist
+                //check order exist
+
+                categoryold.UpdateAt = DateTime.UtcNow;
                 
-                category.UpdateAt = DateTime.UtcNow;
-                
-                var update =await _categoryRepository.Update(category);
+                var update =await _categoryRepository.Update(categoryold);
                 if (!update)
                     return new BaseResponse(true, "Update danh mục thất bại");
                 await _unitOfWork.SaveChangesAsync();

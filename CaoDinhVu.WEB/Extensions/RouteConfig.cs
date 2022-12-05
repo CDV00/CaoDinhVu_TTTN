@@ -18,6 +18,27 @@ namespace CaoDinhVu.WEB.Extensions
 
             app.UseEndpoints(endpoints =>
             {
+                /// Account
+                // Đơn hàng của tôi
+                endpoints.MapControllerRoute(
+                    name: "don-hang-cua-toi",
+                    defaults: new { controller = "Account", action = "ProfileOrder"},
+                    pattern: "don-hang-cua-toi");
+                // Tổng quát về tôi
+                endpoints.MapControllerRoute(
+                    name: "tong-quat-ve-toi",
+                    defaults: new { controller = "Account", action = "ProfileMain" },
+                    pattern: "tong-quat-ve-toi");
+                // Chỉnh sửa thông tin của tôi
+                endpoints.MapControllerRoute(
+                    name: "chinh-sua-thong-tin-cua-toi",
+                    defaults: new { controller = "Account", action = "ProfileSetting" },
+                    pattern: "chinh-sua-thong-tin-cua-toi");
+                // đăng xuất
+                endpoints.MapControllerRoute(
+                    name: "dang-xuat",
+                    defaults: new { controller = "Account", action = "LogOut" },
+                    pattern: "dang-xuat");
                 //route Admin
                 endpoints.MapControllerRoute(
                     name: "areaRoute",

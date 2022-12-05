@@ -3,20 +3,21 @@
 @{
     if (Model == null)
     {
-        <a href="~/dang-nhap/" class="widget-view">
-            <div class="icon-area">
-                <i class="fa fa-user"></i>
-            </div>
-            <small class="text"> Đăng nhập </small>
-        </a>
+    <a style="width:120px" href="~/dang-nhap/" class="widget-view">
+        <div class="icon-area">
+            <i class="fa fa-user"></i>
+        </div>
+        @*<small class="text"> Đăng nhập </small>*@
+        <b style="max-width:none !important;" class="text mx-auto" >Cao Dinh Vu</b>
+    </a>
     }
     else
     {
-        <a href="~/dang-nhap/" class="widget-view">
-            <div class="icon-area">
-                <i class="fa fa-user"></i>
+        <a href="~/tong-quat-ve-toi/" class="widget-view">
+            <div class="icon-area mx-auto">
+                <img src="@Model.AvatarUrl" class="rounded-circle" alt="A girl" width="35">
             </div>
-            <small class="text"> @Model.Fullname </small>
+            <b style="width:120px" class="text mx-auto">@Model.Fullname</b>
         </a>
     }
 

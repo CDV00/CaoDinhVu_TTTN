@@ -317,7 +317,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
         await _unitOfWork.SaveChangesAsync();
 
                 
-                return new BaseResponse(true, "Thêm thành công");
+                return new BaseResponse(true, product.Id.ToString());
             }
             catch (Exception ex)
             {

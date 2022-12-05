@@ -26,6 +26,19 @@ namespace CaoDinhVu.BLL.Services.Implementations
             _roleManager = roleManager;
         }
 
+        public async Task<IEnumerable<UserDTO>> GetAll()
+        {
+            try
+            {
+                var users =await _userRepository.BuildQuery().ToListNoTrackingAsync(u=> _mapper.Map<UserDTO>(u));
+                return users;
+            }
+            catch (Exception ex)
+            {
+                return null;
+                throw new Exception(ex.Message);
+            }
+        }
 
         public async Task<Response<UserDTO>> Login(LoginRequest loginRequest)
         {
@@ -78,7 +91,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
                         return new BaseResponse(false, "Email đã đăng ký tài khoản!");
                     }
 
-                    GetAvartarUser(user);
+                    GetAvartarUser(ref user);
                     user.UpdateAt = DateTime.Now;
 
                     await _userManager.AddPasswordAsync(user, registerRequest.Password);
@@ -97,12 +110,12 @@ namespace CaoDinhVu.BLL.Services.Implementations
                     //GetAvartarUser(user);
                     //user.CreateAt = DateTime.Now;
 
-
+                    
                     var users = _mapper.Map<AppUser>(registerRequest);
                     users.Description = users.Description;
                     user = users;
                     users.CreateAt = DateTime.Now;
-
+                    GetAvartarUser(ref user);
                     await _userManager.CreateAsync(users);
                     await _userManager.AddPasswordAsync(users, registerRequest.Password);
                     result = await _userManager.UpdateAsync(users);
@@ -152,7 +165,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
 
 
-        private static void GetAvartarUser(AppUser user)
+        private static void GetAvartarUser(ref AppUser user)
         {
             user.Fullname = user.Fullname.Trim();
             string FirstLetter = user.Fullname.Split()[0][0].ToString();
@@ -161,7 +174,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             if (lastIndex != 0)
                 LastLetter = user.Fullname.Split()[lastIndex][0].ToString();
 
-            var avartarUrl = "https://i2.wp.com/ui-avatars.com/api/" + FirstLetter + LastLetter + "/300/ed2a26/fff";
+            var avartarUrl = "https://i2.wp.com/ui-avatars.com/api/" + FirstLetter + lastIndex + "/300/ed2a26/fff";
             user.AvatarUrl = avartarUrl;
         }
 
@@ -235,6 +248,31 @@ namespace CaoDinhVu.BLL.Services.Implementations
             string s = address.Substring(index + 2);
             address = address.Remove(index);
             return s;
+        }
+
+        public async Task<Response<UserDTO>> GetById(Guid id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id.ToString());
+                return new Response<UserDTO>(true,"thành công", _mapper.Map<UserDTO>(user));
+            }
+            catch (Exception ex)
+            {
+                return new Response<UserDTO>(true, "thất bại: "+ex.Message);
+            }
+        }
+        public async Task<Responses<UserDTO>> GetAll(Guid id)
+        {
+            try
+            {
+                var users = _userRepository.GetAll();
+                return new Responses<UserDTO>(true, "thành công", _mapper.Map<List<UserDTO>>(users));
+            }
+            catch (Exception ex)
+            {
+                return new Responses<UserDTO>(true, "thất bại: " + ex.Message);
+            }
         }
 
     }
