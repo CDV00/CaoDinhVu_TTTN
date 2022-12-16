@@ -15,6 +15,11 @@ namespace Entities.Constants
     {
         public static int countCart { get; set; } = 0;
     }
+    public static class ActionChangeOrder
+    {
+        public static string UP = "UP";
+        public static string DOWN = "DOWN";
+    }
     public class Search
     {
         public static string KeyWork { get; set; }

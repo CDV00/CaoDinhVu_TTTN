@@ -27,6 +27,10 @@ namespace Repository.Repositories.Implementations
         //    _context.Dispose();
         //}
 
+        public  int SaveChanges()
+        {
+            return _context.SaveChanges();
+        }
         /// <summary>
         /// Save all changes async
         /// </summary>

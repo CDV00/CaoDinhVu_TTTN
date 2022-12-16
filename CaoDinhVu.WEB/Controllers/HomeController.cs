@@ -20,6 +20,7 @@ namespace CaoDinhVu.WEB.Controllers
         private readonly IProductSevice _productSevice;
         private readonly IBrandService _brandService;
         private readonly ISliderService _sliderService;
+        private readonly IOrderService _orderService;
         private readonly IUploadImage _uploadImage;
         
         
@@ -28,7 +29,8 @@ namespace CaoDinhVu.WEB.Controllers
                               IProductSevice productSevice,
                               IUploadImage uploadImage,
                               IBrandService brandService,
-                              ISliderService sliderService)
+                              ISliderService sliderService,
+                              IOrderService orderService)
         {
             _logger = logger;
             _categoryService = categoryService;
@@ -36,6 +38,7 @@ namespace CaoDinhVu.WEB.Controllers
             _uploadImage = uploadImage;
             _brandService = brandService;
             _sliderService = sliderService;
+            _orderService = orderService;
         }
 
         public async Task<IActionResult> Index()
@@ -46,6 +49,7 @@ namespace CaoDinhVu.WEB.Controllers
             
             homeDTO.listBrands = await _brandService.getAll();
             homeDTO.listSlider = await _sliderService.getAll();
+            homeDTO.listSlider = homeDTO.listSlider.Where(s => s.Status == 1).ToList();
             homeDTO.listProducts = await _productSevice.GetAllNoTracking(new PagingRequest(1,100));
             Guid categoryId = (homeDTO.listCategory.FirstOrDefault()).Id.Value;
             homeDTO.ProductsByCategory.category = await _categoryService.getById(categoryId);
@@ -63,7 +67,11 @@ namespace CaoDinhVu.WEB.Controllers
 
             return View(homeDTO);
         }
-
+        public async Task<IActionResult> FindOrder(Guid ma_don_hang)
+        {
+            var orders = await _orderService.GetDetailById(ma_don_hang);
+            return View(orders.Data);
+        }
         /*public IActionResult Privacy()
         {
             return View();

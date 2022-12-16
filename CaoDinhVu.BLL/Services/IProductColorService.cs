@@ -11,6 +11,7 @@ namespace CaoDinhVu.BLL.Services
     public interface IProductColorService
     {
         Task<BaseResponse> AddAsync(ProductColorRequest productColorRequest);
+        Task<BaseResponse> ChangeStatus(Guid id);
         Task<BaseResponse> Delete(Guid id);
         List<Guid> GetIdByProductId(Guid productId);
         Guid GetProductColorId(Guid productId, Guid colorId);

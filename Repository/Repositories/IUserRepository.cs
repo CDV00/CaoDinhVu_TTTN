@@ -10,5 +10,6 @@ namespace Repository.Repositories
     public interface IUserRepository : IRepository<AppUser>
     {
         IUserQuery BuildQuery();
+        int checkRole(Guid userId);
     }
 }

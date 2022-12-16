@@ -17,13 +17,15 @@ namespace CaoDinhVu.BLL.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly IMailService _mailService;
 
-        public AccountService(UserManager<AppUser> userManager, IMapper mapper, IUserRepository userRepository, RoleManager<IdentityRole<Guid>> roleManager)
+        public AccountService(UserManager<AppUser> userManager, IMapper mapper, IUserRepository userRepository, RoleManager<IdentityRole<Guid>> roleManager, IMailService mailService)
         {
             _userManager = userManager;
             _mapper = mapper;
             _userRepository = userRepository;
             _roleManager = roleManager;
+            _mailService = mailService;
         }
 
         public async Task<IEnumerable<UserDTO>> GetAll()
@@ -37,6 +39,18 @@ namespace CaoDinhVu.BLL.Services.Implementations
             {
                 return null;
                 throw new Exception(ex.Message);
+            }
+        }
+        public int GetRole(Guid id)
+        {
+            try
+            {
+               return _userRepository.checkRole(id);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Lỗi: "+ex.Message);
             }
         }
 
@@ -58,7 +72,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 var userResponse = _mapper.Map<UserDTO>(user);
 
                 var roles = await _userManager.GetRolesAsync(user);
-                userResponse.Role = string.Join(",", roles);
+                userResponse.Role = GetRole(userResponse.Id.Value); //string.Join(",", roles);
 
                 //_mapper.Map(user, UserDTO);
                 /*var token = await CreateToken(populateExp: true);
@@ -136,7 +150,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
 
 
                 //await AddStudentRole(user);
-                if (registerRequest.Role == "Saler")
+                if (registerRequest.Role == UserRoles.Seller)
                 {
                     await AddSalerRole(user);
                 }
@@ -144,6 +158,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 {
                     await AddCustomerRole(user);
                 }
+
 
 
                 //var userResponse = _mapper.Map<UserDTO>(user);
@@ -242,6 +257,29 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 throw;
             }
         }
+
+        public async Task<Response<ProfileSetting>> GetProfileSetting(Guid id)
+        {
+            try
+            {
+                ProfileSetting profileSetting = new ProfileSetting();
+                profileSetting.AppUser = _mapper.Map<UserDTO>(await _userManager.FindByIdAsync(id.ToString()));
+                profileSetting.AppUser.Role = _userRepository.checkRole(profileSetting.AppUser.Id.Value);
+                profileSetting.Id = profileSetting.AppUser.Id;
+                string address = profileSetting.AppUser.Address;
+                profileSetting.Province = XuLyChuoi(ref address);
+                profileSetting.District = XuLyChuoi(ref address);
+                profileSetting.wards = XuLyChuoi(ref address);
+                profileSetting.SpecificAddress = address;
+                return new Response<ProfileSetting>(true,"thanh cong", profileSetting);
+            }
+            catch (Exception ex)
+            {
+                return new Response<ProfileSetting>(false, "lỗi " + ex.Message);
+                throw;
+            }
+        }
+
         private String XuLyChuoi(ref string address)
         {
             int index = address.LastIndexOf(",");
@@ -272,6 +310,204 @@ namespace CaoDinhVu.BLL.Services.Implementations
             catch (Exception ex)
             {
                 return new Responses<UserDTO>(true, "thất bại: " + ex.Message);
+            }
+        }
+        public async Task<BaseResponse> ChangePassword(Guid userId, ChangePasswordRequest changePasswordRequest)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId.ToString());
+
+                if (user == null)
+                    return new BaseResponse(false, "can't find user");
+                var checkPassword = _userManager.CheckPasswordAsync(user, changePasswordRequest.PasswordOld);
+
+                if (!checkPassword.Result)
+                {
+                    return new BaseResponse(false, "incorrect password!");
+                }
+                user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, changePasswordRequest.PasswordNew);
+                await _userManager.UpdateAsync(user);
+                return new Response<UserDTO>(true, null, null);
+            }
+            catch (Exception ex)
+            {
+                return new Responses<UserDTO>(false, ex.Message, null);
+            }
+        }
+        //forget password
+        public async Task<BaseResponse> ForgetPassWord(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return new Response<BaseResponse>(false, "No user associated with email", null);
+            }
+
+            string subject = "Quên mật khẩu";
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            string link = "https://localhost:5001/quen-mat-khau?email=" + user.Email + "&token=" + token;
+            string body = "<h2>Quên mật khẩu</h2><br><p>Vui lòng click vào link: "+ link +"</p>";
+            
+            
+            var sen = await _mailService.SeedMail("vucao005@gmail.com", user.Email,user.Fullname, subject, body);
+            if (!sen.IsSuccess)
+            {
+                return new Response<BaseResponse>(false, "Send Email went wrong!" + sen.Message);
+            }
+            return new BaseResponse(true, "Thành công");
+        }
+        //
+        /*public async Task<Response<BaseResponse>> ResetPassWord(ResetPasswordRequest resetPasswordRequest)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(resetPasswordRequest.email);
+                if (user == null)
+                {
+                    return new Response<BaseResponse>(false, "No user associated with email", null);
+                }
+                if (user.CodeNumber is null)
+                {
+                    return new Response<BaseResponse>(false, "Something went wrong!", null);
+                }
+                if (user.CodeNumber != resetPasswordRequest.codeNumber || DateTime.Now >= user.UpdatedAt.Value.AddMinutes(3))
+                {
+                    return new Response<BaseResponse>(false, "Something went wrong!", null);
+                }
+                if (resetPasswordRequest.newPassword != resetPasswordRequest.comfirmPassword)
+                {
+                    return new Response<BaseResponse>(false, "Password doesn't match its confirmation", null);
+                }
+                user.UpdatedAt = DateTime.UtcNow;
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var Result = await _userManager.ResetPasswordAsync(user, token, resetPasswordRequest.newPassword);
+
+                //await AddCodeNumber(user.Email);
+                if (!Result.Succeeded)
+                {
+                    return new Response<BaseResponse>(false, "Something went wrong!", null);
+                }
+                user.CodeNumber = null;
+                await _userManager.UpdateAsync(user);
+                return new Response<BaseResponse>(true, "Password has been reset successfully", null);
+            }
+            catch (Exception ex)
+            {
+                return new Response<BaseResponse>(false, ex.Message, null);
+            }
+        }
+        */
+        //update user
+        public async Task<BaseResponse> UpdateProfile(UserRequest userRequest)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userRequest.Id.ToString());
+                if(_userRepository.checkRole(user.Id) != userRequest.Role)
+                {
+                    if(userRequest.Role == 3)
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, UserRoles.Seller);
+                        await _userManager.AddToRoleAsync(user, UserRoles.Customer);
+                    }
+                    else if(userRequest.Role == 2)
+                    {
+                        await _userManager.RemoveFromRoleAsync(user, UserRoles.Customer);
+                        await _userManager.AddToRoleAsync(user, UserRoles.Seller);
+                    }  
+                }
+                user.Fullname = userRequest.FullName;
+                //user.UserName = userRequest.UserName;
+                user.Gender = userRequest.Gender;
+                user.Email = userRequest.Email;
+                user.Address = userRequest.Address;
+                user.Status = userRequest.Status;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return new BaseResponse(false, "lỗi");
+                }
+                return new BaseResponse(true, "thành công");
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(false, "Thất bại: "+ ex.Message);
+                throw;
+            }
+        }
+        //change status user
+        public async Task<BaseResponse> ChangeStatus(Guid id)
+        {
+            try
+            {
+                var user =await _userManager.FindByIdAsync(id.ToString());
+                if(user.Status == 2)
+                {
+                    user.Status = 1;
+                }
+                else
+                {
+                    user.Status = 2;
+                }
+                var result=await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return new BaseResponse(false, "lỗi");
+                }
+                return new BaseResponse(true, user.Status.ToString());
+            }
+            catch ( Exception ex)
+            {
+                return new BaseResponse(false, "lỗi :" + ex.Message);
+                throw;
+            }
+        }
+        //delete Soft
+        public async Task<BaseResponse> DeleteSoft(Guid id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id.ToString());
+                if (user.Status == 0)
+                {
+                    user.Status = 2;
+                }
+                else
+                {
+                    user.Status = 0;
+                }
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return new BaseResponse(false, "lỗi");
+                }
+                return new BaseResponse(true, "Thành công");
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(false, "lỗi :" + ex.Message);
+                throw;
+            }
+        }
+        //delete Hard
+        public async Task<BaseResponse> Delete(Guid id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id.ToString());
+                user.IsDelete = true;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return new BaseResponse(false, "lỗi");
+                }
+                return new BaseResponse(true, "Thành công");
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(false, "lỗi :" + ex.Message);
+                throw;
             }
         }
 

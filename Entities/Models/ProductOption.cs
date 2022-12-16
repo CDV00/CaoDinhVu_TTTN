@@ -16,7 +16,7 @@ namespace Entities.Models
         public virtual Product Product { get; set; }
         public Guid OptionId { get; set; }
         public virtual Option Option { get; set; }
-
+        public int? Status { get; set; } = 1;
         //[Required(ErrorMessage = "Bắt buộc nhập giá")]
         //[MinLength(0, ErrorMessage = "Giá nhỏ nhất: 0")]
         public decimal? Price { get; set; } = 100000;

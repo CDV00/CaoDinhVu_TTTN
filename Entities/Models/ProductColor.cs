@@ -12,6 +12,7 @@ namespace Entities.Models
         public virtual Product Product { get; set; }
         public Guid? ColorId { get; set; }
         public virtual Color Color { get; set; }
+        public int? Status { get; set; } = 1;
         public virtual ICollection<ProductOption> ProductOptions { get; set; }
         public virtual ICollection<Image> Images { get; set; }
     }

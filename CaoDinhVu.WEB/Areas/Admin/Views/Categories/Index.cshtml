@@ -163,13 +163,13 @@
                     @foreach (var item in Model.Where(c => c.Status != 0).OrderBy(c => c.Orders))
                     {
                         <tr data-id='@item.Id'>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 <input type="checkbox" name="checkId" value="@item" />
                             </td>
                             <td>
                                 <img src="@item.Image" alt="Hình ảnh" class="img-fluid" />
                             </td>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 @item.Name
                             </td>
 
@@ -177,7 +177,7 @@
                         @(String.Format("{0:d}", item.CreatedAt))
                     </td>*@
 
-                            <td>
+                            <td style="vertical-align: middle;">
                                 @if (item.Status == 1)
                                 {
                                     <a class="btn btn-sm btn-success status" data-id="@item.Id"><i class="fas fa-toggle-on"></i></a>
@@ -188,7 +188,7 @@
                                 }
 
                             </td>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 <a href="@Url.Action("Details","Categories", new { id = item.Id })" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Chi tiết</a>
                                 <a href="@Url.Action("Edit","Categories", new { id = item.Id })" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Sữa</a>
                                 <button class="btn btn-sm btn-danger btnDelete" data-id="@item.Id"><i class="fas fa-trash"></i> Xóa</button>

@@ -39,6 +39,16 @@ namespace CaoDinhVu.DAL.Data
             builder.ApplyConfiguration(new AppUserConfiguration());
             builder.ApplyConfiguration(new BrandConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new ColorConfiguration());
+            builder.ApplyConfiguration(new DetailConfiguration());
+            builder.ApplyConfiguration(new ImageConfiguration());
+            builder.ApplyConfiguration(new OptionConfiguration());
+            builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new OrderDetailConfiguration());
+            builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfiguration(new ProductColorConfiguration());
+            builder.ApplyConfiguration(new ProductOptionConfiguration());
+            builder.ApplyConfiguration(new SliderConfiguration());
         }
     }
 }

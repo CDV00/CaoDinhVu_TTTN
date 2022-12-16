@@ -1,0 +1,120 @@
+﻿@model Entities.Models.Slider
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "Sliders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Id)
+    @*@Html.HiddenFor(model => model.CreatedAt)
+        @Html.HiddenFor(model => model.CreatedBy)*@
+    @Html.ValidationSummary(true, "", new { @class = " text-danger" })
+    <!-- Content Wrapper. Contains page content -->
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Sửa Slider</h1>
+                </div>
+                <div class="col-sm-6 text-right">
+                    @*@Html.ActionLink("Back to List", "Index")
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Save" class="btn btn-default" />
+                            </div>
+                        </div>*@
+                    <a href="@Url.Action("Index", "Sliders")" class="btn btn-info"><i class="fas fa-chevron-left"></i> Quay lại</a>
+                    <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Lưu[Thay đổi]</button>
+                </div>
+            </div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content m-5">
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+
+
+            <div class="form-group row">
+                <div class="col-2">
+                    <label>Sắp xếp</label>
+                </div>
+                <div class="col-7">
+                    @Html.EditorFor(model => model.Orders, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Orders, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-2">
+                    <label>Hình ảnh</label>
+                </div>
+                <div class="col-7">
+                    <img src="@Html.DisplayFor(model => model.Img)" id="thumbnail-IMG" alt="Hình ảnh" @*style="width:100%"*@ class="img-thumbnail w-100" />
+                    <br />
+                    <input name="Image" id="Thumbnails" type="file" />
+                </div>
+
+
+
+            </div>
+
+
+
+            @*<div class="form-group">
+                    <label>Mô tả<span class="text-danger">(*)</span></label>
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MetaDesc, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MetaDesc, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+            <div class="form-group">
+                <div class="col-2">
+                    <label>Trạng thái</label>
+                </div>
+
+                <div class="col-md-7">
+                    @Html.DropDownListFor(model => model.Status, new[] { new SelectListItem { Text = "Không xuất bản", Value = "2" }, new SelectListItem { Text = "Xuất bản", Value = "1" } }, "Trạng thái", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-default" />
+                    </div>
+                </div>*@
+        </div>
+    </section>
+}
+@section footer{
+<script>
+    $(document).ready(function () {
+        //change Image Thumbnails
+        $('#Thumbnails').on('change', function (event) {
+            var files = event.target.files;
+            if (files != null) {
+                $("#thumbnail-IMG").hide();
+            }
+            else {
+                $("#thumbnail-IMG").show();
+            }
+
+        });
+    })
+    
+</script>
+}
+

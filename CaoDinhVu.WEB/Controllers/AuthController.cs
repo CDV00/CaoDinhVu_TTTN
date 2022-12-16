@@ -56,7 +56,7 @@ namespace CaoDinhVu.WEB.Controllers
                 Email = email,
                 FullName = fullName,
                 UserName = userName,
-                Address = soNha + "," + phuong + "," + huyen + "," + tinh,
+                Address = soNha + ", " + phuong + ", " + huyen + ", " + tinh,
                 Gender = gender,
                 Password = password,
                 PasswordConfirm = repeatPssword
@@ -95,12 +95,15 @@ namespace CaoDinhVu.WEB.Controllers
             }
 
             var userInfo = UserInfo;
-            
             userInfo = result.Data;
             userInfo.Id = result.Data.Id;
             HttpContext.Session.Set<UserDTO>("UserInfo", userInfo);
 
             ViewBag.Error = "<strong class=\"text-success \">" + result.Message + ".</strong>";
+            if(result.Data.Role != 3)
+            {
+                return Redirect("/quan-ly-thong-ke");
+            }
             return RedirectToAction("Index", "Home");
 
         }

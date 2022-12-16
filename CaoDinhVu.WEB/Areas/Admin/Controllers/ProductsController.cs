@@ -13,11 +13,13 @@ using Newtonsoft.Json;
 using CaoDinhVu.BLL.Services.Implementations;
 using Entities.DTOs;
 using Entities.Responses;
+using CaoDinhVu.WEB.Library;
+using Microsoft.AspNetCore.Http;
 
 namespace CaoDinhVu.WEB.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ProductsController : Controller
+    public class ProductsController : BaseAdminController
     {
         private readonly IOptionService _optionService;
         private readonly IColorService _colorService;
@@ -28,7 +30,7 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         private readonly IProductColorService _productColorService;
         private readonly IProductOptionService _productOptionService;
 
-        public ProductsController(IOptionService optionService,IColorService colorService,IProductColorService productColorService,IProductOptionService productOptionService , IProductSevice productSevice, ICategoryService categoryService, IBrandService brandService, IUploadImage uploadImage)
+        public ProductsController(IOptionService optionService,IColorService colorService,IProductColorService productColorService,IProductOptionService productOptionService , IProductSevice productSevice, ICategoryService categoryService, IBrandService brandService, IUploadImage uploadImage, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _optionService = optionService;
             _colorService = colorService;
@@ -45,6 +47,11 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var product = await _productSevice.GetAll(2);
+            return View(product);
+        }
+        public async Task<IActionResult> Trash()
+        {
+            var product = await _productSevice.GetAll(0);
             return View(product);
         }
         // GET: Admin/Products/Details/5
@@ -72,6 +79,76 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddImageItem(Guid id)
+        {
+            try
+            {
+                var img = Request.Form.Files["Image"];
+                //Add Thumbnails
+                var image = await _uploadImage.UploadImageToImgur(Request.Form.Files["ImageItem"]);
+                if(image == null)
+                {
+                    return Json(JsonConvert.SerializeObject(new BaseResponse(false, "Thất bại")));
+                }
+                var result = await _productSevice.AddImageItem(id, image);
+                if (!result.IsSuccess)
+                {
+                    return Json(JsonConvert.SerializeObject(new BaseResponse(false, "Thất bại")));
+                }
+                return Json(JsonConvert.SerializeObject(result));
+            }
+            catch (Exception ex)
+            {
+                return Json(JsonConvert.SerializeObject(new BaseResponse(false, "Thất bại")));
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddImageThumbnails(Guid id, IFormCollection file)
+        {
+            try
+            {
+                //IFormFile file = form.Files[0];
+                //var image = await _uploadImage.UploadImageToImgur(file);
+                var image = String.Empty;
+
+                if (image.Equals(String.Empty))
+                {
+                    return Json(JsonConvert.SerializeObject(new BaseResponse(false, "Thất bại")));
+                }
+                var result = await _productSevice.ChangeThumbnails(id, image);
+                if (!result.IsSuccess)
+                {
+                    return Json(JsonConvert.SerializeObject(new BaseResponse(false, "Thất bại")));
+                }
+                return Json(JsonConvert.SerializeObject(new BaseResponse(true, image)));
+            }
+            catch (Exception ex)
+            {
+                return Json(JsonConvert.SerializeObject(new BaseResponse(false, "Thất bại")));
+                throw new Exception(ex.Message);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteImageItem(Guid id)
+        {
+            try
+            {
+                //Add Thumbnails
+                var result = await _productSevice.DeleteImageItem(id);
+                if (!result.IsSuccess)
+                {
+                    return Json(JsonConvert.SerializeObject(new BaseResponse(false, "Thất bại")));
+                }
+                return Json(JsonConvert.SerializeObject(new BaseResponse(true, "Thành công")));
+            }
+            catch (Exception ex)
+            {
+                return Json(JsonConvert.SerializeObject(new BaseResponse(false, "Thất bại")));
+                throw new Exception(ex.Message);
+            }
+        }
         // POST: Admin/Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -97,10 +174,12 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
                     listImg.Add(image.ToString());
                     i++;
                 }
+                product.Slug = XString.Str_Slug(product.Name);
                 product.ListImage = listImg;
                 product.Id = Guid.NewGuid();
                 var result = await _productSevice.AddAsync(product);
-                return RedirectToAction(nameof(Index));
+                var productId = new Guid(result.Message);
+                return Redirect("/Admin/products/AddProductItem" + "?productId=" + productId);
             }
             //ViewData["BrandId"] = new SelectList(await _brandService.getAll(), "Id", "Name", product.BrandId);
             //ViewData["CategoryId"] = new SelectList(await _categoryService.getAll(), "Id", "Name", product.CategoryId);
@@ -115,13 +194,29 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            
+
             var product = await _productSevice.GetById(id.Value);
+
+            product.Screen = product.Detail.Screen;
+            product.Camera = product.Detail.Camera;
+            product.OperatingSystem = product.Detail.OperatingSystem;
+            product.CPU = product.Detail.CPU;
+            product.ROM = product.Detail.ROM;
+            product.RAM = product.Detail.RAM;
+            product.Connection = product.Detail.Connection;
+            product.Battery = product.Detail.Battery;
+            product.Charger = product.Detail.Charger;
+            product.GeneralInformation = product.Detail.GeneralInformation;
+
+
             if (product == null)
             {
                 return NotFound();
             }
             ViewBag.listBrand = new SelectList(await _brandService.getAll(1), "Id", "Name", product.BrandId);
             ViewBag.listCat = new SelectList(await _categoryService.getAll(1), "Id", "Name", product.CategoryId);
+            ViewBag.Option = await _optionService.GetALL();
             return View(product);
         }
 
@@ -130,18 +225,29 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Thumbnails,Slug,Title,CategoryId,BrandId,Description,Price,Status,Id,CreateAt,CreateBy,UpdateAt,UpdateBy,IsActive,IsDelete")] ProductRequest product)
+        public async Task<IActionResult> EditPost(List<IFormFile> listImage, Guid id, [Bind("Name,Thumbnails,Title,CategoryId,BrandId,Description,Status,Id,Screen,Camera,GeneralInformation,Charger,Battery,Connection,RAM,ROM,CPU,OperatingSystem")] ProductRequest product)
         {
-            if (id != product.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-
-
-             
+                //Add Thumbnails
+                var img = Request.Form.Files["Image"];
+                if (img != null)
+                {
+                    var image = await _uploadImage.UploadImageToImgur(Request.Form.Files["Image"]);
+                    product.Thumbnails = image;
+                }
+                //Add list image
+                var listImg = new List<string>();
+                if (listImage != null)
+                {
+                    foreach (var item in listImage)
+                    {
+                        var image = await _uploadImage.UploadImageToImgur(item);
+                        listImg.Add(image.ToString());
+                    }
+                }
+                product.ListImage=listImg;
+                product.Slug = XString.Str_Slug(product.Name);
                 var result = await _productSevice.Update(product);
                
                 if (!result.IsSuccess)
@@ -206,6 +312,18 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             return Json(JsonConvert.SerializeObject(Result));
 
         }
+        [HttpPost]
+        public async Task<IActionResult> DeleteProductColor(Guid id)
+        {
+            var Result = await _productColorService.Delete(id);
+            return Json(JsonConvert.SerializeObject(Result));
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatusProductColor(Guid id)
+        {
+            var Result = await _productColorService.ChangeStatus(id);
+            return Json(JsonConvert.SerializeObject(Result));
+        }
         /// <summary>
         /// Add product option
         /// </summary>
@@ -222,6 +340,24 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             };*/
             return Json(JsonConvert.SerializeObject(Result));
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateProductOption([FromBody] ProductOptionRequest productOption)
+        {
+            var Result = await _productOptionService.UpdateAsync(productOption);
+            return Json(JsonConvert.SerializeObject(Result));
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteProductOption(Guid id)
+        {
+            var Result = await _productOptionService.Delete(id);
+            return Json(JsonConvert.SerializeObject(Result));
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatusProductOption(Guid id)
+        {
+            var Result = await _productOptionService.ChangeStatus(id);
+            return Json(JsonConvert.SerializeObject(Result));
         }
         [HttpPost]
         public async Task<IActionResult> AddColor([FromBody] ColorDTO color)
@@ -257,36 +393,12 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _productSevice.GetById(id.Value);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
+            var Result = await _productSevice.Delete(id);
+            return Json(JsonConvert.SerializeObject(Result));
         }
 
-        // POST: Admin/Products/Delete/5
-        /*[HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }*/
-
-        /*private bool ProductExists(Guid id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }*/
+        
     }
 }

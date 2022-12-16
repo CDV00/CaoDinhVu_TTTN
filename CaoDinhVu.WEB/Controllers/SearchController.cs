@@ -40,7 +40,7 @@ namespace CaoDinhVu.WEB.Controllers
             
             if (page == null)
                 page = 1;
-            int pageSize = 2;
+            int pageSize = 8;
             Search.KeyWork = keyWork;
             ViewBag.keywork = keyWork;
             ViewBag.page = page;
@@ -59,12 +59,12 @@ namespace CaoDinhVu.WEB.Controllers
 
             var filterRequest = new FilterRequest()
             {
-                Brand = FilterRequestConstan.Brand,
-                Category = FilterRequestConstan.Category,
-                Color = FilterRequestConstan.Color,
-                Option = FilterRequestConstan.Option,
-                PriceMin = FilterRequestConstan.PriceMin,
-                PriceMax = FilterRequestConstan.PriceMax,
+                BrandId = FilterRequestConstan.Brand.Value,
+                CategoryId = FilterRequestConstan.Category.Value,
+                ColorId = FilterRequestConstan.Color.Value,
+                OptionId = FilterRequestConstan.Option.Value,
+                PriceMin = FilterRequestConstan.PriceMin.Value,
+                PriceMax = FilterRequestConstan.PriceMax.Value,
                 Page = FilterRequestConstan.Page,
                 PageSize = FilterRequestConstan.PageSize,
                 KeyWork = FilterRequestConstan.KeyWork
@@ -79,30 +79,65 @@ namespace CaoDinhVu.WEB.Controllers
         public JsonResult Filter(Guid? brand, Guid? category, Guid? color, Guid? option, decimal? priceMin, decimal? priceMax, int? page)
         {
 
-            FilterRequestConstan.Brand = null;
-            FilterRequestConstan.Category = null;
-            FilterRequestConstan.Color = null;
-            FilterRequestConstan.Option = null;
-            FilterRequestConstan.PriceMin = null;
-            FilterRequestConstan.PriceMax = null;
-            FilterRequestConstan.Page = null;
-            FilterRequestConstan.PageSize = null;
+            FilterRequestConstan.Brand = Guid.Empty;
+            FilterRequestConstan.Category = Guid.Empty;
+            FilterRequestConstan.Color = Guid.Empty;
+            FilterRequestConstan.Option = Guid.Empty;
+            FilterRequestConstan.PriceMin = 0;
+            FilterRequestConstan.PriceMax = 0;
+            FilterRequestConstan.Page = 1;
+            FilterRequestConstan.PageSize = 12;
             FilterRequestConstan.KeyWork = null;
             if (page == null)
                 page = 1;
-            int pageSize = 2;
+            int pageSize = 8;
             ViewBag.keywork = Search.KeyWork;
             ViewBag.page = page;
+            if(brand != null)
+            {
+                FilterRequestConstan.Brand = brand;
+            }
+            if (category != null)
+            {
+                FilterRequestConstan.Category = category;
+            }
+            if (color != null)
+            {
+                FilterRequestConstan.Color = color;
+            }
+            if (option != null)
+            {
+                FilterRequestConstan.Option = option;
+            }
+            if (priceMin != null)
+            {
+                FilterRequestConstan.PriceMin = priceMin;
+            }
+            if (priceMax != null)
+            {
+                FilterRequestConstan.PriceMax = priceMax;
+            }
+            if (page != null)
+            {
+                FilterRequestConstan.Page = page;
+            }
+            if (pageSize != null)
+            {
+                FilterRequestConstan.PageSize = pageSize;
+            }
+            if (Search.KeyWork != null)
+            {
+                FilterRequestConstan.KeyWork = Search.KeyWork;
+            }
 
-            FilterRequestConstan.Brand = brand;
-            FilterRequestConstan.Category = category;
-            FilterRequestConstan.Color = color;
-            FilterRequestConstan.Option = option;
-            FilterRequestConstan.PriceMin = priceMin;
-            FilterRequestConstan.PriceMax = priceMax;
-            FilterRequestConstan.Page = page;
-            FilterRequestConstan.PageSize = pageSize;
-            FilterRequestConstan.KeyWork = Search.KeyWork;
+            
+            
+            
+            
+            
+            
+            
+            
 
             return Json(new
             {
@@ -122,7 +157,7 @@ namespace CaoDinhVu.WEB.Controllers
         {
             if (page == null)
                 page = 1;
-            int pageSize = 10;
+            int pageSize = 8;
             var products = _productSevice.GetByKeyword(new PagingRequest(page, pageSize), keyWork);
             return PartialView("_listProduct", products);
         }

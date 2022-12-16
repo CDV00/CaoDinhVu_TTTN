@@ -14,18 +14,18 @@
         <!-- ============================  FILTER TOP  ================================= -->
         <div class="card mb-3">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-2"> Your are here: </div> <!-- col.// -->
-                    <nav class="col-md-8">
+                <!--<div class="row">
+                    <div class="col-md-2"> Your are here: </div>--> <!-- col.// -->
+                    <!--<nav class="col-md-8">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="#">Category name</a></li>
                             <li class="breadcrumb-item"><a href="#">Sub category</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Items</li>
                         </ol>
-                    </nav> <!-- col.// -->
-                </div> <!-- row.// -->
-                <hr>
+                    </nav>--> <!-- col.// -->
+                <!--</div>--> <!-- row.// -->
+                <!--<hr>-->
                 <div class="row filter">
                     
 
@@ -61,7 +61,6 @@
                     <a href="~/chi-tiet-san-pham/@item.Id">
                         <figure class="card card-product-grid">
                             <div class="img-wrap">
-                                <span class="badge badge-danger"> NEW </span>
                                 <img src="@item.Thumbnails">
                             </div> <!-- img-wrap.// -->
                             <figcaption class="info-wrap">
@@ -85,13 +84,75 @@
 
         <nav class="mb-4" aria-label="Page navigation sample">
             <ul class="pagination">
-                <li class="page-item disabled"><a class="page-link" href="#">Trang sau</a></li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">Trang trước</a></li>
+                @{
+                    if (Model.TotalPage == 1)
+                    {
+                        <li class="page-item disabled"><a class="page-link">Trang trước</a></li>
+                        <li class="page-item active"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=1" value="1">1</a></li>
+                        <li class="page-item disabled"><a class="page-link">Trang sau</a></li>
+                    }
+                    if (Model.TotalPage > 1)
+                    {
+                        if (Model.Page == 1)
+                        {
+                            <li class="page-item disabled"><a class="page-link">Trang trước </a></li>
+                            for (int i = 1; i < Model.TotalPage + 1; i++)
+                            {
+
+                                if (i == Model.Page)
+                                {
+                                    <li class="page-item active"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@i">@i</a></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@i">@i</a></li>
+                                }
+
+                            }
+                            <li class="page-item"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@(Model.Page +1)">Trang sau </a></li>
+                        }
+                        else
+                        {
+                            if (Model.Page == Model.TotalPage)
+                            {
+                                <li class="page-item "><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@(Model.Page -1)">Trang trước </a></li>
+                                for (int i = 1; i < Model.TotalPage + 1; i++)
+                                {
+
+                                    if (i == Model.Page)
+                                    {
+                                        <li class="page-item active"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@i">@i</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@i">@i</a></li>
+                                    }
+
+                                }
+                                <li class="page-item disabled"><a class="page-link">Trang sau </a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item "><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@(Model.Page -1)">Trang trước </a></li>
+                                for (int i = 1; i < Model.TotalPage + 1; i++)
+                                {
+
+                                    if (i == Model.Page)
+                                    {
+                                        <li class="page-item active"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@i">@i</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@i">@i</a></li>
+                                    }
+
+                                }
+                                <li class="page-item"><a class="page-link timkiem" href="~/tat-ca-san-pham?page=@(Model.Page +1)">Trang sau </a></li>
+                            }
+                        }
+                    }
+                }
+
             </ul>
         </nav>
 

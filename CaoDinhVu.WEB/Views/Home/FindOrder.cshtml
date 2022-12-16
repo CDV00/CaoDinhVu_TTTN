@@ -1,0 +1,116 @@
+﻿@model Entities.DTOs.OrderDTO
+@{
+    ViewData["Title"] = "FindOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="container-md mt-4">
+    @{
+        if (Model == null)
+        {
+            <div class="m-auto">
+                <span>Bạn chưa có đơn hàng nào</span>
+                <a href="~/" class="btn btn-primary">Mua hàng ngay</a>
+            </div>
+
+        }
+        string GetStatus(int status)
+        {
+            var str = new List<string>()
+                                                                                            {
+                                    "Đơn hàng bị hủy","Chờ xác nhận","Chờ giao hàng","Đã giao hàng thành công"
+                                };
+            return str[status];
+        }
+
+    }
+    
+        <article class="card mb-4 px-5 py-3">
+            <header class="card-header">
+                <a href="#" class="float-right noPrint" onclick="window.print();"> <i class="fa fa-print"></i> Print</a>
+                <strong class="d-inline-block mr-3">ID Đơn hàng: @Model.Id</strong>
+                <span class="mr-3">Order Date: @(String.Format("{0:MM/dd/yy}", Model.CreateAt))</span>
+                <br />
+                <span><b>      Trạng Thái:</b> @GetStatus((int)Model.StatusOrder)</span>
+            </header>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h6 class="text-muted">Thông tin Người nhận</h6>
+                        <p>
+                            Tên: @Model.FirstName <br>
+                            Phone: @Model.PhoneNumber<br>
+                            Email: @Model.LastName <br>
+                            Địa chỉ: @Model.Address <br>
+                        </p>
+                    </div>
+                    @*<div class="col-md-4">
+                            <h6 class="text-muted">Payment</h6>
+                            <span class="text-success">
+                                <i class="fab fa-lg fa-cc-visa"></i>
+                                Visa  **** 4216
+                            </span>
+                            <p>
+                                Subtotal: $356 <br>
+                                Shipping fee:  $56 <br>
+                                <span class="b">Total:  $456 </span>
+                            </p>
+                        </div>*@
+                </div> <!-- row.// -->
+            </div> <!-- card-body .// -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tbody>
+                        <!--<tr>
+            <td width="65">
+                <img src="images/items/1.jpg" class="img-xs border">
+            </td>
+            <td>
+                <p class="title mb-0">Product name goes here </p>
+                <var class="price text-muted">USD 145</var>
+            </td>
+            <td> Seller <br> Nike clothing </td>
+            <td width="250">
+                <a href="#" class="btn btn-outline-primary">Track order</a>
+                <div class="dropdown d-inline-block">
+                    <a href="#" data-toggle="dropdown" class="dropdown-toggle btn btn-outline-secondary">More</a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="#" class="dropdown-item">Return</a>
+                        <a href="#" class="dropdown-item">Cancel order</a>
+                    </div>
+                </div>-->
+                        <!-- dropdown.// -->
+                        <!--</td>
+            </tr>-->
+                        @foreach (var orderdetal in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td width="65">
+                                    <img src="@orderdetal.Product.Thumbnails" style="height:50px" class="img-xs border">
+                                </td>
+                                <td>
+                                    <p class="title mb-0"><a href="~/chi-tiet-san-pham/@orderdetal.Product.Id">@orderdetal.Product.Name </a></p>
+                                    <var class="price text-muted">@((orderdetal.ProductOption.Price).ToString("#,##0")) VND</var>
+                                </td>
+                                <td> Số lượng: @orderdetal.Amount.Value <br> Tổng giá: @((orderdetal.ProductOption.Price * orderdetal.Amount.Value).ToString("#,##0")) VND</td>
+
+                            </tr>
+                        }
+
+
+
+
+                    </tbody>
+
+                </table>
+                <div style="display: flex; justify-content: flex-end">
+                    <strong class="h4 mr-2">Tổng tiền: </strong>
+                    <span  class="h4">@((Model.TotalPrice).ToString("#,##0")) VND</span>
+                </div>
+                
+            </div> <!-- table-responsive .end// -->
+        </article> <!-- card order-item .// -->
+    
+
+
+</main> <!-- col.// -->

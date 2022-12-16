@@ -11,16 +11,17 @@ using CaoDinhVu.BLL.Services;
 using Entities.Requests;
 using Newtonsoft.Json;
 using CaoDinhVu.WEB.Library;
+using Microsoft.AspNetCore.Http;
 
 namespace CaoDinhVu.WEB.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class BrandController : Controller
+    public class BrandController : BaseAdminController
     {
         private readonly IBrandService _brandService;
         private readonly IUploadImage _uploadImage;
 
-        public BrandController(IBrandService brandService, IUploadImage uploadImage)
+        public BrandController(IBrandService brandService, IUploadImage uploadImage, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _brandService = brandService;
             _uploadImage = uploadImage;
@@ -31,7 +32,10 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
         {
             return View(await _brandService.getAll(2));
         }
-
+        public async Task<IActionResult> Trash()
+        {
+            return View(await _brandService.getAll(0));
+        }
         // GET: Admin/Brand/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
@@ -161,31 +165,13 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
 
         }
 
-        // GET: Admin/Brand/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var brand = await _brandService.getById(id.Value);
-            if (brand == null)
-            {
-                return NotFound();
-            }
-
-            return View(brand);
+            var Result = await _brandService.Delete(id);
+            return Json(JsonConvert.SerializeObject(Result));
         }
 
-        // POST: Admin/Brand/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var brand = await _brandService.getById(id);
-            return RedirectToAction(nameof(Index));
-        }
 
     }
 }

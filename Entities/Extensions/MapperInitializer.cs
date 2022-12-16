@@ -22,6 +22,8 @@ namespace Entities.Extensions
 
             //slider
             CreateMap<Slider, SliderDTO>().ReverseMap();
+            CreateMap<Slider, SliderRequest>().ReverseMap();
+            CreateMap<SliderRequest, Slider>().ReverseMap();
             //product
             CreateMap<Product, ProductDTO>().ReverseMap();
             CreateMap<Product, ListProductDTO>().ReverseMap();
@@ -43,6 +45,7 @@ namespace Entities.Extensions
             //Product option
             CreateMap<ProductOption, ProductOptionDTO>().ReverseMap();
             CreateMap<ProductOption, ProductOptionRequest>().ReverseMap();
+            CreateMap<ProductOptionRequest, ProductOption >().ReverseMap();
             //Appuser
             CreateMap<AppUser, UserDTO>().ReverseMap();
             

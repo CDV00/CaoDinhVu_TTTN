@@ -9,16 +9,17 @@ using CaoDinhVu.DAL.Data;
 using Entities.Models;
 using CaoDinhVu.BLL.Services;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace CaoDinhVu.WEB.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class OrdersController : Controller
+    public class OrdersController : BaseAdminController
     {
         //private readonly DBContext _context;
         private readonly IOrderService _orderService;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IOrderService orderService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _orderService = orderService;
         }

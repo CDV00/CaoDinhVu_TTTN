@@ -5,11 +5,6 @@
     Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
 }
 
-<h1>Create</h1>
-
-<h1>Tạo mới danh mục</h1>
-<hr />
-
 @using (Html.BeginForm("Create", "Brand", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -21,7 +16,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <strong class="text-danger text-uppercase">Tạo mới sản phẩm</strong>
+                        <strong class="text-danger text-uppercase">TẠO MỚI THƯƠNG HIỆU</strong>
                     </div>
                     <div class="col-sm-6 text-right">
 

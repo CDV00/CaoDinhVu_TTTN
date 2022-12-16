@@ -181,7 +181,7 @@
     <strong>Success!</strong> Indicates a successful or positive action.
 </div>
 <div id="toastd"></div>
-<section class="py-3 bg-light">
+@*<section class="py-3 bg-light">
     <div class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -190,7 +190,7 @@
             <li class="breadcrumb-item active" aria-current="page">Items</li>
         </ol>
     </div>
-</section>
+</section>*@
 
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content bg-white padding-y">
@@ -202,14 +202,17 @@
                 <div class="card">
                     <article class="gallery-wrap">
                         <div class="img-big-wrap">
-                            <div> <a href="#"><img id="imgmain" src="@Model.Images.FirstOrDefault().Imglink"></a></div>
+                            <div> <a href="#"><img id="imgmain" class="mx-auto d-block" src="@Model.Images.FirstOrDefault().Imglink"></a></div>
                         </div> <!-- slider-product.// -->
-                        <div class="thumbs-wrap">
-                            @foreach (var item in Model.Images)
-                            {
-                                <img class="item-thumb imgitem" src="@item.Imglink">
-                            }
-                        </div> <!-- slider-nav.// -->
+                        <div class="thumbs-wrap scroll-smooth" style="padding: 15px; overflow-x: auto; ">
+
+                            <div id="img-item" style="display: flex; padding-left: 0; width: max-content;">
+                                @foreach (var item in Model.Images)
+                                {
+                                    <img class="item-thumb imgitem" src="@item.Imglink">
+                                }
+                            </div>
+                        </div>
                     </article> <!-- gallery-wrap .end// -->
                 </div> <!-- card.// -->
             </aside>
@@ -261,7 +264,7 @@
                         <dt class="col-sm-3">Màu sắc: </dt>
                         <dd class="col-sm-9">
                             @{int colorCount = 0; }
-                            @foreach (var item in Model.ProductColors.Select(c => c.Color))
+                            @foreach (var item in Model.ProductColors.Where(m=>m.Status == 1).Select(c => c.Color))
                             {
 
                                 if (colorCount == 0)
@@ -286,17 +289,21 @@
                         <dd class="col-sm-9">
                             <div id="options">
                                 @{int optionCount = 0; }
-                                @foreach (var item in Model.ProductOptions.Where(p => p.ProductColor.Id == Entities.Constants.Product.ProductColorId).Select(c => c.Option))
+                                @foreach (var item in Model.ProductOptions.Where(p => p.ProductColorId == Entities.Constants.Product.ProductColorId && p.Status == 1))
                                 {
                                     if (optionCount == 0)
                                     {
-                                        <input checked class='optionItem' value="@item.Id" type="radio" name="optionItem">
-                                        <button style="margin-right:20px;">@item.RAM/@item.ROM</button>
+                                        <input checked class='optionItem' value="@item.Option.Id" type="radio" name="optionItem">
+                                        <button style="margin-right:20px;">@item.Option.RAM/@item.Option.ROM</button>
+                                        <script>
+                                            var price = '@((item.Price).ToString("#,##0"))' +' VND';
+                                            $("#price").text(price);
+                                        </script>
                                     }
                                     else
                                     {
                                         <input class='optionItem' value="@item.Id" type="radio" name="optionItem">
-                                        <button style="margin-right:20px;">@item.RAM/@item.ROM</button>
+                                        <button style="margin-right:20px;">@item.Option.RAM/@item.Option.ROM</button>
                                     }
                                     optionCount++;
                                 }
@@ -346,13 +353,13 @@
                 <p>
                     @Html.Raw(Model.Description)
                 </p>
-                <ul class="list-check">
+                @*<ul class="list-check">
                     <li>Material: Stainless steel</li>
                     <li>Weight: 82kg</li>
                     <li>built-in drip tray</li>
                     <li>Open base for pots and pans</li>
                     <li>On request available in propane execution</li>
-                </ul>
+                </ul>*@
 
                 <div class="fb-comments" data-href="https://localhost:5001/" data-width="" data-numposts=""></div>
                 <!-- ========================= SECTION SUBSCRIBE  ========================= -->

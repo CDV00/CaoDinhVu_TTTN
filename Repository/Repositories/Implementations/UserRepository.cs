@@ -27,12 +27,10 @@ namespace Repository.Repositories.Implementations
             var roleName = _context.Roles.Where(m => m.Id == roleId).Select(r => r.Name).FirstOrDefault();
             if (roleName == UserRoles.Admin)
                 return 1;
-            else
-            {
-                if (roleName == UserRoles.Customer)
+            else if (roleName == UserRoles.Seller)
                     return 2;
-                return 3;
-            }
+            return 3;
+            
         }
     }
 }

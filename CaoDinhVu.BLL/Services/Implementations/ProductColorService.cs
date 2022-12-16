@@ -69,9 +69,9 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 _mapper.Map(productColorRequest,productColor);
 
 
-                var update =await _productColorRepository.Update(productColor);
-                if(!update)
-                    return new BaseResponse(true, "Update Color thất bại");
+                //var update =await _productColorRepository.Update(productColor);
+                /*if(!update)
+                    return new BaseResponse(true, "Update Color thất bại");*/
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResponse(true, "Update thành công");
             }
@@ -80,22 +80,48 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 return new BaseResponse(true, "Update Color thất bại" + ex);
             }
         }
+        
         public async Task<BaseResponse> Delete(Guid id)
         {
             try
             {
                 var productColor = await _productColorRepository.GetByIdAsync(id);
                 productColor.IsDelete = true;
-                var update =await _productColorRepository.Update(productColor);
+                var update = await _productColorRepository.Update(productColor);
                 if (!update)
-                    return new BaseResponse(true, "Delete Color thất bại");
+                    return new BaseResponse(true, "Delete product color thất bại");
                 await _unitOfWork.SaveChangesAsync();
-                return new BaseResponse(true, "Delete thành công");
+                return new BaseResponse(true, "Delete product color thành công");
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "Delete Color thất bại" + ex);
+                return new BaseResponse(true, "Delete product color thất bại" + ex);
             }
         }
+        public async Task<BaseResponse> ChangeStatus(Guid id)
+        {
+            try
+            {
+                var productColor = await _productColorRepository.GetByIdAsync(id);
+                //change status
+                if (productColor.Status == 1)
+                    productColor.Status = 2;
+                else if (productColor.Status == 2)
+                    productColor.Status = 1;
+
+                var update = await _productColorRepository.Update(productColor);
+                if (!update)
+                    return new BaseResponse(true, "Change status product color thất bại");
+                await _unitOfWork.SaveChangesAsync();
+                return new BaseResponse(true, "Change status product color thành công");
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(true, "Change statu products color thất bại" + ex);
+            }
+        }
+
+
+
     }
 }

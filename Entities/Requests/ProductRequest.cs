@@ -15,7 +15,7 @@ namespace Entities.Requests
         public string Description { get; set; }
         public decimal? Price { get; set; }=0;
         public int? Status { get; set; }
-        public List<string> ListImage { get; set; }
+        public List<string> ListImage { get; set; } = null;
         //public Guid ColorId { get; set; }
         //public Guid? OptionId { get; set; }
         //public decimal Prices { get; set; }

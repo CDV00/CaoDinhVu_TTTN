@@ -1,0 +1,281 @@
+﻿@model IEnumerable<Entities.DTOs.SliderDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
+}
+
+
+
+@section header{
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+@section footer{
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+        //xóa danh mục
+        $('.btnDelete').off('click').on('click', function () {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Xác nhận?',
+                text: "Bạn có muốn xóa Slider?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có!',
+                cancelButtonText: 'Không!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var id = $(this).data('id');
+                    $.ajax({
+                        url: '/Admin/Sliders/DeleteSoft',
+                        data: { id: $(this).data('id') },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+
+                            $("tr[data-id='" + id + "']").remove();
+                            //thông báo
+                            swalWithBootstrapButtons.fire(
+                                'Thành công!',
+                                'Bạn đã xóa thành công.',
+                                'success'
+                            );
+                            @*if (res.status == true) {
+                                window.location.href = '/gio-hang';
+                            }*@
+                        }
+                    })
+
+                }
+            })
+        })
+        //change status
+        $('.status').off('click').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/Admin/Sliders/ChangeStatus',
+                data: { id: $(this).data('id') },
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+
+                    var obj = JSON.parse(res);
+                    console.log(obj);
+                    if (obj.IsSuccess) {
+                        if (obj.Message == "1") {
+                            // remove class
+                            $("a[data-id='" + id + "']").removeClass('btn-danger');
+                            $("a[data-id='" + id + "']").children().removeClass('fa-toggle-off');
+                            //add class
+                            $("a[data-id='" + id + "']").addClass('btn-success');
+                            $("a[data-id='" + id + "']").children().addClass('fa-toggle-on');
+
+                        }
+                        if (obj.Message == "2")
+                        {
+                            // remove class
+                            $("a[data-id='" + id + "']").removeClass('btn-success');
+                            $("a[data-id='" + id + "']").children().removeClass('fa-toggle-on');
+                            //add class
+                            $("a[data-id='" + id + "']").addClass('btn-danger');
+                            $("a[data-id='" + id + "']").children().addClass('fa-toggle-off');
+                        }
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                    //$("tr[data-id='" + id + "']").remove();
+
+                }
+            })
+
+        });
+        //change order slider UP
+        $('.up').off('click').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/Admin/Sliders/ChangeOrder',
+                data: { id: $(this).data('id'), actionChange : 1 },
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+
+                    var obj = JSON.parse(res);
+                    console.log(obj);
+                    if (obj.IsSuccess) {
+                        window.location.href = '/Admin/Sliders/Index';
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                }
+            })
+
+        });
+        //change order slider DOWN
+        $('.down').off('click').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/Admin/Sliders/ChangeOrder',
+                data: { id: $(this).data('id'), actionChange: 2 },
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+
+                    var obj = JSON.parse(res);
+                    console.log(obj);
+                    if (obj.IsSuccess) {
+                        window.location.href = '/Admin/Sliders/Index';
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+
+                }
+            })
+
+        });
+
+    </script>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <strong class="text-danger text-uppercase">Quản lý Slider</strong>
+                @*<h1>@Session["Test"]</h1>*@
+            </div>
+            <div class="col-sm-6 text-right">
+                <!--ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Blank Page</li>
+                </ol-->
+                <a href="@Url.Action("Create","Sliders")" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Thêm</a>
+                <a href="@Url.Action("Trash","Sliders")" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Thùng rác</a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+
+        <div class="card-body my-2">
+            @*@Html.Partial("Message")*@
+            <table class="table table-bordered table-striped" id="myTable">
+                <thead>
+                    <tr class="text-center">
+                        <th>STT</th>
+                        <th style="width:250px">
+                            Hình Slider
+                        </th>
+                        <th>
+                            Sắp xếp
+                        </th>
+                        <th>
+                            Trạng thái
+                        </th>
+                        <th>Change</th>
+
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var item in Model.OrderBy(c => c.Orders))
+                    {
+                        <tr data-id='@item.Id'>
+                            <td style="vertical-align: middle;">
+                                @item.Orders
+                            </td>
+                            <td>
+                                <img src="@item.Img" alt="Hình ảnh" class="img-fluid" />
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @*<b>@item.Orders</b>*@
+                                <button  data-id="@item.Id" class="ml-3 up">
+                                    <i class="fa fa-caret-up"></i>
+                                </button>
+                                <button  data-id="@item.Id" class="down">
+                                    <i class="fa fa-caret-down"></i>
+                                </button>
+                                
+                            </td>
+
+                            @*<td>
+                                    @(String.Format("{0:d}", item.CreatedAt))
+                                </td>*@
+
+                            <td style="vertical-align: middle;">
+                                @if (item.Status == 1)
+                                {
+                                    <a class="btn btn-sm btn-success status" data-id="@item.Id"><i class="fas fa-toggle-on"></i></a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-sm btn-danger status" data-id="@item.Id"><i class="fas fa-toggle-off"></i></a>
+                                }
+
+                            </td>
+                            <td  style="vertical-align: middle;">
+                                <a href="@Url.Action("Details","Sliders", new { id = item.Id })" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Chi tiết</a>
+                                <a href="@Url.Action("Edit","Sliders", new { id = item.Id })" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Sữa</a>
+                                <button class="btn btn-sm btn-danger btnDelete" data-id="@item.Id"><i class="fas fa-trash"></i> Xóa</button>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

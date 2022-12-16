@@ -8,6 +8,7 @@ using Entities.DTOs;
 using Entities.Requests;
 using Entities.Responses;
 using Repository.Repositories.Implementations;
+using System.Linq;
 
 namespace CaoDinhVu.BLL.Services.Implementations
 {
@@ -16,22 +17,25 @@ namespace CaoDinhVu.BLL.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IProductOptionRepository _productOptionRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductOptionService(IUnitOfWork unitOfWork,IMapper mapper, IProductOptionRepository productOptionRepository)
+        public ProductOptionService(IProductRepository productRepository,IUnitOfWork unitOfWork,IMapper mapper, IProductOptionRepository productOptionRepository)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _productOptionRepository = productOptionRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<List<OptionDTO>> getOptionbyProductcolorId(Guid productColorId)
         {
             var productOption =await _productOptionRepository.BuildQuery()
                                                              .FilterByProductColorId(productColorId)
+                                                             .FilterStatusActive()
                                                              .IncludeOption()
                                                              .ToListAsync(p => _mapper.Map<ProductOptionDTO>(p));
-                                                             //.AsSelectorAsync(p => _mapper.Map<ProductOptionDTO>(p));
-
+            //.AsSelectorAsync(p => _mapper.Map<ProductOptionDTO>(p));
+            productOption.Where(m => m.Status == 1);
             List<OptionDTO> options = new List<OptionDTO>();
 
             for (int i = 0; i< productOption.Count; i++)
@@ -85,6 +89,10 @@ namespace CaoDinhVu.BLL.Services.Implementations
                     return new BaseResponse(false, "Sản phẩm đã tồn tại");
                 var productOption = _mapper.Map<ProductOption>(productOptionRequest);
                 await _productOptionRepository.CreateAsync(productOption);
+                var product = await _productRepository.GetByIdAsync(productOption.ProductId.Value);
+                if (product.Price == 0 || product.Price > productOption.Price)
+                    product.Price = productOption.Price.Value;
+                product.Status = 1;
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResponse(true, "Thêm thành công");
             }
@@ -94,20 +102,23 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
         }
 
-        public async Task<BaseResponse> Update(ProductOptionRequest productOptionRequest)
+        public async Task<BaseResponse> UpdateAsync(ProductOptionRequest productOptionRequest)
         {
             try
             {
-                var productOption = _mapper.Map<ProductOption>(productOptionRequest);
-                var update =await _productOptionRepository.Update(productOption);
-                if (!update)
-                    return new BaseResponse(true, "Update Option thất bại");
+                var productOption = await _productOptionRepository.GetByIdAsync(productOptionRequest.Id.Value);
+                productOption.Number = productOptionRequest.Number;
+                productOption.Price = productOptionRequest.Price;
+                productOption.OptionId = productOptionRequest.OptionId.Value;
+                var product = await _productRepository.GetByIdAsync(productOption.ProductId.Value);
+                if (product.Price == 0 || product.Price > productOption.Price)
+                    product.Price = productOption.Price.Value;
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResponse(true, "Update thành công");
             }
             catch (Exception ex)
             {
-                return new BaseResponse(true, "Update Option thất bại" + ex);
+                return new BaseResponse(false, "Update Option thất bại" + ex);
             }
         }
         public async Task<BaseResponse> Delete(Guid id)
@@ -125,6 +136,28 @@ namespace CaoDinhVu.BLL.Services.Implementations
             catch (Exception ex)
             {
                 return new BaseResponse(true, "Delete Option thất bại" + ex);
+            }
+        }
+        public async Task<BaseResponse> ChangeStatus(Guid id)
+        {
+            try
+            {
+                var productOption = await _productOptionRepository.GetByIdAsync(id);
+                //change status
+                if (productOption.Status == 1)
+                    productOption.Status = 2;
+                else if(productOption.Status == 2)
+                    productOption.Status = 1;
+
+                var update = await _productOptionRepository.Update(productOption);
+                if (!update)
+                    return new BaseResponse(true, "Change status product Option thất bại");
+                await _unitOfWork.SaveChangesAsync();
+                return new BaseResponse(true, "Change status product thành công");
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(true, "Change statu products Option thất bại" + ex);
             }
         }
     }

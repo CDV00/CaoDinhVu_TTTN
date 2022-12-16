@@ -28,14 +28,14 @@ namespace Query.Queries.Implementations
         }
         public IProductQuery FilterBrandId(Guid? id)
         {
-            if (id == null)
+            if (id.Equals(Guid.Empty))
                 return this;
-            Query = Query.Where(type => type.CategoryId == id);
+            Query = Query.Where(type => type.BrandId == id);
             return this;
         } 
         public IProductQuery FilterCategoryId(Guid? id)
         {
-            if (id == null)
+            if (id.Equals(Guid.Empty))
                 return this;
             Query = Query.Where(type => type.CategoryId == id);
             return this;
@@ -45,9 +45,12 @@ namespace Query.Queries.Implementations
             Query = Query.Where(type => type.ProductColors.Any(pc => pc.Product.Id == productId));
             return this;
         }
-        public IProductQuery IncludeProductColor()
+        public IProductQuery IncludeProductColor(int status)
         {
-            Query.Include(p => p.ProductColors).Load();
+            if(status == 1)
+                Query.Include(p => p.ProductColors.Where(c=>c.Status == status)).Load();
+            else
+                Query.Include(p => p.ProductColors).Load();
             return this;
         }
         public IProductQuery IncludeColor()
@@ -66,9 +69,12 @@ namespace Query.Queries.Implementations
             Query.Include(p => p.ProductOptions).ThenInclude(po=>po.Option).Load();
             return this;
         }
-        public IProductQuery IncludeProductOption()
+        public IProductQuery IncludeProductOption(int status)
         {
-            Query.Include(pc=>pc.ProductOptions).Load();
+            if (status == 1)
+                Query.Include(p => p.ProductOptions.Where(c => c.Status == status)).Load();
+            else
+                Query.Include(pc=>pc.ProductOptions).Load();
             return this;
         }
         public IProductQuery IncludeCategory()
@@ -86,7 +92,7 @@ namespace Query.Queries.Implementations
             Query.Include(p => p.Images).Load();
             return this;
         }
-        public IProductQuery FilterByKeyword(string keyWork)
+        public IProductQuery FilterByKeyword(string? keyWork = null)
         {
             if (keyWork == null)
                 return this;
@@ -116,7 +122,7 @@ namespace Query.Queries.Implementations
 
         public IProductQuery FilterByOptionId(Guid? optionId)
         {
-            if(optionId == null)
+            if(optionId.Equals(Guid.Empty))
             {
                 return this;
             }
@@ -126,7 +132,7 @@ namespace Query.Queries.Implementations
         }
         public IProductQuery FilterByColorId(Guid? colorId)
         {
-            if (colorId == null)
+            if (colorId.Equals(Guid.Empty))
             {
                 return this;
             }
@@ -137,7 +143,7 @@ namespace Query.Queries.Implementations
 
         public IProductQuery FilterByPriceMin(decimal? price)
         {
-            if (price == null)
+            if (price == 0)
             {
                 return this;
             }
@@ -147,7 +153,7 @@ namespace Query.Queries.Implementations
         }
         public IProductQuery FilterByPriceMax(decimal? price)
         {
-            if (price == null)
+            if (price == 0)
             {
                 return this;
             }

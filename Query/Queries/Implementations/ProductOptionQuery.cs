@@ -59,6 +59,10 @@ namespace Query.Queries.Implementations
             Query = Query.Where(po => po.Option.Id == id);
             return this;
         }
-
+        public IProductOptionQuery FilterStatusActive()
+        {
+            Query = Query.Where(po => po.Status == 1);
+            return this;
+        }
     }
 }

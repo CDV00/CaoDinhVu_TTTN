@@ -1,109 +1,215 @@
-﻿@model Entities.Models.Product
+﻿@model Entities.DTOs.ProductDTO
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
 }
 
-<h1>Details</h1>
+@{
+    string GetStatus(int status)
+    {
+        var StringStatus = new List<string>()
+        {
+            "Đã xóa","Đang hoạt động","Đang ẩn"
+        };
+        return StringStatus[status];
+    }
+}
 
-<div>
-    <h4>Product</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Thumbnails)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Thumbnails)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdateAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdateAt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdateBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UpdateBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDelete)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsDelete)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<ul class="nav nav-pills mt-3" role="tablist">
+    <li class="nav-item" style="width: 50%">
+        <a class="nav-link active" data-toggle="tab" href="#thongtin">Thông tin sản phẩm</a>
+    </li>
+    <li class="nav-item" style="width: 50%">
+        <a class="nav-link" data-toggle="tab" href="#chiTiet">Item sản phẩm</a>
+    </li>
+    @*<li class="nav-item" style="width: 30%">
+            <a class="nav-link" data-toggle="tab" href="#menu1">Sản phẩm</a>
+        </li>*@
+</ul>
+<div class="tab-content">
+
+    <div id="thongtin" class=" tab-pane active mt-5">
+
+        <div class="row">
+            <div class="col-6 mx-5">
+                <dl class="row">
+                    <dt class="col-sm-3 col-md-3">
+                        Tên sản phẩm
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-3 col-md-3">
+                        Hình sản phẩm
+                    </dt>
+                    <dd class="col-sm-9 col-md-9  border-bottom">
+                        <img src="@Html.DisplayFor(model => model.Thumbnails)" alt="Hình ảnh" style="height:200px" class="img-thumbnail" />
+                    </dd>
+                    <dt class="col-sm-3 col-md-3">
+                        Bí danh:
+                    </dt>
+                    <dd class="col-sm-9 col-md-9 border-bottom">
+                        @Html.DisplayFor(model => model.Slug)
+                    </dd>
+                    <dt class="col-sm-3 col-md-3">
+                        Tiêu đề
+                    </dt>
+                    <dd class="col-sm-9 col-md-9 border-bottom">
+                        @Html.DisplayFor(model => model.Title)
+                    </dd>
+                    <dt class="col-sm-3 col-md-3">
+                        Thuộc danh mục:
+                    </dt>
+                    <dd class="col-sm-9 col-md-9 border-bottom">
+                        @Html.DisplayFor(model => model.Category.Name)
+                    </dd>
+                    <dt class="col-sm-3 col-md-3">
+                        Thuộc thương hiệu:
+                    </dt>
+                    <dd class="col-sm-9 col-md-9 border-bottom">
+                        @Html.DisplayFor(model => model.Brand.Name)
+                    </dd>
+                    <dt class="col-sm-3 col-md-3">
+                        Mô tả:
+                    </dt>
+                    <dd class="col-sm-9 col-md-9 border-bottom">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt class="col-sm-3 col-md-3">
+                        Trạng thái:
+                    </dt>
+                    <dd class="col-sm-9 col-md-9  border-bottom">
+                        @GetStatus(Model.Status)
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-5">
+                <dl class="row">
+                    <dt class="col-sm-3 col-md-3">
+                        Màn Hình:
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.Screen)
+                    </dd>
+                    <dt class="col-sm-3 col-md-3">
+                        Camera:
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.Camera)
+                    </dd>
+
+                    <dt class="col-sm-3 col-md-3">
+                        Hệ Điều hành:
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.OperatingSystem)
+                    </dd>
+
+                    <dt class="col-sm-3 col-md-3">
+                        Chip xử lý:
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.CPU)
+                    </dd>
+
+                    <dt class="col-sm-3 col-md-3">
+                        Bộ Nhớ
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.ROM)
+                    </dd>
+
+                    <dt class="col-sm-3 col-md-3">
+                        RAM
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.RAM)
+                    </dd>
+
+                    <dt class="col-sm-3 col-md-3">
+                        Kết nối
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.Connection)
+                    </dd>
+
+                    <dt class="col-sm-3 col-md-3">
+                        Pin
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.Battery)
+                    </dd>
+
+                    <dt class="col-sm-3 col-md-3">
+                        Sạc
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.Charger)
+                    </dd>
+
+                    <dt class="col-sm-3 col-md-3">
+                        Thông tin chung
+                    </dt>
+                    <dd class="col-sm-9 border-bottom">
+                        @Html.DisplayFor(model => model.Detail.GeneralInformation)
+                    </dd>
+
+
+
+                </dl>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div id="chiTiet" class="container tab-pane  mt-5">
+        <div><b>Ảnh sản phẩm</b></div>
+        @foreach (var item in Model.Images.Take(5))
+        {
+            <img src="@item.Imglink" alt="Hình ảnh" style="height:200px" class="img-thumbnail ml-4" />
+        }
+
+        @foreach (var item in Model.ProductColors)
+        {
+
+            <article class="card order-item mb-4 mt-5">
+                <header class="card-header">
+                    <strong class="d-inline-block mr-3">Color: @item.Color.Name</strong>
+                </header>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <tbody>
+                            @foreach (var productoption in Model.ProductOptions.Where(p => p.ProductColorId == item.Id))
+                            {
+                                <tr>
+                                    <td class="pl-5">
+                                        <p class="title mb-0">Option Ram/Rom </p>
+                                        <var class="price text-muted">@(productoption.Option.RAM)/@(productoption.Option.ROM)</var>
+                                    </td>
+                                    <td>
+                                        <p class="title mb-0">Giá bán</p>
+                                        <var class="price text-muted">@((productoption.Price).ToString("#,##0"))VND</var>
+                                    </td>
+                                    <td>
+                                        <p class="title mb-0">Số lượng trong kho </p>
+                                        <var class="price text-muted">@productoption.Number</var>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div> <!-- table-responsive .end// -->
+            </article> <!-- card order-item .// -->
+
+        }
+
+
+
+
+
+    </div>
 </div>

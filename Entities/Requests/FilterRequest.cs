@@ -5,13 +5,13 @@ namespace Entities.Requests
 {
     public class FilterRequest
     {
-        public Guid? Brand { get; set; }
-        public Guid? Category { get; set; }
-        public Guid? Color { get; set; }
-        public Guid? Option { get; set; }
-        public decimal? PriceMin { get; set; }
-        public decimal? PriceMax { get; set; }
-        public string KeyWork { get; set; }
+        public Guid BrandId { get; set; } = Guid.Empty;
+        public Guid CategoryId { get; set; } = Guid.Empty;
+        public Guid ColorId { get; set; } = Guid.Empty;
+        public Guid OptionId { get; set; } = Guid.Empty;
+        public decimal PriceMin { get; set; } = 0;
+        public decimal PriceMax { get; set; } = 0;
+        public string KeyWork { get; set; } = null;
         public int? Page { get; set; }
         public int? PageSize { get; set; }
     }

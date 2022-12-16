@@ -5,7 +5,108 @@
     Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
 }
 
+@section header{
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+@section footer{
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+        //xóa danh mục
+        $('.btnDelete').off('click').on('click', function () {
 
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Xác nhận?',
+                text: "Bạn có muốn xóa người dùng?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có!',
+                cancelButtonText: 'Không!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var id = $(this).data('id');
+                    $.ajax({
+                        url: '/Admin/Users/DeleteSoft',
+                        data: { id: $(this).data('id') },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+
+                            $("tr[data-id='" + id + "']").remove();
+                            //thông báo
+                            swalWithBootstrapButtons.fire(
+                                'Thành công!',
+                                'Bạn đã xóa người dùng thành công.',
+                                'success'
+                            );
+                            @*if (res.status == true) {
+                                window.location.href = '/gio-hang';
+                            }*@
+                        }
+                    })
+
+                }
+            })
+        })
+        //change status
+        $('.status').off('click').on('click', function () {
+            var id = $(this).data('id');
+            $.ajax({
+                url: '/Admin/Users/ChangeStatus',
+                data: { id: $(this).data('id') },
+                dataType: 'json',
+                type: 'POST',
+                success: function (res) {
+
+                    var obj = JSON.parse(res);
+                    console.log(obj);
+                    if (obj.IsSuccess) {
+                        if (obj.Message == "1") {
+                            // remove class
+                            $("a[data-id='" + id + "']").removeClass('btn-danger');
+                            $("a[data-id='" + id + "']").children().removeClass('fa-toggle-off');
+                            //add class
+                            $("a[data-id='" + id + "']").addClass('btn-success');
+                            $("a[data-id='" + id + "']").children().addClass('fa-toggle-on');
+
+                        }
+                        if (obj.Message == "2")
+                        {
+                            // remove class
+                            $("a[data-id='" + id + "']").removeClass('btn-success');
+                            $("a[data-id='" + id + "']").children().removeClass('fa-toggle-on');
+                            //add class
+                            $("a[data-id='" + id + "']").addClass('btn-danger');
+                            $("a[data-id='" + id + "']").children().addClass('fa-toggle-off');
+                        }
+                        Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                    //$("tr[data-id='" + id + "']").remove();
+
+                }
+            })
+
+        });
+
+    </script>
+}
 
 <!-- Content Header (Page header) -->
 <section class="content-header">
@@ -20,8 +121,7 @@
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
                     <li class="breadcrumb-item active">Blank Page</li>
                 </ol-->
-                <a href="@Url.Action("Create","Products")" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Thêm</a>
-                <a href="@Url.Action("Trash","Products")" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Thùng rác</a>
+                <a href="@Url.Action("Trash","Users")" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Thùng rác</a>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -65,22 +165,30 @@
                             <td>
                                 <img src="@item.AvatarUrl" alt="Hình ảnh" class="rounded-circle border w-50" />
                             </td>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 @item.Fullname
                             </td>
 
-                            <td>
-                                    @item.Gender
+                            <td style="vertical-align: middle;">
+                                @item.Gender
                             </td>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 @item.Email
                             </td>
-                            <td>
-                                Look
+                            <td style="vertical-align: middle;">
+                                @if (item.Status == 1)
+                                {
+                                    <a class="btn btn-sm btn-success status" data-id="@item.Id"><i class="fas fa-toggle-on"></i></a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-sm btn-danger status" data-id="@item.Id"><i class="fas fa-toggle-off"></i></a>
+                                }
+
                             </td>
-                            <td>
-                                <a href="@Url.Action("Details","Products", new { id = item.Id })" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Chi tiết</a>
-                                <a href="@Url.Action("Edit","Products", new { id = item.Id })" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Sữa</a>
+                            <td style="vertical-align: middle;">
+                                <a href="@Url.Action("Details","Users", new { id = item.Id })" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Chi tiết</a>
+                                <a href="@Url.Action("Edit","Users", new { id = item.Id })" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Sữa</a>
                                 <button class="btn btn-sm btn-danger btnDelete" data-id="@item.Id"><i class="fas fa-trash"></i> Xóa</button>
 
                             </td>
@@ -98,14 +206,3 @@
 
 </section>
 <!-- /.content -->
-
-
-
-
-
-
-
-
-
-
-

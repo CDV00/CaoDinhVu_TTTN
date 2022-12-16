@@ -11,11 +11,12 @@ namespace CaoDinhVu.BLL.Services
     public interface IProductOptionService
     {
         Task<BaseResponse> AddAsync(ProductOptionRequest productOptionRequest);
+        Task<BaseResponse> ChangeStatus(Guid id);
         Task<BaseResponse> Delete(Guid id);
         Task<ProductOptionCartItem> GetByProductColor(Guid productColorId, Guid optionId);
         List<Guid> GetIdByProductId(Guid productId);
         Task<List<OptionDTO>> getOptionbyProductcolorId(Guid productColorId);
         Task<decimal> GetPrice(Guid productColorId, Guid optionId);
-        Task<BaseResponse> Update(ProductOptionRequest productOptionRequest);
+        Task<BaseResponse> UpdateAsync(ProductOptionRequest productOptionRequest);
     }
 }

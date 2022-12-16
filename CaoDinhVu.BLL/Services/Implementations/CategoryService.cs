@@ -145,7 +145,14 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try
             {
                 var category = await _categoryRepository.GetByIdAsync(id);
-                category.Status = 0;
+                if(category.Status == 0)
+                {
+                    category.Status = 2;
+                }
+                else
+                {
+                    category.Status = 0;
+                }
 
                 await _unitOfWork.SaveChangesAsync();
                 return new BaseResponse(true, "xóa mềm thành công");
@@ -159,13 +166,9 @@ namespace CaoDinhVu.BLL.Services.Implementations
         {
             try
             {
-                var product = await _categoryRepository.GetByIdAsync(id);
-                product.IsDelete = true;
-                var update =await _categoryRepository.Update(product);
-                if (!update)
-                    return new BaseResponse(true, "Delete sản phẩm thất bại");
+                var category = await _categoryRepository.GetByIdAsync(id);
+                category.IsDelete = true;
                 await _unitOfWork.SaveChangesAsync();
-                //var productColor = _productColorService.GetIdByProductId(id);
                 return new BaseResponse(true, "Delete thành công");
             }
             catch (Exception ex)

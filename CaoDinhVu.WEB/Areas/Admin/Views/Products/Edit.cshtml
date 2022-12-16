@@ -5,88 +5,948 @@
     Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
 }
 
-<h1>Edit</h1>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+<style>
+        @@keyframes spin {
+            0% {
+                transform: rotate(0);
+            }
 
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Thumbnails" class="control-label"></label>
-                <input asp-for="Thumbnails" class="form-control" />
-                <span asp-validation-for="Thumbnails" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Slug" class="control-label"></label>
-                <input asp-for="Slug" class="form-control" />
-                <span asp-validation-for="Slug" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BrandId" class="control-label"></label>
-                <select asp-for="BrandId" class="form-control" asp-items="ViewBag.BrandId"></select>
-                <span asp-validation-for="BrandId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="CreateAt" class="control-label"></label>
-                <input asp-for="CreateAt" class="form-control" />
-                <span asp-validation-for="CreateAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreateBy" class="control-label"></label>
-                <input asp-for="CreateBy" class="form-control" />
-                <span asp-validation-for="CreateBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdateAt" class="control-label"></label>
-                <input asp-for="UpdateAt" class="form-control" />
-                <span asp-validation-for="UpdateAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdateBy" class="control-label"></label>
-                <input asp-for="UpdateBy" class="form-control" />
-                <span asp-validation-for="UpdateBy" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1003;
+            @*background: #ffffff;*@
+            overflow: hidden;
+        }
+
+            .spinner div:first-child {
+                display: block;
+                position: relative;
+                left: 50%;
+                top: 50%;
+                width: 150px;
+                height: 150px;
+                margin: -75px 0 0 -75px;
+                border-radius: 50%;
+                box-shadow: 0 3px 3px 0 rgba(255, 56, 106, 1);
+                transform: translate3d(0, 0, 0);
+                animation: spin 2s linear infinite;
+            }
+
+                .spinner div:first-child:after,
+                .spinner div:first-child:before {
+                    content: "";
+                    position: absolute;
+                    border-radius: 50%;
+                }
+
+                .spinner div:first-child:before {
+                    top: 5px;
+                    left: 5px;
+                    right: 5px;
+                    bottom: 5px;
+                    box-shadow: 0 3px 3px 0 rgb(255, 228, 32);
+                    -webkit-animation: spin 3s linear infinite;
+                    animation: spin 3s linear infinite;
+                }
+
+                .spinner div:first-child:after {
+                    top: 15px;
+                    left: 15px;
+                    right: 15px;
+                    bottom: 15px;
+                    box-shadow: 0 3px 3px 0 rgba(61, 175, 255, 1);
+                    animation: spin 1.5s linear infinite;
+                }
+    .hover-product:hover .bg-product {
+        display: block;
+    }
+
+    .bg-product {
+        display: none;
+        position: absolute;
+        top: 0;
+        background-color: rgb(0,0,0,.1);
+        width: 100%;
+        height: 100%;
+    }
+
+    .btn-del-product {
+        position: absolute;
+        bottom: 8px;
+        right: 50%;
+        transform: translateX(50%);
+        background-color: #ffc8c88a;
+    }
+</style>
+@using (Html.BeginForm("EditPost", "Products", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.Id)
+    <div class="d-flex justify-content-end mt-5">
+        <a href="~/quan-ly-san-pham" class="btn btn-secondary mr-3"><i class="fas fa-chevron-left"></i> thoát</a>
+        <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Lưu[Thay đổi]</button>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <ul class="nav nav-pills mt-3" role="tablist">
+        <li class="nav-item" style="width: 50%">
+            <a class="nav-link border btn btn-outline-info active" data-toggle="tab" href="#thongtin">Thông tin sản phẩm</a>
+        </li>
+        <li class="nav-item" style="width: 50%">
+            <a class="nav-link border btn btn-outline-info text-120" data-toggle="tab" href="#chiTiet">Item sản phẩm</a>
+        </li>
+        @*<li class="nav-item" style="width: 30%">
+                <a class="nav-link" data-toggle="tab" href="#menu1">Sản phẩm</a>
+            </li>*@
+    </ul>
+    <div id="content" class="tab-content">
+
+        <div id="thongtin" class=" tab-pane active mt-5">
+
+            <div class="row">
+                <div class="col-6 mx-5">
+                    <dl class="row">
+                        <dt class="col-sm-3 col-md-3">
+                            Tên sản phẩm
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </dd>
+                        <dt class="col-sm-3 col-md-3">
+                            Hình sản phẩm
+                        </dt>
+                        <dd class="col-sm-9 col-md-9  border-bottom">
+                            <img src="@Html.DisplayFor(model => model.Thumbnails)" alt="Hình ảnh" style="height:200px" id="thumbnail-IMG" class="img-thumbnail" />
+
+                            <input data-id="@Model.Id" id="Thumbnails" name="Image" type="file" />
+
+                            @*<img src="https://i.imgur.com/U7afLiO.png" id="img" height="200px">*@
+                            @*<br />
+            <input type="file" id="file">*@
+                            <!--<img src="https://i.imgur.com/U7afLiO.png" id="img" height="200">
+        <br />
+        <input type="file" id="file">
+        <br />
+        <strong>
+            <p id="url"></p>
+        </strong>
+        <iframe src="~/Page/imgupload.html">~/Page/imgupload.html" title="W3Schools Free Online Web Tutorials">
+        </iframe>-->
+                            @*<div>
+                <input type="file" name="img" id="img">
+                <button class="submit">OK</button>
+            </div>*@
+
+                            @*<button class="float-right btn btn-success mr-3">Thêm Ảnh</button>*@
+                        </dd>
+                        <dt class="col-sm-3 col-md-3">
+                            Tiêu đề
+                        </dt>
+                        <dd class="col-sm-9 col-md-9 border-bottom">
+                            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                        </dd>
+                        <dt class="col-sm-3 col-md-3">
+                            Thuộc danh mục:
+                        </dt>
+                        <dd class="col-sm-9 col-md-9 border-bottom">
+                            @Html.DropDownListFor(model => model.CategoryId, (SelectList)ViewBag.listCat, "chọn danh mục", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                        </dd>
+                        <dt class="col-sm-3 col-md-3">
+                            Thuộc thương hiệu:
+                        </dt>
+                        <dd class="col-sm-9 col-md-9 border-bottom">
+                            @Html.DropDownListFor(model => model.BrandId, (SelectList)ViewBag.listBrand, "chọn thương hiệu", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
+                        </dd>
+                        <dt class="col-sm-3 col-md-3">
+                            Trạng thái:
+                        </dt>
+                        <dd class="col-sm-9 col-md-9 border-bottom">
+                            @Html.DropDownListFor(model => model.Status, new[] { new SelectListItem { Text = "Ẩn sản phẩm", Value = "2" }, new SelectListItem { Text = "Xuất bản", Value = "1" } }, "Trạng thái", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </dd>
+
+                    </dl>
+                </div>
+                <div class="col-5">
+                    <dl class="row">
+                        <dt class="col-sm-3 col-md-3">
+                            Màn Hình:
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.Screen, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Screen, "", new { @class = "text-danger" })
+                        </dd>
+                        <dt class="col-sm-3 col-md-3">
+                            Camera:
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.Camera, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Camera, "", new { @class = "text-danger" })
+                        </dd>
+
+                        <dt class="col-sm-3 col-md-3">
+                            Hệ Điều hành:
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.OperatingSystem, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.OperatingSystem, "", new { @class = "text-danger" })
+                        </dd>
+
+                        <dt class="col-sm-3 col-md-3">
+                            Chip xử lý:
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.CPU, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.CPU, "", new { @class = "text-danger" })
+                        </dd>
+
+                        <dt class="col-sm-3 col-md-3">
+                            Bộ Nhớ
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.ROM, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ROM, "", new { @class = "text-danger" })
+                        </dd>
+
+                        <dt class="col-sm-3 col-md-3">
+                            RAM
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.RAM, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.RAM, "", new { @class = "text-danger" })
+                        </dd>
+
+                        <dt class="col-sm-3 col-md-3">
+                            Kết nối
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.Connection, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Connection, "", new { @class = "text-danger" })
+                        </dd>
+
+                        <dt class="col-sm-3 col-md-3">
+                            Pin
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.Battery, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Battery, "", new { @class = "text-danger" })
+                        </dd>
+
+                        <dt class="col-sm-3 col-md-3">
+                            Sạc
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.Charger, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Charger, "", new { @class = "text-danger" })
+                        </dd>
+
+                        <dt class="col-sm-3 col-md-3">
+                            Thông tin chung
+                        </dt>
+                        <dd class="col-sm-9 border-bottom">
+                            @Html.EditorFor(model => model.GeneralInformation, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.GeneralInformation, "", new { @class = "text-danger" })
+                        </dd>
+
+
+
+                    </dl>
+
+
+
+                </div>
+                <div class="col-12">
+                    <dl class="row">
+
+                        <dt class="col-sm-2 col-md-1 mx-5">
+                            Mô tả:
+                        </dt>
+                        <dd class="col-sm-9 col-md-9 border-bottom w-100">
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, @id = "txtDescription" })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </dd>
+                    </dl>
+                   
+                </div>
+            </div>
+
+        </div>
+
+
+        <div id="chiTiet" class="container tab-pane  mt-5">
+            <div class="float-right">
+                @*<b>Ảnh sản phẩm</b>
+                    <input class="float-right" name="ImageItem" type="file" />
+                    <button id="AddImageItem" data-id="@Model.Id" class="float-right btn btn-success mr-3">Thêm Ảnh</button>*@
+
+
+                <strong>Thêm mới ảnh:</strong>
+                <input class="btn btn-success" name="listImage" asp-for="FileUpload.FormFiles" type="file" multiple>
+
+
+
+
+
+            </div>
+            <div class="h-100 w-100" style="height: 220px; padding: 15px; overflow-x: auto; ">
+
+                <ul id="img-item" style="display: flex; padding-left: 0; width: max-content; list-style: none;">
+                    @foreach (var item in Model.Images)
+                    {
+                        <li style="position: relative" class="hover-product mr-3">
+                            <img src="@item.Imglink" alt="Hình ảnh" style="height:200px; width:200px;" class="img-thumbnail" />
+                            <div class="bg-product">
+                                <button type="button" data-id="@item.Id" class="btn btn-del-product overlay" data-toggle="tooltip" data-placement="right" title="xóa ảnh">
+                                    <i class="fas fa-trash text-danger"></i>
+                                </button>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            @{
+                if (Model.ProductColors.Count > 0)
+                {
+                    @foreach (var item in Model.ProductColors)
+                    {
+
+                        <article class="card order-item mb-4 mt-5">
+                            <header class="card-header">
+                                <strong class="d-inline-block mr-3">Color: @item.Color.Name</strong>
+
+                                <label class="title mb-0 mx-3">Trạng thái:</label>
+
+                                @{
+                                    if (item.Status == 1)
+                                    {
+                                        <a class="statusColor" data-id="@item.Id"><input  data-onstyle="success" data-offstyle="danger" data-on="Ẩn" data-off="On" type="checkbox" checked data-toggle="toggle"></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="statusColor" data-id="@item.Id"><input  data-onstyle="success" data-offstyle="danger"  data-on="Ẩn" data-off="On" type="checkbox" data-toggle="toggle"></a>
+                                    }
+                                }
+
+                                <a href="#" data-id="@item.Id" class="btn btn-outline-secondary float-lg-right removeColor"><i class="fas fa-trash text-danger"></i></a>
+                            </header>
+
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        @foreach (var productoption in Model.ProductOptions.Where(p => p.ProductColorId == item.Id))
+                                        {
+                                            <tr data-id="@productoption.OptionId">
+                                                <td>
+                                                    <label>Chọn option</label><br />
+                                                    <select class="option" style="width:150px; height:24px;">
+                                                        @foreach (var option in ViewBag.Option)
+                                                        {
+                                                            if (option.Id == productoption.OptionId)
+                                                            {
+                                                                <option selected class="text-center" value="@option.Id">@(option.RAM)/@(option.ROM)</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option class="text-center" value="@option.Id">@(option.RAM)/@(option.ROM)</option>
+                                                            }
+                                                        }
+
+                                                    </select>
+                                                </td>
+                                                <td class="py-4">
+                                                    <label class="title mb-0">Giá bán</label><br />
+                                                    <input class="price" type="text" value="@productoption.Price" />
+                                                </td>
+                                                <td class="py-4">
+                                                    <label class="title mb-0">Số lượng trong kho </label><br />
+                                                    <input class="soluong" type="text" value="@productoption.Number" />
+                                                </td>
+                                                <td class="py-4">
+                                                    <label class="title mb-0">Trạng thái</label><br />
+
+                                                    @{
+                                                        if (productoption.Status == 1)
+                                                        {
+                                                            <div class="statusOption" data-id="@productoption.Id"><input  data-onstyle="success" data-offstyle="danger" data-on="Ẩn" data-off="On" type="checkbox" checked data-toggle="toggle"></div>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="statusOption" data-id="@productoption.Id"><input  data-onstyle="success" data-offstyle="danger" data-on="Ẩn" data-off="On" type="checkbox" data-toggle="toggle"></div>
+                                                        }
+                                                    }
+
+
+                                                </td>
+                                                <td class="py-5">
+                                                    <a href="#" data-id="@productoption.Id" class="btn btn-outline-secondary saveOption"><i class="fas fa-save text-success"></i></a>
+                                                    <a href="#" data-id="@productoption.Id" class="btn btn-outline-info deleteOption"><i class="fas fa-trash text-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+
+
+
+                            </div> <!-- table-responsive .end// -->
+                            @*<div class="btn btn-primary">Thêm product Option</div>
+                                <table class="mt-4 bg-light" style="background:">
+                                <tr>
+                                    <td>
+                                        <label>RAM</label>
+                                        <input type="text" value="productoption.Option.RAM" />
+                                        <br />
+                                        <label>ROM</label>
+                                        <input type="text" value="productoption.Option.ROM" />
+
+                                    </td>
+                                    <td class="py-4">
+                                        <label class="title mb-0">Giá bán</label>
+                                        <input type="text" value="productoption.Price" />
+                                    </td>
+                                    <td class="py-4">
+                                        <label class="title mb-0">Số lượng trong kho </label>
+                                        <input type="text" value="productoption.Number" />
+                                    </td>
+                                    <td class="py-4">
+                                        <label class="title mb-0">Trạng thái</label>
+                                        <a class="btn btn-sm btn-success status" data-id="productoption.Id"><i class="fas fa-toggle-on"></i></a>
+                                    </td>
+                                    <td class="py-4">
+                                        <a href="#" class="btn btn-outline-secondary"><i class="fas fa-save text-success"></i></a>
+                                    </td>
+                                </tr>
+                                </table>*@
+                        </article> <!-- card order-item .// -->
+
+                    }
+
+                }
+            }
+
+
+            <a class="btn btn-success" href="~/Admin/Products/AddProductItem?productId=@Model.Id">Thêm Sản phẩm Item</a>
+
+
+
+        </div>
+    </div>
+}
+
+@section footer{
+    <script src="~/dist/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('txtDescription');
+    </script>
+
+    @*<link href="https://cdn.jsdelivr.net/npm/@@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @*const file = document.getElementById("file")
+        const img = document.getElementById("img")
+        const url = document.getElementById("url")
+        file.addEventListener("change", ev => {
+            const formdata = new FormData()
+            formdata.append("image", ev.target.files[0])
+            aj("https://api.imgur.com/3/image/", {
+                method: "post",
+                headers: {
+                    Authorization: "Client-ID 82572ef78c47a38"
+                },
+                body: formdata
+            }).then(data => data.json()).then(data => {
+                img.src = data.data.link
+                url.innerText = data.data.link
+            })
+        });*@
+
+        @*$('document').ready(function () {
+            $('#file').on('change', function (ev) {
+                var $files = ev.target.files[0];
+                var apiUrl = 'https://api.imgur.com/3/image';
+                var apiKey = '82572ef78c47a38'; // Thay bằng Client ID của ae
+
+
+
+                $.ajax({
+                    url: 'https://api.imgur.com/3/image',
+                    headers: {
+                        'Authorization': 'Client-ID 82572ef78c47a38'
+                    },
+                    type: 'POST',
+                    data: {
+                        'image': $files
+                    },
+                    success: function (data, status) {
+                        console.log("Data: " + data.data.link);
+                        console.log(data.data.link)
+                    }
+                });
+
+
+
+
+            });
+        });*@
+
+
+
+
+
+
+
+
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            //save Change Product option
+            $('.saveOption').click(function () {
+                debugger;
+                //
+                $("#content").append(
+                    "<div class='spinner'></div>"
+                );
+                $(".spinner").append(
+
+                    "<div class='blob blob-0'></div>",
+                );
+                //
+                var tr = $(this).parent().parent();
+                var productOption = {
+                    "Id": $(this).data("id"),
+                    "Number": tr.children("td").children(".soluong").val(),
+                    "OptionId": tr.children("td").children('.option').find(":selected").val(),
+                    "Price": tr.children("td").children(".price").val()
+                };
+                $.ajax({
+                    url: '/Admin/Products/UpdateProductOption',
+                    async: true,
+                    type: "post",
+                    contentType: "application/json",
+                    data: JSON.stringify(productOption),
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        }
+
+
+
+                        $(".spinner").remove();
+
+                    }
+                })
+            });
+            //delete Product option
+            $('.deleteOption').click(function () {
+                //
+                $("#content").append(
+                    "<div class='spinner'></div>"
+                );
+                $(".spinner").append(
+
+                    "<div class='blob blob-0'></div>",
+                );
+                //
+                var tr = $(this).parent().parent();
+
+                $.ajax({
+                    url: '/Admin/Products/DeleteProductOption',
+                    data: { Id: $(this).data('id') },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+                            tr.remove();
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+
+
+
+                        $(".spinner").remove();
+
+                    }
+                })
+            });
+            //Change status Product option
+            $('.statusOption').click(function () {
+                //
+                debugger;
+                $("#content").append(
+                    "<div class='spinner'></div>"
+                );
+                $(".spinner").append(
+
+                    "<div class='blob blob-0'></div>",
+                );
+
+                $.ajax({
+                    url: '/Admin/Products/ChangeStatusProductOption',
+                    data: { Id: $(this).data('id') },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+
+                        $(".spinner").remove();
+
+                    }
+                })
+            });
+            //delete Product color
+            $('.removeColor').click(function () {
+                //
+                $("#content").append(
+                    "<div class='spinner'></div>"
+                );
+                $(".spinner").append(
+
+                    "<div class='blob blob-0'></div>",
+                );
+                //
+                var article = $(this).parent().parent();
+
+                $.ajax({
+                    url: '/Admin/Products/DeleteProductColor',
+                    data: { Id: $(this).data('id') },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+                            article.remove();
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+
+
+
+                        $(".spinner").remove();
+
+                    }
+                })
+            });
+            //Change status Product color
+            $('.statusColor').click(function () {
+                //
+                $("#content").append(
+                    "<div class='spinner'></div>"
+                );
+                $(".spinner").append(
+
+                    "<div class='blob blob-0'></div>",
+                );
+
+                $.ajax({
+                    url: '/Admin/Products/ChangeStatusProductColor',
+                    data: { Id: $(this).data('id') },
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+
+                        $(".spinner").remove();
+
+                    }
+                })
+            });
+
+            ////
+
+
+
+            //change Image Thumbnails
+            $('#Thumbnails').on('change', function (event) {
+                
+                var files = event.target.files;   
+                if (files != null) {
+
+                    $("#thumbnail-IMG").remove();
+                }
+
+                @*$.ajax({
+                    url: '/Admin/Products/AddImageThumbnails',
+                    data: { id: $(this).data('id'), file: formData },
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            $("#thumbnail-IMG").attr('src', imgold);
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    }
+                })*@
+
+
+
+
+
+                @*$.ajax({
+                    url: '/Admin/Products/AddImageThumbnails',
+                    data: { id: $(this).data('id'), file: formData },
+                    processData: false,
+                    contentType: false,
+                    type: 'POST',
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            $("#thumbnail-IMG").attr('src', imgold);
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    }
+                })*@
+
+
+            });
+
+
+
+            //Add Image item
+            $('#AddImageItem').click(function () {
+                //
+                $("#content").append(
+                    "<div class='spinner'></div>"
+                );
+                $(".spinner").append(
+
+                    "<div class='blob blob-0'></div>",
+                );
+
+                $.ajax({
+                    url: '/Admin/Products/AddImageItem',
+                    data: { id: $(this).data('id')},
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+
+                            $("#img-item").append(
+                                `<li style="position: relative" class="hover-product mr-3">
+                                    <img src="${obj.Imglink}" alt="Hình ảnh" style="height:200px; width:200px;" class="img-thumbnail" />
+                                    <div class="bg-product">
+                                        <button type="button" data-id="${obj.Id}" class="btn btn-del-product" data-toggle="tooltip" data-placement="right" title="xóa ảnh">
+                                            <i class="fas fa-trash text-danger"></i>
+                                        </button>
+                                    </div>
+                                </li>`
+                            );
+
+
+
+
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+
+                        $(".spinner").remove();
+
+                    }
+                })
+            });
+            //Remove Image item
+            $('.btn-del-product').click(function () {
+                //
+                $("#content").append(
+                    "<div class='spinner'></div>"
+                );
+                $(".spinner").append(
+
+                    "<div class='blob blob-0'></div>",
+                );
+                var li = $(this).parent().parent();
+                $.ajax({
+                    url: '/Admin/Products/DeleteImageItem',
+                    data: { id: $(this).data('id')},
+                    dataType: 'json',
+                    type: 'POST',
+                    success: function (res) {
+                        var obj = JSON.parse(res);
+                        if (obj.IsSuccess == true) {
+                            li.remove();
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'success',
+                                title: 'Hoàn Thành',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                position: 'top-end',
+                                icon: 'error',
+                                title: 'Thất bại',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+
+                        $(".spinner").remove();
+
+                    }
+                })
+            });
+
+        });
+
+
+    </script>
+
+}
+
 

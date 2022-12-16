@@ -150,14 +150,14 @@
                     @foreach (var item in Model.OrderByDescending(m=>m.FirstName))
                     {
                     <tr data-id='@item.Id'>
-                        <td>
+                        <td style="vertical-align: middle;">
                             @(String.Format("{0:MM/dd/yy}", item.CreateAt))
                         </td>
-                        <td>
+                        <td style="vertical-align: middle;">
                             @item.FirstName
                         </td>
 
-                        <td style="width:350px">
+                        <td style="vertical-align: middle;" style="width:350px">
                             @item.Address
                         </td>
 
@@ -174,7 +174,7 @@
                             }
                             else if (item.StatusOrder == 2)
                             {
-                                <td class="stt" data-id="@item.Id">
+                                <td style="vertical-align: middle;" class="stt" data-id="@item.Id">
                                     <select name="status" class="status" data-id="@item.Id">
                                         <option selected value=2>Đang giao</option>
                                         <option value=3>Đã giao</option>
@@ -183,11 +183,10 @@
                             }
                             else
                             {
-                                <td>Đã giao <i class="fa-solid fa-circle-check text-success"></i></td>
+                                <td style="vertical-align: middle;">Đã giao <i class="fa-solid fa-circle-check text-success"></i></td>
                             } }
-                        <td>
+                        <td style="vertical-align: middle;">
                             <a href="@Url.Action("Details","Orders", new { id = item.Id })" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Chi tiết</a>
-                            <a href="@Url.Action("Edit","Orders", new { id = item.Id })" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Sữa</a>
                             <button class="btn btn-sm btn-danger btnDelete" data-id="@item.Id"><i class="fas fa-trash"></i> Xóa</button>
 
                         </td>

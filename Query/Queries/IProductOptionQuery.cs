@@ -11,6 +11,7 @@ namespace Query.Queries
         IProductOptionQuery FilterByProductColorId(Guid id);
         IProductOptionQuery FilterOption(Guid id);
         List<Guid> FilterProductId(Guid productId);
+        IProductOptionQuery FilterStatusActive();
         IProductOptionQuery IncludeColor();
         IProductOptionQuery IncludeOption();
         IProductOptionQuery IncludeProduct();

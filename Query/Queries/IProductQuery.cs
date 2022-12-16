@@ -9,7 +9,7 @@ namespace Query.Queries
     public interface IProductQuery : IQuery<Product>
     {
         IProductQuery FilterByColorId(Guid? colorId);
-        IProductQuery FilterByKeyword(string keyWork);
+        IProductQuery FilterByKeyword(string? keyWork = null);
         IProductQuery FilterByOptionId(Guid? optionId);
         IProductQuery FilterBrandId(Guid? id);
         IProductQuery FilterCategoryId(Guid? id);
@@ -20,8 +20,8 @@ namespace Query.Queries
         IProductQuery IncludeDetail();
         IProductQuery IncludeImage();
         IProductQuery IncludeOption();
-        IProductQuery IncludeProductColor();
-        IProductQuery IncludeProductOption();
+        IProductQuery IncludeProductColor(int status);
+        IProductQuery IncludeProductOption(int status);
         IProductQuery FilterByPriceMax(decimal? price);
         IProductQuery FilterByPriceMin(decimal? price);
         IProductQuery FilterStatus(int status);

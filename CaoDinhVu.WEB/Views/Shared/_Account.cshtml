@@ -8,16 +8,16 @@
             <i class="fa fa-user"></i>
         </div>
         @*<small class="text"> Đăng nhập </small>*@
-        <b style="max-width:none !important;" class="text mx-auto" >Cao Dinh Vu</b>
+        <b style="max-width:none !important;" class="text mx-auto" >Đăng Nhập</b>
     </a>
     }
     else
     {
-        <a href="~/tong-quat-ve-toi/" class="widget-view">
-            <div class="icon-area mx-auto">
+        <a  style="width:120px" href="~/tong-quat-ve-toi/" class="widget-view">
+            <div class="icon-area">
                 <img src="@Model.AvatarUrl" class="rounded-circle" alt="A girl" width="35">
             </div>
-            <b style="width:120px" class="text mx-auto">@Model.Fullname</b>
+            <b style="max-width:none !important;" class="text mx-auto">@Model.Fullname</b>
         </a>
     }
 

@@ -1,0 +1,181 @@
+﻿@model IEnumerable<Entities.DTOs.BrandDTO>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
+}
+
+@section header{
+    <link href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+@section footer{
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable();
+        });
+        //xóa danh mục
+        $('.btnReDelete').off('click').on('click', function () {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Xác nhận?',
+                text: "Bạn có muốn xóa thương hiệu?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có!',
+                cancelButtonText: 'Không!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var id = $(this).data('id');
+                    $.ajax({
+                        url: '/Admin/Brand/DeleteSoft',
+                        data: { categoryId: $(this).data('id') },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+
+                            $("tr[data-id='" + id + "']").remove();
+                            //thông báo
+                            swalWithBootstrapButtons.fire(
+                                'Thành công!',
+                                'Bạn đã xóa thương hiệu thành công.',
+                                'success'
+                            );
+                            @*if (res.status == true) {
+                                window.location.href = '/gio-hang';
+                            }*@
+                        }
+                    })
+
+                }
+            })
+        })
+        //xóa danh mục
+        $('.btnDelete').off('click').on('click', function () {
+
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: 'Xác nhận?',
+                text: "Bạn có muốn xóa thương hiệu?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Có!',
+                cancelButtonText: 'Không!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var id = $(this).data('id');
+                    $.ajax({
+                        url: '/Admin/Brand/Delete',
+                        data: { id: $(this).data('id') },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function (res) {
+
+                            $("tr[data-id='" + id + "']").remove();
+                            //thông báo
+                            swalWithBootstrapButtons.fire(
+                                'Thành công!',
+                                'Bạn đã xóa thương hiệu thành công.',
+                                'success'
+                            );
+                            @*if (res.status == true) {
+                                window.location.href = '/gio-hang';
+                            }*@
+                        }
+                    })
+
+                }
+            })
+        })
+        
+    </script>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <strong class="text-danger text-uppercase">Quản lý Thương hiệu</strong>
+                @*<h1>@Session["Test"]</h1>*@
+            </div>
+            <div class="col-sm-6 text-right">
+                <!--ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">Blank Page</li>
+                </ol-->
+                <a href="@Url.Action("Index", "Brand")" class="btn btn-info"><i class="fas fa-chevron-left"></i> Quay lại</a>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+
+        <div class="card-body my-2">
+            @*@Html.Partial("Message")*@
+            <table class="table table-bordered table-striped" id="myTable">
+                <thead>
+                    <tr class="text-center">
+                        <th style="width:100px">
+                            Hình danh mục
+                        </th>
+                        <th>
+                            Tên danh mục
+                        </th>
+                        <th>Change</th>
+
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var item in Model.OrderBy(c => c.Orders))
+                    {
+                        <tr data-id='@item.Id'>
+                            <td >
+                                <img src="@item.Image" alt="Hình ảnh" class="img-fluid" />
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @item.Name
+                            </td>
+
+                            <td style="vertical-align: middle;">
+                                <button class="btn btn-sm btn-success btnReDelete" data-id="@item.Id"><i class="fa-solid fa-arrow-rotate-left"></i> Phục Hồi</button>
+                                <button class="btn btn-sm btn-danger btnDelete" data-id="@item.Id"><i class="fas fa-trash"></i> Xóa</button>
+
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->

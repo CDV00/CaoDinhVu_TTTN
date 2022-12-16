@@ -64,12 +64,12 @@
 <script>
     $(document).ready(function () {
         $("#okFilter").off('click').on('click', function (e) {
-            var brand = $('input[name="Brand"]').val();
-            var category = $('input[name="Category"]').val();
-            var color = $('input[name="Color"]').val();
-            var option = $('input[name="Option"]').val();
-            var priceMin = $('input[name="PriceMin"]').val();
-            var priceMax = $('input[name="PriceMax"]').val();
+            var brand = $('#brandId').val();
+            var category = $('#category').val();
+            var color = $('#Color').val();
+            var option = $('#Option').val();
+            var priceMin = $('#priceMin').val();
+            var priceMax = $('#priceMax').val();
             //window.location.href = "/search/Fiter?keyWork=" + valueSearch;
             $("#rederBody").append(
                 "<div class='spinner'></div>"
@@ -92,12 +92,8 @@
                     "priceMin": priceMin,
                     "priceMax": priceMax
                 },
-                //data: { "colortId": selected,"productId": productId },
                 dataType: "json",
-                //contentType: "application/json; charset=utf-8",
                 success: function (data) {
-
-                    //$("#rederBody").empty();
                     $("#rederBody").load("/Search/_Filter");
                 },
                 error: function () {
@@ -110,7 +106,8 @@
 </script>
 
 
-<div class="col-md-2">Filter by</div> <!-- col.// -->
+
+<div class="col-md-2">BỘ LỌC TÌM KIẾM</div> <!-- col.// -->
 <div class="col-md-10">
     <ul class="list-inline">
         <li class="list-inline-item mr-3 dropdown">
@@ -119,10 +116,18 @@
                 @foreach (var item in Model.listBrands)
                 {
                     <label class="form-check">
-                        <input value="@item.Id" type="radio" name="Brand" class="form-check-input"> @item.Name
+                        <input value="@item.Id" type="radio" name="Brand" @*class="form-check-input"*@> @item.Name
                     </label>
                 }
             </div> <!-- dropdown-menu.// -->
+            <input hidden id="brandId" type="text" value="" />
+            <script>
+                $('input[type=radio][name=Brand]').on('change', function () {
+                    var brandId = this.value;
+                    $("#brandId").val(brandId);
+                    
+                });
+            </script>
         </li>
         <li class="list-inline-item mr-3 dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Loại sản phẩm</a>
@@ -130,10 +135,17 @@
                 @foreach (var item in Model.listCategory)
                 {
                     <label class="form-check">
-                        <input value="@item.Id" type="radio" name="Category" class="form-check-input"> @item.Name
+                        <input value="@item.Id" type="radio" name="Category" @*class="form-check-input"*@> @item.Name
                     </label>
                 }
             </div> <!-- dropdown-menu.// -->
+            <input hidden id="category" type="text" value="" />
+            <script>
+                $('input[type=radio][name=Category]').on('change', function () {
+                    var categoryId = this.value;
+                    $("#category").val(categoryId);
+                });
+            </script>
         </li>
         <li class="list-inline-item mr-3 dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Màu sắc</a>
@@ -141,10 +153,17 @@
                 @foreach (var item in Model.listColors)
                 {
                     <label class="form-check">
-                        <input value="@item.Id" type="radio" name="Color" class="form-check-input"> @item.Name
+                        <input value="@item.Id" type="radio" name="Color" @*class="form-check-input"*@> @item.Name
                     </label>
                 }
             </div>
+            <input hidden id="Color" type="text" value="" />
+            <script>
+                $('input[type=radio][name=Color]').on('change', function () {
+                    var Color = this.value;
+                    $("#Option").val(Color);
+                });
+            </script>
         </li>
         <li class="list-inline-item mr-3 dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Phiên bản</a>
@@ -152,17 +171,24 @@
                 @foreach (var item in Model.listOptions)
                 {
                     <label class="form-check">
-                        <input value="@item.Id" type="radio" name="Option" class="form-check-input"> @item.RAM/@item.ROM
+                        <input value="@item.Id" type="radio" name="Option" @*class="form-check-input"*@> @item.RAM/@item.ROM
                     </label>
                 }
             </div>
+            <input hidden id="Option" type="text" value="" />
+            <script>
+                $('input[type=radio][name=Option]').on('change', function () {
+                    var OptionId = this.value;
+                    $("#Option").val(OptionId);
+                });
+            </script>
         </li>
         <li class="list-inline-item mr-3">
             <div class="form-inline">
                 <label class="mr-2">Giá</label>
-                <input class="form-control form-control-sm" name="PriceMin" placeholder="Min" type="number">
+                <input class="form-control form-control-sm" name="PriceMin" id="priceMin" placeholder="Min" type="number">
                 <span class="px-2"> - </span>
-                <input class="form-control form-control-sm" name="PriceMax" placeholder="Max" type="number">
+                <input class="form-control form-control-sm" name="PriceMax" id="priceMax" placeholder="Max" type="number">
                 <button id="okFilter" class="btn btn-sm btn-light ml-2">Ok</button>
             </div>
         </li>

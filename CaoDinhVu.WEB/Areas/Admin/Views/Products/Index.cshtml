@@ -29,7 +29,7 @@
 
             swalWithBootstrapButtons.fire({
                 title: 'Xác nhận?',
-                text: "Bạn có muốn xóa danh mục?",
+                text: "Bạn có muốn xóa sản phẩm?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Có!',
@@ -49,7 +49,7 @@
                             //thông báo
                             swalWithBootstrapButtons.fire(
                                 'Thành công!',
-                                'Bạn đã xóa danh mục thành công.',
+                                'Bạn đã xóa sane phẩm thành công.',
                                 'success'
                             );
                             @*if (res.status == true) {
@@ -109,10 +109,6 @@
     </script>
 }
 
-
-
-<h1>Index</h1>
-
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -165,21 +161,17 @@
                     @foreach (var item in Model.Where(c => c.Status != 0))
                     {
                         <tr data-id='@item.Id'>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 <input type="checkbox" name="checkId" value="@item" />
                             </td>
                             <td>
                                 <img src="@item.Thumbnails" alt="Hình ảnh" class="img-fluid" />
                             </td>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 @item.Name
                             </td>
 
-                            @*<td>
-                                    @(String.Format("{0:d}", item.CreatedAt))
-                                </td>*@
-
-                            <td>
+                            <td style="vertical-align: middle;">
                                 @if (item.Status == 1)
                                 {
                                     <a class="btn btn-sm btn-success status" data-id="@item.Id"><i class="fas fa-toggle-on"></i></a>
@@ -190,9 +182,10 @@
                                 }
 
                             </td>
-                            <td>
+                            <td style="vertical-align: middle;">
                                 <a href="@Url.Action("Details","Products", new { id = item.Id })" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Chi tiết</a>
                                 <a href="@Url.Action("Edit","Products", new { id = item.Id })" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Sữa</a>
+                                @*<a href="@Url.Action("AddProductItem","Products", new { id = item.Id })" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i> Thêm Item</a>*@
                                 <button class="btn btn-sm btn-danger btnDelete" data-id="@item.Id"><i class="fas fa-trash"></i> Xóa</button>
 
                             </td>

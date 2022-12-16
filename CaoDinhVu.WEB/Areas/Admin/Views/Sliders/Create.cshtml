@@ -1,0 +1,61 @@
+﻿@model Entities.Models.Slider
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Share/_layoutAdmin.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Sliders", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <!-- Content Wrapper. Contains page content -->
+    <div class="p-lg-5">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <strong class="text-danger text-uppercase">TẠO MỚI SLIDER</strong>
+                    </div>
+                    <div class="col-sm-6 text-right">
+
+                        <a href="@Url.Action("Index", "Sliders")" class="btn btn-info"><i class="fas fa-chevron-left"></i> Quay lại</a>
+                        <button class="btn btn-success" type="submit"><i class="fas fa-save"></i> Lưu[Thêm]</button>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!--ddddddd-->
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label>Chọn ảnh<span class="text-danger">(*)</span></label>
+            </div>
+
+
+            <div class="form-group">
+                <label>Image</label>
+                <input name="Image" type="file" />
+            </div>
+
+            <div class="form-group">
+                <label>Trạng thái</label>
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.Status, new[] { new SelectListItem { Text = "Không xuất bản", Value = "2" }, new SelectListItem { Text = "Xuất bản", Value = "1" } }, "Trạng thái", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>*@
+        </div>
+
+        <!--ddddddd-->
+    </div>
+
+}

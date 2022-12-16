@@ -18,6 +18,11 @@ namespace CaoDinhVu.WEB.Extensions
 
             app.UseEndpoints(endpoints =>
             {
+                //
+                endpoints.MapControllerRoute(
+                   name: "don-hang",
+                   defaults: new { controller = "Home", action = "FindOrder" },
+                   pattern: "don-hang");
                 /// Account
                 // Đơn hàng của tôi
                 endpoints.MapControllerRoute(

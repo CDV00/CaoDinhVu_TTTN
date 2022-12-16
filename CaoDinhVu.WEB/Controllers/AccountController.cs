@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using CaoDinhVu.BLL.Services;
+using Entities.Requests;
 
 namespace CaoDinhVu.WEB.Controllers
 {
@@ -23,7 +24,7 @@ namespace CaoDinhVu.WEB.Controllers
             _httpContextAccessor = httpContextAccessor;
             _accountService = accountService;
             _orderService = orderService;
-            /*try
+            try
             {
                 var a = _httpContextAccessor.HttpContext.Session.Get<UserDTO>("UserInfo").Id??Guid.Empty;
                 if (a.Equals(Guid.Empty))
@@ -32,7 +33,7 @@ namespace CaoDinhVu.WEB.Controllers
             catch (NullReferenceException)
             {
                 _httpContextAccessor.HttpContext.Response.Redirect("dLogin");
-            }*/
+            }
         }
         //trả về trang login ở controller 
         /*public void checkUser()
@@ -99,15 +100,48 @@ namespace CaoDinhVu.WEB.Controllers
             var orders = await _orderService.GetByUserId(UserId);
             return View(orders.Data);
         }
+
         // GET: /Account/Profile-Seller
         public IActionResult ProfileSeller()
         {
             return View();
         }
-        // GET: /Account/Profile-Setting
-        public IActionResult ProfileSetting()
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(IFormCollection field)
         {
-            return View();
+            string fullName = field["fullName"];
+            string userName = field["userName"];
+            string email = field["email"];
+            string tinh = field["Tinh"];
+            string huyen = field["Huyen"];
+            string phuong = field["phuong"];
+            string soNha = field["soNha"];
+            string gender = field["genders"];
+            Guid UserId = (UserInfo.Id.Equals(Guid.Empty)) ? new Guid("62e7da25-2472-4410-5f95-08dab98aa38a") : UserInfo.Id.Value;
+
+            var userRequest = new UserRequest();
+            userRequest.Id = UserId;
+            userRequest.Email = email;
+            userRequest.FullName = fullName;
+            userRequest.UserName = userName;
+            userRequest.Address = soNha + ", " + phuong + ", " + huyen + ", " + tinh;
+            userRequest.Gender = gender;
+
+            var result = await _accountService.UpdateProfile(userRequest);
+            if (result.IsSuccess)
+            {
+                return RedirectToAction(nameof(ProfileSetting));
+            }
+            var appUser = await _accountService.GetProfileSetting(UserId);
+            return View(appUser);
+        }
+
+        // GET: /Account/Profile-Setting
+        public async Task<IActionResult> ProfileSetting()
+        {
+            Guid UserId = (UserInfo.Id.Equals(Guid.Empty)) ? new Guid("62e7da25-2472-4410-5f95-08dab98aa38a") : UserInfo.Id.Value;
+            var profileSetting = await _accountService.GetProfileSetting(UserId);
+            return View(profileSetting.Data);
         }
         public IActionResult LogOut()
         {

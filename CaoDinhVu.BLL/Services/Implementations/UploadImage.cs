@@ -58,7 +58,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             }
             catch (Exception ex)
             {
-                return await Task.FromResult("Failed!");
+                return await Task.FromResult(String.Empty);
                 throw new("Something went wrong. " + ex.Message);
             }
         }

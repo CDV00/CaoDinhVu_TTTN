@@ -126,25 +126,80 @@ namespace CaoDinhVu.WEB
                      pattern: "quan-ly-thong-ke");
                 //đặt hành
                 //sản phẩm
+                endpoints.MapAreaControllerRoute(
+                     name: "san-pham-da-xoa",
+                     areaName: "Admin",
+                     defaults: new { Areas = "Admin", Controller = "Products", Action = "Trash" },
+                     pattern: "san-pham-da-xoa");
+                endpoints.MapAreaControllerRoute(
+                     name: "them-san-pham",
+                     areaName: "Admin",
+                     defaults: new { Areas = "Admin", Controller = "Products", Action = "Create" },
+                     pattern: "them-san-pham");
+                endpoints.MapAreaControllerRoute(
+                     name: "quan-ly-san-pham",
+                     areaName: "Admin",
+                     defaults: new { Areas = "Admin", Controller = "Products", Action = "Index" },
+                     pattern: "quan-ly-san-pham");
+                endpoints.MapAreaControllerRoute(
+                     name: "xem-chi-tiet-san-pham",
+                     areaName: "Admin",
+                     defaults: new { Areas = "Admin", Controller = "Products", Action = "Details" },
+                     pattern: "san-pham/chi-tiet/{id?}");
+                endpoints.MapAreaControllerRoute(
+                   name: "sua-san-pham",
+                   areaName: "Admin",
+                   defaults: new { Areas = "Admin", Controller = "Products", Action = "Edit" },
+                   pattern: "sua-san-pham/{id?}");
                 //thương hiệu
                 endpoints.MapAreaControllerRoute(
-                   name: "MyAreaProductsd",
+                   name: "thuong-hieu-da-xoa",
+                   areaName: "Admin",
+                   defaults: new { Areas = "Admin", Controller = "Brand", Action = "Trash" },
+                   pattern: "thuong-hieu-da-xoa");
+                endpoints.MapAreaControllerRoute(
+                   name: "them-thuong-hieu",
+                   areaName: "Admin",
+                   defaults: new { Areas = "Admin", Controller = "Brand", Action = "Create" },
+                   pattern: "them-thuong-hieu");
+                endpoints.MapAreaControllerRoute(
+                   name: "quan-ly-thuong-hieu",
                    areaName: "Admin",
                    defaults: new { Areas = "Admin", Controller = "Brand", Action = "Index" },
                    pattern: "quan-ly-thuong-hieu");
+                endpoints.MapAreaControllerRoute(
+                     name: "xem-chi-tiet-thuong-hieu",
+                     areaName: "Admin",
+                     defaults: new { Areas = "Admin", Controller = "Brand", Action = "Details" },
+                     pattern: "thuong-hieu/chi-tiet/{id?}");
+                endpoints.MapAreaControllerRoute(
+                   name: "sua-thuong-hieu",
+                   areaName: "Admin",
+                   defaults: new { Areas = "Admin", Controller = "Brand", Action = "Edit" },
+                   pattern: "sua-thuong-hieu/{id?}");
                 //danh mục
                 endpoints.MapAreaControllerRoute(
-                     name: "xem-tat-ca",
+                     name: "quan-ly-danh-muc",
                      areaName: "Admin",
                      defaults: new { Areas = "Admin", Controller = "Categories", Action = "Index" },
                      pattern: "quan-ly-danh-muc");
+                endpoints.MapAreaControllerRoute(
+                   name: "danh-muc-da-xoa",
+                   areaName: "Admin",
+                   defaults: new { Areas = "Admin", Controller = "Categories", Action = "Trash" },
+                   pattern: "danh-muc-da-xoa");
+                endpoints.MapAreaControllerRoute(
+                   name: "them-danh-muc",
+                   areaName: "Admin",
+                   defaults: new { Areas = "Admin", Controller = "Categories", Action = "Create" },
+                   pattern: "them-danh-muc");
                 endpoints.MapAreaControllerRoute(
                      name: "xem-chi-tiet-danh-muc",
                      areaName: "Admin",
                      defaults: new { Areas = "Admin", Controller = "Categories", Action = "Details" },
                      pattern: "danh-muc/chi-tiet/{id?}");
                 endpoints.MapAreaControllerRoute(
-                   name: "MyAreaProducts",
+                   name: "sua-danh-muc",
                    areaName: "Admin",
                    defaults: new { Areas = "Admin", Controller = "Categories", Action = "Edit" },
                    pattern: "sua-danh-muc/{id?}");

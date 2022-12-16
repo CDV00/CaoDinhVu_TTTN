@@ -44,7 +44,7 @@
                                 }
                             </ol>
                             <div class="carousel-inner">
-                                @foreach (var item in Model.listSlider)
+                                @foreach (var item in Model.listSlider.OrderBy(m=>m.Orders))
                                 {
                                     if (item.Orders == 1)
                                     {
@@ -79,10 +79,10 @@
                             {
                                 <div class="card-banner border-bottom">
                                     <div class="py-3" style="width:80%">
-                                        <h6 class="card-title">@item.Name</h6>
-                                        <a href="~/danh-muc/@item.Id" class="btn btn-secondary btn-sm"> Source now </a>
+                                        <h6 class="card-title text-white">@item.Name</h6>
+                                        <a href="~/danh-muc/@item.Id" class="btn btn-secondary btn-sm  text-white"> xem ngay </a>
                                     </div>
-                                    <img src="~/Content/images/items/1.jpg" height="80" class="img-bg">
+                                    <img src="@item.Image" height="100" class="img-bg">
                                 </div>
                             }
 
@@ -99,36 +99,79 @@
     <!-- ========================= SECTION MAIN END// ========================= -->
     <!-- =============== SECTION DEAL =============== -->
     <section class="padding-bottom">
+        <header class="section-heading heading-line">
+            <span class="title-section text-uppercase h4 text-info">Sản phẩm mới</span>
+            <a class="float-right" style="z-index:100">Xem tất cả sản phẩm mới</a>
+        </header>
         <div class="card card-deal">
-            <div class="col-heading content-body">
-                <header class="section-heading">
-                    <h3 class="section-title">Deals and offers</h3>
-                    <p>Hygiene equipments</p>
-                </header><!-- sect-heading -->
-                <div class="timer">
-                    <div> <span class="num">04</span> <small>Days</small></div>
-                    <div> <span class="num">12</span> <small>Hours</small></div>
-                    <div> <span class="num">58</span> <small>Min</small></div>
-                    <div> <span class="num">02</span> <small>Sec</small></div>
-                </div>
-            </div> <!-- col.// -->
-            <div class="row no-gutters items-wrap">
-                @foreach (var item in Model.listProducts.Data)
-                {
-                    <div class="col-md col-6">
-                        <figure class="card-product-grid card-sm">
-                            <a href="~/chi-tiet-san-pham/@item.Id" class="img-wrap">
-                                <img src="@item.Thumbnails">
-                            </a>
-                            <div class="text-wrap p-3">
-                                <a href="~/chi-tiet-san-pham/@item.Id" class="title">@item.Name</a>
-                                <span class="badge badge-danger"> -20% </span>
-                            </div>
-                        </figure>
-                    </div> <!-- col.// -->
-                }
 
+
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+
+
+            <!-- javascript -->
+            <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+                    integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+                    crossorigin="anonymous">
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"
+                    integrity="sha512-gY25nC63ddE0LcLPhxUJGFxa2GoIyA5FLym4UJqHDEMHjp8RET6Zn/SHo1sltt3WuVtqfyxECP38/daUc/WVEA=="
+                    crossorigin="anonymous" referrerpolicy="no-referrer">
+            </script>
+            <!-- javascript -->
+
+
+            <div class="large-12 columns">
+                <div class="row no-gutters items-wrap">
+                    <div class="large-12 columns container">
+                        <div class="owl-carousel pr-5">
+                            @foreach (var item in Model.listProducts.Data.OrderByDescending(c => c.CreateAt))
+                            {
+                                <div class="col-md col-6">
+                                    <figure class="card-product-grid card-sm">
+                                        <a href="~/chi-tiet-san-pham/@item.Id" class="img-wrap">
+                                            <span class="badge badge-danger"> NEW </span>
+                                            <img src="@item.Thumbnails">
+                                        </a>
+                                        <div class="text-wrap p-3">
+                                            <a href="~/chi-tiet-san-pham/@item.Id" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;" class="title">@item.Name</a>
+                                            <div class="price mt-1">@((item.Price).ToString("#,##0")) VND</div>
+                                        </div>
+                                    </figure>
+                                </div> <!-- col.// -->
+                            }
+
+                        </div>
+                    </div>
+                </div>
             </div>
+            <script>
+                var owl = $('.owl-carousel');
+                owl.owlCarousel({
+                    margin: 10,
+                    loop: true,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        300: {
+                            items: 2
+                        },
+                        600: {
+                            items: 3
+                        },
+                        900: {
+                            items: 4
+                        },
+                        1200: {
+                            items: 5
+                        }
+
+                    }
+                })
+            </script>
+
+
         </div>
 
     </section>
@@ -136,7 +179,7 @@
     <!-- =============== SECTION 1 =============== -->
     <section class="padding-bottom">
         <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Apparel</h4>
+            <h4 class="title-section text-uppercase">Thương hiệu</h4>
         </header>
 
         <div class="card card-home-category">
@@ -145,9 +188,9 @@
 
                     <div class="home-category-banner bg-light-orange">
                         <h5 class="title">@Model.ProductsByBrabds.brand.Name</h5>
-                        <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                        <a href="#" class="btn btn-outline-primary rounded-pill">Source now</a>
-                        <img src="~/Content/images/items/2.jpg" class="img-bg">
+                        <p>@Model.ProductsByBrabds.brand.Title </p>
+                        <a href="#" class="~/thuong-hieu/@Model.ProductsByBrabds.brand.Id">Xem sản phẩm</a>
+                        <img src="@Model.ProductsByBrabds.brand.Image" height="181" class="img-bg">
                     </div>
 
                 </div> <!-- col.// -->
@@ -157,9 +200,9 @@
                         {
                             <li class="col-6 col-lg-3 col-md-4">
                                 <a href="~/chi-tiet-san-pham/@item.Id" class="item">
-                                    <div class="card-body">
-                                        <h6 class="title">@item.Name</h6>
-                                        <img class="img-sm float-right" src="@item.Thumbnails">
+                                    <div class="card-body h-50">
+                                        <h6 class="title center-x">@item.Name</h6>
+                                        <img class="img-sm mt-3 center-y" src="@item.Thumbnails">
                                         @*<p class="text-muted"><i class="fa fa-map-marker-alt"></i> Guanjou, China</p>*@
                                     </div>
                                 </a>
@@ -175,7 +218,7 @@
     <!-- =============== SECTION 2 =============== -->
     <section class="padding-bottom">
         <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Electronics</h4>
+            <h4 class="title-section text-uppercase">Danh mục</h4>
         </header>
 
         <div class="card card-home-category">
@@ -184,9 +227,9 @@
 
                     <div class="home-category-banner bg-light-orange">
                         <h5 class="title">@Model.ProductsByCategory.category.Name</h5>
-                        <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                        <a href="#" class="btn btn-outline-primary rounded-pill">Source now</a>
-                        <img src="~/Content/images/items/14.jpg" class="img-bg">
+                        <p>@Model.ProductsByCategory.category.Title </p>
+                        <a href="#" class="btn btn-outline-primary rounded-pill">Xem sản phẩm</a>
+                        <img src="@Model.ProductsByCategory.category.Image" class="img-bg">
                     </div>
 
                 </div> <!-- col.// -->
@@ -211,74 +254,12 @@
             </div> <!-- row.// -->
         </div> <!-- card.// -->
     </section>
-    <!-- =============== SECTION 2 END =============== -->
-    <!-- =============== SECTION REQUEST =============== -->
-    <section class="padding-bottom">
-
-        <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Request for Quotation</h4>
-        </header>
-
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card-banner banner-quote overlay-gradient" style="background-image: url('images/banners/banner9.jpg');">
-                    <div class="card-img-overlay white">
-                        <h3 class="card-title">An easy way to send request to suppliers</h3>
-                        <p class="card-text" style="max-width: 400px">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt.
-                        </p>
-                        <a href="" class="btn btn-primary rounded-pill">Learn more</a>
-                    </div>
-                </div>
-            </div> <!-- col // -->
-            <div class="col-md-4">
-
-                <div class="card card-body">
-                    <h4 class="title py-3">One Request, Multiple Quotes</h4>
-                    <form>
-                        <div class="form-group">
-                            <input class="form-control" name="" placeholder="What are you looking for?" type="text">
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input class="form-control" placeholder="Quantity" name="" type="text">
-
-                                <select class="custom-select form-control">
-                                    <option>Pieces</option>
-                                    <option>Litres</option>
-                                    <option>Tons</option>
-                                    <option>Gramms</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group text-muted">
-                            <p>Select template type:</p>
-                            <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" value="option1">
-                                <span class="form-check-label">Request price</span>
-                            </label>
-                            <label class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" value="option2">
-                                <span class="form-check-label">Request a sample</span>
-                            </label>
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-warning">Request for quote</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div> <!-- col // -->
-        </div> <!-- row // -->
-    </section>
-
-    <!-- =============== SECTION REQUEST .//END =============== -->
+    
     <!-- =============== SECTION ITEMS =============== -->
     <section class="padding-bottom-sm">
 
         <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Recommended items</h4>
+            <h4 class="title-section text-uppercase">Sản phẩm bán chạy</h4>
         </header>
 
         <div class="row row-sm">
@@ -288,7 +269,7 @@
                     <div class="card card-sm card-product-grid">
                         <a href="~/chi-tiet-san-pham/@item.Id" class="img-wrap"> <img src="@item.Thumbnails"> </a>
                         <figcaption class="info-wrap">
-                            <a href="~/chi-tiet-san-pham/@item.Id" class="title">@item.Name</a>
+                            <a href="~/chi-tiet-san-pham/@item.Id" class="title" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">@item.Name</a>
                             <div class="price mt-1">@((item.Price).ToString("#,##0"))VND</div> <!-- price-wrap.// -->
                         </figcaption>
                     </div>
@@ -297,102 +278,5 @@
 
         </div> <!-- row.// -->
     </section>
-    <!-- =============== SECTION ITEMS .//END =============== -->
-    <!-- =============== SECTION SERVICES =============== -->
-    <section class="padding-bottom">
-
-        <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Trade services</h4>
-        </header>
-
-        <div class="row">
-            <div class="col-md-3 col-sm-6">
-                <article class="card card-post">
-                    <img src="~/Content/images/posts/1.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="title">Trade Assurance</h6>
-                        <p class="small text-uppercase text-muted">Order protection</p>
-                    </div>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-            <div class="col-md-3 col-sm-6">
-                <article class="card card-post">
-                    <img src="~/Content/images/posts/2.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="title">Pay anytime</h6>
-                        <p class="small text-uppercase text-muted">Finance solution</p>
-                    </div>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-            <div class="col-md-3 col-sm-6">
-                <article class="card card-post">
-                    <img src="~/Content/images/posts/3.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="title">Inspection solution</h6>
-                        <p class="small text-uppercase text-muted">Easy Inspection</p>
-                    </div>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-            <div class="col-md-3 col-sm-6">
-                <article class="card card-post">
-                    <img src="~/Content/images/posts/4.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h6 class="title">Ocean and Air Shipping</h6>
-                        <p class="small text-uppercase text-muted">Logistic services</p>
-                    </div>
-                </article> <!-- card.// -->
-            </div> <!-- col.// -->
-        </div> <!-- row.// -->
-
-    </section>
-    <!-- =============== SECTION SERVICES .//END =============== -->
-    <!-- =============== SECTION REGION =============== -->
-    <section class="padding-bottom">
-
-        <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Choose region</h4>
-        </header>
-
-        <ul class="row mt-4">
-            <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/Content/images/icons/flags/CN.png"> <span>China</span> </a></li>
-            <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/Content/images/icons/flags/DE.png"> <span>Germany</span> </a></li>
-            <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/Content/images/icons/flags/AU.png"> <span>Australia</span> </a></li>
-            <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/Content/images/icons/flags/RU.png"> <span>Russia</span> </a></li>
-            <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/Content/images/icons/flags/IN.png"> <span>India</span> </a></li>
-            <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/Content/images/icons/flags/GB.png"> <span>England</span> </a></li>
-            <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/Content/images/icons/flags/TR.png"> <span>Turkey</span> </a></li>
-            <li class="col-md col-6"><a href="#" class="icontext"> <img class="icon-flag-sm" src="~/Content/images/icons/flags/UZ.png"> <span>Uzbekistan</span> </a></li>
-            <li class="col-md col-6"><a href="#" class="icontext"> <i class="mr-3 fa fa-ellipsis-h"></i> <span>More regions</span> </a></li>
-        </ul>
-    </section>
-    <!-- =============== SECTION REGION .//END =============== -->
-
-    <article class="my-4">
-        <img src="~/Content/images/banners/ad-sm.png" class="w-100">
-    </article>
+    
 </div>
-<!-- container end.// -->
-<!-- ========================= SECTION SUBSCRIBE  ========================= -->
-<section class="section-subscribe padding-y-lg">
-    <div class="container">
-
-        <p class="pb-2 text-center text-white">Delivering the latest product trends and industry news straight to your inbox</p>
-
-        <div class="row justify-content-md-center">
-            <div class="col-lg-5 col-md-6">
-                <form class="form-row">
-                    <div class="col-md-8 col-7">
-                        <input class="form-control border-0" placeholder="Your Email" type="email">
-                    </div> <!-- col.// -->
-                    <div class="col-md-4 col-5">
-                        <button type="submit" class="btn btn-block btn-warning"> <i class="fa fa-envelope"></i> Subscribe </button>
-                    </div> <!-- col.// -->
-                </form>
-                <small class="form-text text-white-50">We’ll never share your email address with a third-party. </small>
-            </div> <!-- col-md-6.// -->
-        </div>
-
-
-    </div>
-</section>
-

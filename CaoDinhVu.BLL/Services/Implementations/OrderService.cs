@@ -7,6 +7,7 @@ using Entities.Requests;
 using System;
 using System.Collections.Generic;
 using Entities.DTOs;
+using Microsoft.Extensions.Configuration;
 
 namespace CaoDinhVu.BLL.Services.Implementations
 {
@@ -18,8 +19,9 @@ namespace CaoDinhVu.BLL.Services.Implementations
         private readonly IOrderDetailService _orderDetailService;
         private readonly IMailService _mailService;
         private readonly IOrderDetailRepository _orderDetailRepository;
+        private readonly IConfiguration _config;
 
-        public OrderService(IMapper mapper,IOrderRepository orderRepository, IUnitOfWork unitOfWork, IOrderDetailService orderDetailService, IMailService mailService, IOrderDetailRepository orderDetailRepository)
+        public OrderService(IMapper mapper,IOrderRepository orderRepository, IUnitOfWork unitOfWork, IOrderDetailService orderDetailService, IMailService mailService, IOrderDetailRepository orderDetailRepository, IConfiguration config)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
@@ -27,6 +29,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             _orderDetailService = orderDetailService;
             _mailService = mailService;
             _orderDetailRepository = orderDetailRepository;
+            _config = config;
         }
         public async Task<BaseResponse> Add(PaymentRequest paymentRequest)
         {
@@ -39,6 +42,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 await _orderRepository.CreateAsync(order);
                 await _unitOfWork.SaveChangesAsync();
                 //
+                //_config["Server:Location"]
                 foreach (var item in paymentRequest.Carts)
                 {
                     var orderDetail = new OrderDetail();
@@ -56,7 +60,8 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 }
                 //
                 string subject = "Thanh toán thành công";
-                string body = "thanh toán thành công";
+                string link = _config["Server:Location"] + "don-hang?ma_don_hang=" + order.Id;
+                string body = "<h2>thanh toán thành công</h2><p>Để theo dõi đơn hàng vui lòng <a href='"+ link + "'>Click</a></p>";
                 var send = await _mailService.SeedMail("vucao005@gmail.com", paymentRequest.LastName, paymentRequest.FirstName, subject, body);
                 if (!send.IsSuccess)
                 {
@@ -120,23 +125,34 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 var dayLastWeek = DateTime.Now.Date.Add(new TimeSpan(0, 0, 0)).AddDays(-6);
                 var lineChart = _orderDetailRepository.OrderInWeek(dayLastWeek);
                 var result = new List<OrderInWeekResponse>();
+                int j = 0;
                 for (int i =0; i < 7; i++)
                 {
-                    int j = 0;
-                    if(dayLastWeek.AddDays(i).Day.ToString() == lineChart[j].Day)
+                    if(lineChart.Count == 0)
                     {
+                        for(int day = 0; day < 7; day++)
+                        {
+                            var item = new OrderInWeekResponse();
+                            item.Day = dayLastWeek.AddDays(day).DayOfWeek.ToString();
+                            item.Amount = 0;
+                            result.Add(item);
+                        }
+                        break;
+                    }
+                    else if(lineChart.Count > j && dayLastWeek.AddDays(i).DayOfWeek.ToString().Equals(lineChart[j].Day))
+                    {
+                        result.Add(lineChart[j]);
                         j++;
-                        result.Add(lineChart[i]);
                     }
                     else
                     {
                         var item = new OrderInWeekResponse();
-                        item.Day = dayLastWeek.AddDays(i).Day.ToString();
+                        item.Day = dayLastWeek.AddDays(i).DayOfWeek.ToString();
                         item.Amount = 0;
-                        result.Add(lineChart[i]);
+                        result.Add(item);
                     }
                 }
-                return new Responses<OrderInWeekResponse>(true, "thanh cong", lineChart);
+                return new Responses<OrderInWeekResponse>(true, "thanh cong", result);
                 #region comment
                 /*var listAmount = new List<long>();
                 var listDay = new List<string>();
