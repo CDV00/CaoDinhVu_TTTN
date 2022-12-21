@@ -107,7 +107,7 @@ namespace Repository.Repositories.Implementations
                                                       {
                                                           CategoryName = _context.Categories.Where(c=>c.Id == m.Key).Select(c=>c.Name).FirstOrDefault(),
                                                           Amount = m.Sum(a => a.Amount.Value)
-                                                      }).ToList();
+                                                      }).OrderBy(m => m.Amount).ToList();
                                       
                                      /* select new OrderByCategoryResponse()
                                                 {
@@ -134,7 +134,7 @@ namespace Repository.Repositories.Implementations
                                                                                                   .Select(c => c.Name)
                                                                                                   .FirstOrDefault(),
                                                                 Amount = m.Sum(a => a.Amount.Value)
-                                                            }).ToList();
+                                                            }).OrderBy(m=>m.Amount).ToList();
 
                 return OrderByBrand;
             }

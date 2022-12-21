@@ -27,7 +27,7 @@ namespace Entities.Requests
         public string UserName { get; set; }
         public string Address { get; set; }
         public string Gender { get; set; }
-        public int? Role { get; set; } = 3;
+        public int? Role { get; set; }
         public int? Status { get; set; } = 1;
 
     }

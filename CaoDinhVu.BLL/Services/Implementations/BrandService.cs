@@ -88,7 +88,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             {
                 //int order = categoryRequest.Orders.Value;
                 var brandOld = await _brandRepository.GetByIdAsync(brandRequest.Id.Value);
-                int orderOld = brandOld.Orders.Value;
+                var orderOld = brandOld.Orders.Value == null? brandRequest.Orders.Value: brandOld.Orders.Value;
                 //categoryRequest.UpdateBy =categoryold.CreateBy;
                 //categoryRequest.CreateBy =categoryold.CreateBy;
                 //

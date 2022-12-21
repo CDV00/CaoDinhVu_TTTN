@@ -6,8 +6,25 @@ $(document).ready(function() {
 
   // var html_download = '<a href="http://bootstrap-ecommerce.com/templates.html" class="btn btn-dark rounded-pill" style="font-size:13px; z-index:100; position: fixed; bottom:10px; right:10px;">Download theme</a>';
   //  $('body').prepend(html_download);
-    
 
+    /*function hidenBanner() {
+
+        $("body>div:nth-last-child(-n+13)").css("display", "none");
+    }
+    setTimeout(hidenBanner, 500);
+
+
+    function hidenCenter() {
+        $("center").text("")
+    }
+    setTimeout(hidenCenter, 100);
+    setTimeout(hidenCenter, 200);
+    setTimeout(hidenCenter, 300);
+    setTimeout(hidenCenter, 500);
+    setTimeout(hidenCenter, 1000);
+    setTimeout(hidenCenter, 1500);
+    setTimeout(hidenCenter, 2000);
+    setTimeout(hidenCenter, 2500);*/
 	//////////////////////// Prevent closing from click inside dropdown
     $(document).on('click', '.dropdown-menu', function (e) {
       e.stopPropagation();

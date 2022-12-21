@@ -196,7 +196,6 @@ namespace CaoDinhVu.BLL.Services.Implementations
                 var orderBrand = _orderDetailRepository.OrderByBrand();
                 if (orderBrand.Count > 3)
                 {
-                    orderBrand.Sort();
                     orderBrand[3].BrandName = "khác";
                     for (int i = 4; i < orderBrand.Count; i++)
                     {

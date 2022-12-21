@@ -23,7 +23,7 @@
                             </ul>
                         </nav>
                     </aside> <!-- col.// -->
-                    <div class="col-md-9 col-xl-8 col-lg-8">
+                    <div class="col-md-9 col-xl-10 col-lg-10">
 
                         <!-- ================== COMPONENT SLIDER  BOOTSTRAP  ==================  -->
                         <div id="carousel1_indicator" class="slider-home-banner carousel slide" data-ride="carousel">
@@ -72,7 +72,7 @@
                         <!-- ==================  COMPONENT SLIDER BOOTSTRAP end.// ==================  .// -->
 
                     </div> <!-- col.// -->
-                    <div class="col-md-2 d-none d-lg-block flex-grow-1">
+                    <!--<div class="col-md-2 d-none d-lg-block flex-grow-1">
                         <aside class="special-home-right">
                             <h6 class="bg-blue text-center text-white mb-0 ">Popular category</h6>
                             @foreach (var item in Model.listCategory.Take(3))
@@ -89,7 +89,7 @@
 
 
                         </aside>
-                    </div> <!-- col.// -->
+                    </div>--> <!-- col.// -->
                 </div> <!-- row.// -->
 
             </div> <!-- card-body.// -->
@@ -99,9 +99,12 @@
     <!-- ========================= SECTION MAIN END// ========================= -->
     <!-- =============== SECTION DEAL =============== -->
     <section class="padding-bottom">
+        <header class="section-heading ">
+            <span class="title-section text-uppercase h4 text-primary"><i class="fa-solid fa-bolt text-warning"></i> Sản phẩm mới <i class="fa-solid fa-bolt text-warning"></i></span>
+            <a href="~/tat-ca-san-pham" class="float-right p-2 bg-info text-white" style="border: 2px ; border-radius: 10px;color: black ">Xem tất cả sản phẩm mới <i class="fa-solid fa-circle-chevron-right"></i></a>
+        </header>
         <header class="section-heading heading-line">
-            <span class="title-section text-uppercase h4 text-info">Sản phẩm mới</span>
-            <a class="float-right" style="z-index:100">Xem tất cả sản phẩm mới</a>
+            <h4 class="title-section text-uppercase"></h4>
         </header>
         <div class="card card-deal">
 
@@ -127,7 +130,7 @@
                         <div class="owl-carousel pr-5">
                             @foreach (var item in Model.listProducts.Data.OrderByDescending(c => c.CreateAt))
                             {
-                                <div class="col-md col-6">
+                                <div class="col-md col-6 px-0">
                                     <figure class="card-product-grid card-sm">
                                         <a href="~/chi-tiet-san-pham/@item.Id" class="img-wrap">
                                             <span class="badge badge-danger"> NEW </span>
@@ -140,37 +143,19 @@
                                     </figure>
                                 </div> <!-- col.// -->
                             }
+                            <div class="col-md col-6">
+                                <figure class="card-product-grid card-sm" style="padding-top: 36px;">
 
+                                    <a href="~/tat-ca-san-pham" class="img-wrap bg-secondary rounded-circle center-x" style="height:100px; width:100px;">
+                                        <i class="fa-solid fa-angles-right Bold center-xy" style="font-size:50px; color:white;"></i>
+                                    </a>
+                                    <strong class="h6"> Xem tất cả sản phẩm </strong>
+                                </figure>
+                            </div> <!-- col.// -->
                         </div>
                     </div>
                 </div>
             </div>
-            <script>
-                var owl = $('.owl-carousel');
-                owl.owlCarousel({
-                    margin: 10,
-                    loop: true,
-                    responsive: {
-                        0: {
-                            items: 1
-                        },
-                        300: {
-                            items: 2
-                        },
-                        600: {
-                            items: 3
-                        },
-                        900: {
-                            items: 4
-                        },
-                        1200: {
-                            items: 5
-                        }
-
-                    }
-                })
-            </script>
-
 
         </div>
 
@@ -178,79 +163,115 @@
     <!-- =============== SECTION DEAL // END =============== -->
     <!-- =============== SECTION 1 =============== -->
     <section class="padding-bottom">
-        <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Thương hiệu</h4>
+        <header class="section-heading ">
+            <span class="title-section text-uppercase h4 text-primary">Thương hiệu @Model.ProductsByBrabds.brand.Name </span>
+            <a href="~/thuong-hieu" class="float-right p-2 bg-info text-white" style="border: 2px ; border-radius: 10px;color: black ">Tất cả thương hiệu <i class="fa-solid fa-circle-chevron-right"></i></a>
         </header>
-
+        <header class="section-heading heading-line">
+            <h4 class="title-section text-uppercase"></h4>
+        </header>
         <div class="card card-home-category">
             <div class="row no-gutters">
-                <div class="col-md-3">
+                <!--<div class="col-md-3">
 
-                    <div class="home-category-banner bg-light-orange">
-                        <h5 class="title">@Model.ProductsByBrabds.brand.Name</h5>
-                        <p>@Model.ProductsByBrabds.brand.Title </p>
-                        <a href="#" class="~/thuong-hieu/@Model.ProductsByBrabds.brand.Id">Xem sản phẩm</a>
-                        <img src="@Model.ProductsByBrabds.brand.Image" height="181" class="img-bg">
+                <div class="home-category-banner bg-light-orange">
+                    <h5 class="title">@Model.ProductsByBrabds.brand.Name</h5>
+                    <p>@Model.ProductsByBrabds.brand.Title </p>
+                    <a href="#" class="~/thuong-hieu/@Model.ProductsByBrabds.brand.Id">Xem sản phẩm</a>
+                    <img src="@Model.ProductsByBrabds.brand.Image" height="181" class="img-bg">
+                </div>
+
+            </div>-->
+                <!-- col.// -->
+
+
+                <div class="large-12 columns">
+                    <div class="row no-gutters items-wrap">
+                        <div class="large-12 columns container">
+                            <div class="owl-carousel pr-5">
+                                @foreach (var item in Model.ProductsByBrabds.products.Data.Take(8))
+                                {
+                                    <div class="col-md col-6 px-0">
+                                        <figure style="box-sizing: content-box;" class="card-product-grid card-sm">
+                                            <a href="~/chi-tiet-san-pham/@item.Id" class="img-wrap">
+                                                <span class="badge badge-danger"> NEW </span>
+                                                <img src="@item.Thumbnails">
+                                            </a>
+                                            <div class="text-wrap p-3">
+                                                <a href="~/chi-tiet-san-pham/@item.Id" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;" class="title">@item.Name</a>
+                                                <div class="price mt-1">@((item.Price).ToString("#,##0")) VND</div>
+                                            </div>
+                                        </figure>
+                                    </div> <!-- col.// -->
+                                }
+                                <div class="col-md col-6 px-0">
+                                    <figure class="card-product-grid card-sm" style="padding-top: 36px;">
+
+                                        <a href="~/thuong-hieu/@Model.ProductsByBrabds.brand.Id" class="img-wrap bg-secondary rounded-circle center-x" style="height:100px; width:100px;">
+                                            <i class="fa-solid fa-angles-right Bold center-xy" style="font-size:50px; color:white;"></i>
+                                        </a>
+                                        <span style=" margin-left: 27px;" class="h6">Sản phẩm @Model.ProductsByBrabds.brand.Name</span>
+                                    </figure>
+                                </div> <!-- col.// -->
+
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                </div> <!-- col.// -->
-                <div class="col-md-9">
-                    <ul class="row no-gutters bordered-cols">
-                        @foreach (var item in Model.ProductsByBrabds.products.Data.Take(8))
-                        {
-                            <li class="col-6 col-lg-3 col-md-4">
-                                <a href="~/chi-tiet-san-pham/@item.Id" class="item">
-                                    <div class="card-body h-50">
-                                        <h6 class="title center-x">@item.Name</h6>
-                                        <img class="img-sm mt-3 center-y" src="@item.Thumbnails">
-                                        @*<p class="text-muted"><i class="fa fa-map-marker-alt"></i> Guanjou, China</p>*@
-                                    </div>
-                                </a>
-                            </li>
-                        }
+                
 
-                    </ul>
-                </div> <!-- col.// -->
             </div> <!-- row.// -->
         </div> <!-- card.// -->
     </section>
     <!-- =============== SECTION 1 END =============== -->
     <!-- =============== SECTION 2 =============== -->
     <section class="padding-bottom">
-        <header class="section-heading heading-line">
-            <h4 class="title-section text-uppercase">Danh mục</h4>
-        </header>
-
+        <div style="background-color: #ff6700; border: 2px; border-radius: 5px;" class="p-2">
+            <header class="section-heading ">
+                <span class="title-section text-uppercase h4 ml-4"> Danh mục @Model.ProductsByCategory.category.Name </span>
+                <a href="~/danh-muc" class="float-right p-2 bg-info text-white" style="border: 2px ; border-radius: 10px;color: black ">Tất cả danh mục <i class="fa-solid fa-circle-chevron-right"></i></a>
+            </header>
+        </div>
         <div class="card card-home-category">
             <div class="row no-gutters">
-                <div class="col-md-3">
 
-                    <div class="home-category-banner bg-light-orange">
-                        <h5 class="title">@Model.ProductsByCategory.category.Name</h5>
-                        <p>@Model.ProductsByCategory.category.Title </p>
-                        <a href="#" class="btn btn-outline-primary rounded-pill">Xem sản phẩm</a>
-                        <img src="@Model.ProductsByCategory.category.Image" class="img-bg">
+                <div class="large-12 columns">
+                    <div class="row no-gutters items-wrap">
+                        <div class="large-12 columns container">
+                            <div class="owl-carousel pr-5">
+                                @foreach (var item in Model.ProductsByCategory.products.Data)
+                                {
+                                    <div class="col-md col-6 px-0">
+                                        <figure style="box-sizing: content-box;" class="card-product-grid card-sm">
+                                            <a href="~/chi-tiet-san-pham/@item.Id" class="img-wrap">
+                                                <span class="badge badge-danger"> NEW </span>
+                                                <img src="@item.Thumbnails">
+                                            </a>
+                                            <div class="text-wrap p-3">
+                                                <a href="~/chi-tiet-san-pham/@item.Id" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;" class="title">@item.Name</a>
+                                                <div class="price mt-1">@((item.Price).ToString("#,##0")) VND</div>
+                                            </div>
+                                        </figure>
+                                    </div> <!-- col.// -->
+                                }
+                                <div class="col-md col-6">
+                                    <figure class="card-product-grid card-sm" style="padding-top: 36px;">
+
+                                        <a href="~/danh-muc/@Model.ProductsByCategory.category.Id" class="img-wrap bg-secondary rounded-circle center-x" style="height:100px; width:100px;">
+                                            <i class="fa-solid fa-angles-right Bold center-xy" style="font-size:50px; color:white;"></i>
+                                        </a>
+                                        <strong style=" margin-left: 27px;" class="h6">Sản phẩm @Model.ProductsByCategory.category.Name</strong>
+                                    </figure>
+                                </div> <!-- col.// -->
+
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                </div> <!-- col.// -->
-                <div class="col-md-9">
-                    <ul class="row no-gutters bordered-cols">
-                        @foreach (var item in Model.ProductsByCategory.products.Data.Take(8))
-                        {
-                            <li class="col-6 col-lg-3 col-md-4">
-                                <a href="~/chi-tiet-san-pham/@item.Id" class="item">
-                                    <div class="card-body">
-                                        <h6 class="title">@item.Name</h6>
-                                        <img class="img-sm float-right" src="@item.Thumbnails">
-                                        @* <img src="~/images/items/apple-iphone-12-pro.png" />*@
-                                        @*<p class="text-muted"><i class="fa fa-map-marker-alt"></i> Tokyo, Japan</p>*@
-                                    </div>
-                                </a>
-                            </li>
-                        }
+                
 
-                    </ul>
-                </div> <!-- col.// -->
             </div> <!-- row.// -->
         </div> <!-- card.// -->
     </section>
@@ -280,3 +301,28 @@
     </section>
     
 </div>
+<script>
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+        margin: 10,
+        loop: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            300: {
+                items: 2
+            },
+            600: {
+                items: 3
+            },
+            900: {
+                items: 4
+            },
+            1200: {
+                items: 5
+            }
+
+        }
+    })
+</script>

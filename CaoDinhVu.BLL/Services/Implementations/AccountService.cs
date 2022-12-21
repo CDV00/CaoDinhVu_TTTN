@@ -404,7 +404,7 @@ namespace CaoDinhVu.BLL.Services.Implementations
             try
             {
                 var user = await _userManager.FindByIdAsync(userRequest.Id.ToString());
-                if(_userRepository.checkRole(user.Id) != userRequest.Role)
+                if(_userRepository.checkRole(user.Id) != userRequest.Role && _userRepository.checkRole(user.Id) != 1)
                 {
                     if(userRequest.Role == 3)
                     {

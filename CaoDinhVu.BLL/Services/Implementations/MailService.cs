@@ -3,6 +3,10 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using ElasticEmail.Api;
+using ElasticEmail.Client;
+using ElasticEmail.Model;
 
 namespace CaoDinhVu.BLL.Services.Implementations
 {
@@ -27,24 +31,24 @@ namespace CaoDinhVu.BLL.Services.Implementations
             #endregion
             #region test sendMaid Gmait smtp
             /*MailMessage mail = new MailMessage();
-           SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+            SmtpClient SmtpServer = new SmtpClient(_from);
 
-           mail.From = new MailAddress("vucao005@gmail.com");
-           mail.To.Add("caodinhvu00@gmail.com");
-           mail.Subject = "Test Mail";
-           mail.Body = "This is for testing SMTP mail from GMAIL";
+            mail.From = new MailAddress(_from);
+            mail.To.Add(_to);
+            mail.Subject = _subject;
+            mail.Body = _body;
 
-           SmtpServer.Port = 587;
-           SmtpServer.Credentials = new System.Net.NetworkCredential("vucao005@gmail.com", "01699148170");
-           SmtpServer.EnableSsl = true;
-           SmtpServer.UseDefaultCredentials = true;
-           SmtpServer.Send(mail);
-           //MessageBox.Show("mail Send");*/
+            SmtpServer.Port = 2525;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("vucao005@gmail.com", "14CCAAC2FD6545F88BC86588631D17D66BF2");
+            SmtpServer.EnableSsl = true;
+            SmtpServer.UseDefaultCredentials = true;
+            SmtpServer.Send(mail);*/
+            //MessageBox.Show("mail Send");
             #endregion
-            try
+            /*try
             {
                 #region SendMail SENDGRID       
-                Environment.SetEnvironmentVariable("SENDGRID_API_KEY", "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");
+                Environment.SetEnvironmentVariable("SENDGRID_API_KEY", "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");
                 var apiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
                 var client = new SendGridClient(apiKey);
                 var from = new EmailAddress(_from, "Thiet bi dien tu Shop");
@@ -61,6 +65,38 @@ namespace CaoDinhVu.BLL.Services.Implementations
             {
                 Console.WriteLine(ex.Message);
                 return new BaseResponse(false, ex.Message);
+            }*/
+            Configuration config = new Configuration();
+            // Configure API key authorization: apikey
+            config.ApiKey.Add("X-ElasticEmail-ApiKey", "089DE984E2B0219FB6BCD411FD4B783CA700107A2D34E4C57891EDDC1CCEACD55751FA13E57E213C5207A6271B07FFDF");
+            var apiInstance = new EmailsApi(config);
+            var to = new List<string>();
+            to.Add(_to);
+            var recipients = new TransactionalRecipient(to: to);
+            EmailTransactionalMessageData emailData = new EmailTransactionalMessageData(recipients: recipients);
+            emailData.Content = new EmailContent();
+            emailData.Content.Body = new List<BodyPart>();
+            BodyPart htmlBodyPart = new BodyPart();
+            htmlBodyPart.ContentType = BodyContentType.HTML;
+            htmlBodyPart.Charset = "utf-8";
+            htmlBodyPart.Content = _body;
+            BodyPart plainTextBodyPart = new BodyPart();
+            plainTextBodyPart.ContentType = BodyContentType.PlainText;
+            plainTextBodyPart.Charset = "utf-8";
+            plainTextBodyPart.Content = _body;
+            emailData.Content.Body.Add(htmlBodyPart);
+            emailData.Content.Body.Add(plainTextBodyPart);
+            emailData.Content.From = _from;
+            emailData.Content.Subject = _subject;
+            try
+            {
+                apiInstance.EmailsTransactionalPost(emailData);
+                return new BaseResponse();
+            }
+            catch (Exception ex)
+            {
+                return new BaseResponse(false, ex.Message);
+                throw;
             }
         }
     }

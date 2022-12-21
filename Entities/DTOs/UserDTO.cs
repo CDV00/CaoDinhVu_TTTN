@@ -22,7 +22,7 @@ namespace Entities.DTOs
         public string HeadLine { get; set; }
         public string Description { get; set; }
 
-        public int Role { get; set; } = 3;
+        public int Role { get; set; }
 
         public string Address { get; set; }
         public string Gender { get; set; }
