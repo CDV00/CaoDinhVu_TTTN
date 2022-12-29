@@ -20,7 +20,7 @@ namespace CaoDinhVu.WEB.Areas.Admin.Controllers
             {
                 var UserId = _httpContextAccessor.HttpContext.Session.Get<UserDTO>("UserInfo").Id ?? Guid.Empty;
                 var Role = _httpContextAccessor.HttpContext.Session.Get<UserDTO>("UserInfo").Role;
-                if (UserId.Equals(Guid.Empty) /*|| Role == 3*/)
+                if (UserId.Equals(Guid.Empty) || Role == 3)
                 {
                     ViewBag.Error = "<strong class=\"text-danger \">Bạn không có quyền admin</strong>";
                     _httpContextAccessor.HttpContext.Response.Redirect("/dang-nhap");

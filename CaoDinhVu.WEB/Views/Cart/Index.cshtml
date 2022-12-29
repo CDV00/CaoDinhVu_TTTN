@@ -98,9 +98,9 @@
                     <table class="table table-borderless table-shopping-cart">
                         <thead class="text-muted">
                             <tr class="small text-uppercase">
-                                <th scope="col">Product</th>
-                                <th scope="col" width="120">Quantity</th>
-                                <th scope="col" width="120">Price</th>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col" width="120">Số lượng</th>
+                                <th scope="col" width="120">Tiền</th>
                                 <th scope="col" class="text-right" width="200"> </th>
                             </tr>
                         </thead>
@@ -139,8 +139,7 @@
                                         </div> <!-- price-wrap .// -->
                                     </td>
                                     <td class="text-right">
-                                        <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
-                                        <button class="btn btn-light btnDelete" data-id="@item.ProductOption.Id"> Remove</button>
+                                        <button class="btn btn-light btnDelete" data-id="@item.ProductOption.Id"> Xóa</button>
                                     </td>
                                 </tr>
                             }
@@ -158,7 +157,7 @@
                             <a href="~/thanh-toan" class="btn btn-primary float-md-right"> thanh toán <i class="fa fa-chevron-right"></i> </a>
                         }
 
-                        <a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
+                        <a href="~/" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Về trang chủ </a>
                     </div>
                 </div> <!-- card.// -->
 
@@ -166,7 +165,7 @@
 
             </main> <!-- col.// -->
             <aside class="col-md-3">
-                <div class="card mb-3">
+                <!--<div class="card mb-3">
                     <div class="card-body">
                         <form>
                             <div class="form-group">
@@ -179,12 +178,12 @@
                                 </div>
                             </div>
                         </form>
-                    </div> <!-- card-body.// -->
-                </div>  <!-- card .// -->
+                    </div>--> <!-- card-body.// -->
+                <!--</div>-->  <!-- card .// -->
                 <div class="card">
                     <div class="card-body">
                         <dl class="dlist-align">
-                            <dt>Total price:</dt>
+                            <dt>Tổng tiền:</dt>
                             <dd id="tongtien" class="text-right">@(totalprice.ToString("#,##0"))</dd>
                         </dl>
                         @*<dl class="dlist-align">
@@ -196,9 +195,9 @@
                             <dd class="text-right  h5"><strong>$1,650</strong></dd>
                         </dl>*@
                         <hr>
-                        <p class="text-center mb-3">
+                        @*<p class="text-center mb-3">
                             <img src="images/misc/payments.png" height="26">
-                        </p>
+                        </p>*@
 
                     </div> <!-- card-body.// -->
                 </div>  <!-- card .// -->
